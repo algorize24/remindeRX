@@ -1,9 +1,9 @@
 import { ScrollView, StyleSheet } from "react-native";
 
 // components
-import TitlePolicy from "../components/header/TitlePolicy";
-import WelcomePolicy from "../components/header/WelcomePolicy";
-import ListPrivacyPolicy from "../components/desc/ListPrivacyPolicy";
+import TitlePolicy from "../../components/header/TitlePolicy";
+import WelcomePolicy from "../../components/header/WelcomePolicy";
+import ListPrivacyPolicy from "../../components/desc/ListPrivacyPolicy";
 
 export default function PrivacyPolicyScreen() {
   return (

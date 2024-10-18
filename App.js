@@ -1,26 +1,29 @@
-// react-native
-import { StatusBar } from "expo-status-bar";
-
-// react
-import { useState, useEffect } from "react";
+import { StatusBar } from "expo-status-bar"; // react-native
+import { useState, useEffect } from "react"; // react
 
 // react-navigation
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
-// custom-fonts
-import * as Font from "expo-font";
-
-// splash screen
-import * as SplashScreen from "expo-splash-screen";
+import * as Font from "expo-font"; // custom-fonts
+import * as SplashScreen from "expo-splash-screen"; // splash screen
 
 // constants
 import { Color } from "./constants/Color";
 
-// screen
-import PolicyScreen from "./screens/PolicyScreen";
-import TermOfUse from "./screens/TermOfUse";
-import PrivacyPolicyScreen from "./screens/PrivacyPolicyScreen";
+// screens - ReminderxPolicyStack
+import PolicyScreen from "./screens/reminderxpolicy/PolicyScreen";
+import TermOfUse from "./screens/reminderxpolicy/TermOfUse";
+import PrivacyPolicyScreen from "./screens/reminderxpolicy/PrivacyPolicyScreen";
+
+// screens - ReminderAuthStack
+import AuthSelect from "./screens/reminderxauth/AuthSelect";
+import AuthLogin from "./screens/reminderxauth/AuthLogin";
+import AuthSignUp from "./screens/reminderxauth/AuthSignUp";
+import ForgotPassword from "./screens/reminderxauth/ForgotPassword";
+import ResetPassword from "./screens/reminderxauth/ResetPassword";
+import SetPassword from "./screens/reminderxauth/SetPassword";
+import CreatingAccount from "./screens/reminderxauth/CreatingAccount";
 
 const Stack = createNativeStackNavigator(); // stack navigator
 SplashScreen.preventAutoHideAsync(); // Keep the splash screen visible while we fetch resources
@@ -58,7 +61,83 @@ function ReminderxPolicyStack() {
 }
 
 // this fn component will rendered if session expires or newly user. signIn/signUp
-function ReminderAuthStack() {}
+function ReminderAuthStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: Color.bgColor },
+        contentStyle: { backgroundColor: Color.bgColor },
+      }}
+    >
+      <Stack.Screen
+        name="ReminderxPolicyStack"
+        component={ReminderxPolicyStack}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AuthSelect"
+        component={AuthSelect}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Signin"
+        component={AuthLogin}
+        options={{
+          headerTintColor: "white",
+          title: " ",
+        }}
+      />
+      <Stack.Screen
+        name="Signup"
+        component={AuthSignUp}
+        options={{
+          headerTintColor: "white",
+          title: " ",
+        }}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{
+          headerTintColor: "white",
+          title: "",
+        }}
+      />
+
+      <Stack.Screen
+        name="ResetPassword"
+        component={ResetPassword}
+        options={{
+          headerTintColor: "white",
+          title: "",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="SetPassword"
+        component={SetPassword}
+        options={{
+          headerTintColor: "white",
+          title: "",
+        }}
+      />
+
+      <Stack.Screen
+        name="CreatingAccount"
+        component={CreatingAccount}
+        options={{
+          headerTintColor: "white",
+          title: "",
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 // this fn component will only rendered once if the user install the application. features section
 function ReminderFeaturesStack() {}
@@ -99,7 +178,8 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <NavigationContainer>
-        <ReminderxPolicyStack />
+        {/* <ReminderxPolicyStack /> */}
+        <ReminderAuthStack />
       </NavigationContainer>
     </>
   );

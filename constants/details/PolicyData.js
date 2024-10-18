@@ -196,9 +196,9 @@ export const PrivacyPolicy = [
       {
         content: [
           "RemindeRx Support Team",
-          "Email: [Insert Email Address]",
-          "Phone: [Insert Phone Number]",
-          "Address: [Insert Mailing Address]",
+          "Email: reminderx@gmail.com",
+          "Phone: 123-456-789",
+          "Address: Metro Manila, Mandaluyong City",
         ],
       },
     ],

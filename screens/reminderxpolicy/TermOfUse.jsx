@@ -1,9 +1,9 @@
 import { StyleSheet, ScrollView } from "react-native";
 
 // components
-import TitlePolicy from "../components/header/TitlePolicy";
-import WelcomePolicy from "../components/header/WelcomePolicy";
-import ListTermOfUse from "../components/desc/ListTermOfUse";
+import TitlePolicy from "../../components/header/TitlePolicy";
+import WelcomePolicy from "../../components/header/WelcomePolicy";
+import ListTermOfUse from "../../components/desc/ListTermOfUse";
 
 export default function TermOfUse() {
   return (

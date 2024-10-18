@@ -11,7 +11,7 @@ export default function Title({}) {
       <Text style={styles.mainText}>
         Reminde<Text style={styles.subText}>RX</Text>
       </Text>
-      <Text style={styles.tagline}>Safe.Smart.Connected</Text>
+      <Text style={styles.tagline}>Safe. Smart. Connected</Text>
     </View>
   );
 }

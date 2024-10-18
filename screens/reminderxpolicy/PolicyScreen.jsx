@@ -2,19 +2,25 @@ import { View, StyleSheet } from "react-native";
 import { useState } from "react";
 
 // constants
-import { Color } from "../constants/Color";
+import { Color } from "../../constants/Color";
 
 // components
-import Title from "../components/header/Title";
-import CustomCheckbox from "../components/buttons/CustomCheckbox";
-import Button from "../components/buttons/Button";
+import Title from "../../components/header/Title";
+import CustomCheckbox from "../../components/buttons/CustomCheckbox";
+import Button from "../../components/buttons/Button";
 
-export default function PolicyScreen() {
+export default function PolicyScreen({ navigation }) {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
   // pass to CustomCheckbox component
   const handleCheckedLaw = (isChecked) => {
     setIsButtonEnabled(isChecked); // Enable the button when checked
+  };
+
+  // pass to button
+  const handleUserAgreement = () => {
+    navigation.navigate("AuthSelect");
+    console.log("Pressed");
   };
 
   return (
@@ -28,10 +34,7 @@ export default function PolicyScreen() {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button
-          onPress={() => console.log("Button Pressed")}
-          isEnable={isButtonEnabled}
-        >
+        <Button onPress={handleUserAgreement} isEnable={isButtonEnabled}>
           Continue
         </Button>
       </View>
