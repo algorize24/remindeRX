@@ -6,15 +6,19 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
-import AuthText from "../../components/header/AuthText";
+
+// constants
 import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
+
+// components
+import AuthText from "../../components/header/AuthText";
 import MainButton from "../../components/buttons/MainButton";
 
 export default function CreatingAccount({ navigation }) {
   const handleButton = () => {
-    // navigation.navigate("Signin");
     navigation.reset({
+      // to not go back to previous screen, focus only on one route.
       index: 0,
       routes: [{ name: "Signin" }],
     });

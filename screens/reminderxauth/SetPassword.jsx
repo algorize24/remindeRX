@@ -1,18 +1,23 @@
 import {
   View,
-  Text,
   StyleSheet,
   Pressable,
   KeyboardAvoidingView,
 } from "react-native";
-import { Color } from "../../constants/Color";
-import { Fonts } from "../../constants/Font";
-import AuthText from "../../components/header/AuthText";
-import Feather from "@expo/vector-icons/Feather";
-import TextInputs from "../../components/Inputs/TextInputs";
-import Entypo from "@expo/vector-icons/Entypo";
-import MainButton from "../../components/buttons/MainButton";
+
 import { useState } from "react";
+
+// constants
+import { Color } from "../../constants/Color";
+
+// components
+import AuthText from "../../components/header/AuthText";
+import MainButton from "../../components/buttons/MainButton";
+import TextInputs from "../../components/Inputs/TextInputs";
+
+// icons
+import Feather from "@expo/vector-icons/Feather";
+import Entypo from "@expo/vector-icons/Entypo";
 
 export default function SetPassword({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);

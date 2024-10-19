@@ -6,10 +6,14 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
+
+// components
 import AuthText from "../../components/header/AuthText";
+import MainButton from "../../components/buttons/MainButton";
+
+// constants
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
-import MainButton from "../../components/buttons/MainButton";
 
 export default function ResetPassword({ navigation }) {
   const handleResetPassword = () => {

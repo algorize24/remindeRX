@@ -8,6 +8,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as Font from "expo-font"; // custom-fonts
 import * as SplashScreen from "expo-splash-screen"; // splash screen
 
+// icons
+import {
+  Fontisto,
+  Feather,
+  Entypo,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+
 // constants
 import { Color } from "./constants/Color";
 
@@ -24,6 +32,11 @@ import ForgotPassword from "./screens/reminderxauth/ForgotPassword";
 import ResetPassword from "./screens/reminderxauth/ResetPassword";
 import SetPassword from "./screens/reminderxauth/SetPassword";
 import CreatingAccount from "./screens/reminderxauth/CreatingAccount";
+
+// screens - ReminderFeaturesStack
+import RealTimeScreen from "./screens/reminderfeatures/RealTimeScreen";
+import ReminderFallDetectScreen from "./screens/reminderfeatures/ReminderFallDetectScreen";
+import ReminderMedScreen from "./screens/reminderfeatures/ReminderMedScreen";
 
 const Stack = createNativeStackNavigator(); // stack navigator
 SplashScreen.preventAutoHideAsync(); // Keep the splash screen visible while we fetch resources
@@ -140,7 +153,44 @@ function ReminderAuthStack() {
 }
 
 // this fn component will only rendered once if the user install the application. features section
-function ReminderFeaturesStack() {}
+function ReminderFeaturesStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: Color.bgColor },
+        contentStyle: { backgroundColor: Color.bgColor },
+      }}
+    >
+      <Stack.Screen
+        name="ReminderAuthStack"
+        component={ReminderAuthStack}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="RealTime"
+        component={RealTimeScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="FallDetection"
+        component={ReminderFallDetectScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="MedicineReminder"
+        component={ReminderMedScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 // this fn component will show if the user is authenticated. main screen/component
 function ReminderAuthenticated() {}
@@ -157,6 +207,10 @@ export default function App() {
         await Font.loadAsync({
           "work-sans": require("./assets/fonts/WorkSans-VariableFont_wght.ttf"),
           "merri-weather": require("./assets/fonts/Merriweather-Regular.ttf"),
+          ...Fontisto.font,
+          ...Feather.font,
+          ...Entypo.font,
+          ...MaterialCommunityIcons.font,
         });
       } catch (err) {
         console.warn(err);
@@ -179,7 +233,8 @@ export default function App() {
       <StatusBar style="light" />
       <NavigationContainer>
         {/* <ReminderxPolicyStack /> */}
-        <ReminderAuthStack />
+        {/* <ReminderAuthStack /> */}
+        <ReminderFeaturesStack />
       </NavigationContainer>
     </>
   );

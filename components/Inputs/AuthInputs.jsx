@@ -1,6 +1,12 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+
+// components
 import TextInputs from "./TextInputs";
+
+// constants
+import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
 
 // icons
@@ -8,13 +14,11 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { Fonts } from "../../constants/Font";
-
-import { useNavigation } from "@react-navigation/native";
 
 export default function AuthInputs() {
   const [showPassword, setShowPassword] = useState(false); // show pass
   const [rememberMe, setRememberMe] = useState(false); // checked box
+
   const navigation = useNavigation();
 
   // invoke in pressable forgot password

@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
-import { Color } from "../../constants/Color";
-import { Fonts } from "../../constants/Font";
 
-import TextInputs from "../../components/Inputs/TextInputs";
-
-import Fontisto from "@expo/vector-icons/Fontisto";
+// components
 import AuthInputs from "../../components/Inputs/AuthInputs";
 import MainButton from "../../components/buttons/MainButton";
+
+// constants
+import { Color } from "../../constants/Color";
+import { Fonts } from "../../constants/Font";
 
 export default function AuthLogin({ navigation }) {
   const handleSignUp = () => {
@@ -16,6 +16,11 @@ export default function AuthLogin({ navigation }) {
       routes: [{ name: "Signup" }],
     });
   };
+
+  const handeSignIn = () => {
+    navigation.navigate("RealTime");
+  };
+
   return (
     <View style={styles.root}>
       <View style={styles.textContainer}>
@@ -29,7 +34,7 @@ export default function AuthLogin({ navigation }) {
 
       <KeyboardAvoidingView style={styles.keyboard}>
         <View style={styles.viewKey}>
-          <MainButton>Log In</MainButton>
+          <MainButton onPress={handeSignIn}>Log In</MainButton>
           <Text style={styles.subText}>
             Don't have an account?{" "}
             <Text onPress={handleSignUp} style={styles.signUpText}>

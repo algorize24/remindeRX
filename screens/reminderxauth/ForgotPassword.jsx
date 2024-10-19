@@ -1,9 +1,15 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
-import AuthText from "../../components/header/AuthText";
+
+// constants
 import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
+
+// components
+import AuthText from "../../components/header/AuthText";
 import TextInputs from "../../components/Inputs/TextInputs";
 import MainButton from "../../components/buttons/MainButton";
+
+// icons
 import Fontisto from "@expo/vector-icons/Fontisto";
 
 export default function ForgotPassword({ navigation }) {

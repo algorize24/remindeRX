@@ -1,10 +1,16 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+
+// constants
 import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
-import AuthText from "../../components/header/AuthText";
-import Fontisto from "@expo/vector-icons/Fontisto";
+
+// components
 import TextInputs from "../../components/Inputs/TextInputs";
 import MainButton from "../../components/buttons/MainButton";
+import AuthText from "../../components/header/AuthText";
+
+// icon
+import Fontisto from "@expo/vector-icons/Fontisto";
 
 export default function AuthSignUp({ navigation }) {
   const handleSignUp = () => {
