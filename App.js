@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"; // react
 // react-navigation
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import * as Font from "expo-font"; // custom-fonts
 import * as SplashScreen from "expo-splash-screen"; // splash screen
@@ -38,7 +39,21 @@ import RealTimeScreen from "./screens/reminderfeatures/RealTimeScreen";
 import ReminderFallDetectScreen from "./screens/reminderfeatures/ReminderFallDetectScreen";
 import ReminderMedScreen from "./screens/reminderfeatures/ReminderMedScreen";
 
+// screens - ReminderAuthenticated
+import DashboardScreen from "./screens/reminderauthenticated/DashboardScreen";
+import InventoryScreen from "./screens/reminderauthenticated/InventoryScreen";
+import ReminderScreen from "./screens/reminderauthenticated/ReminderScreen";
+import ContactScreen from "./screens/reminderauthenticated/ContactScreen";
+import EventLogScreen from "./screens/reminderauthenticated/EventLogScreen";
+import ProfileScreen from "./screens/reminderauthenticated/ProfileScreen";
+
+// components
+import HeaderTitle from "./components/header/HeaderTitle";
+import HeaderIcon from "./components/header/HeaderIcon";
+import DrawerHeader from "./components/header/DrawerHeader";
+
 const Stack = createNativeStackNavigator(); // stack navigator
+const Drawer = createDrawerNavigator(); // drawer navigator
 SplashScreen.preventAutoHideAsync(); // Keep the splash screen visible while we fetch resources
 
 // this fn component will only rendered once if the user install the application. privacy policy
@@ -193,7 +208,49 @@ function ReminderFeaturesStack() {
 }
 
 // this fn component will show if the user is authenticated. main screen/component
-function ReminderAuthenticated() {}
+function ReminderAuthenticated() {
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => <DrawerHeader {...props} />}
+      screenOptions={({ navigation }) => ({
+        headerStyle: { backgroundColor: Color.bgColor },
+        headerRight: () => (
+          <HeaderIcon onPress={() => navigation.toggleDrawer()} />
+        ),
+        headerTitle: () => <HeaderTitle />,
+        headerLeft: () => null, // Remove the default menu icon on the left
+        drawerStyle: { backgroundColor: Color.bgColor },
+        drawerLabelStyle: { color: "white" },
+        drawerActiveBackgroundColor: Color.container,
+      })}
+    >
+      <Drawer.Screen name="Dashboard" component={DashboardScreen} />
+      <Drawer.Screen
+        name="InventoryLog"
+        component={InventoryScreen}
+        options={{
+          title: "Inventory Log",
+        }}
+      />
+      <Drawer.Screen
+        name="EventSchedule"
+        component={ReminderScreen}
+        options={{
+          title: "Event Schedule",
+        }}
+      />
+      <Drawer.Screen name="Contact" component={ContactScreen} />
+      <Drawer.Screen
+        name="EventLog"
+        component={EventLogScreen}
+        options={{
+          title: "Event Log",
+        }}
+      />
+      <Drawer.Screen name="Profile" component={ProfileScreen} />
+    </Drawer.Navigator>
+  );
+}
 
 // main function
 export default function App() {
@@ -234,7 +291,8 @@ export default function App() {
       <NavigationContainer>
         {/* <ReminderxPolicyStack /> */}
         {/* <ReminderAuthStack /> */}
-        <ReminderFeaturesStack />
+        {/* <ReminderFeaturesStack /> */}
+        <ReminderAuthenticated />
       </NavigationContainer>
     </>
   );
