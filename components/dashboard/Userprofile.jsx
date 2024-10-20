@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
   email: {
     fontFamily: Fonts.main,
     color: "#fff",
-    fontWeight: "bold",
     fontSize: 18,
   },
 

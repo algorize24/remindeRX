@@ -16,23 +16,48 @@ export default function ProfileScreen({ navigation }) {
       </View>
 
       <View style={styles.links}>
-        <Text onPress={() => {}} style={styles.text}>
+        <Text
+          onPress={() => {
+            navigation.navigate("TermOfUse");
+          }}
+          style={styles.text}
+        >
           Terms of Use
         </Text>
 
-        <Text onPress={() => {}} style={styles.text}>
+        <Text
+          onPress={() => {
+            navigation.navigate("PrivacyPolicy");
+          }}
+          style={styles.text}
+        >
           Privacy & Policy
         </Text>
 
-        <Text onPress={() => {}} style={styles.text}>
+        <Text
+          onPress={() => {
+            navigation.navigate("HelpnSupport");
+          }}
+          style={styles.text}
+        >
           Help & Support
         </Text>
 
-        <Text onPress={() => {}} style={styles.text}>
+        <Text
+          onPress={() => {
+            navigation.navigate("AboutReminderx");
+          }}
+          style={styles.text}
+        >
           About RemindeRX
         </Text>
 
-        <Text onPress={() => {}} style={styles.text}>
+        <Text
+          onPress={() => {
+            navigation.navigate("AboutUs");
+          }}
+          style={styles.text}
+        >
           About Us
         </Text>
       </View>
@@ -54,7 +79,6 @@ const styles = StyleSheet.create({
   userInfo: {
     justifyContent: "center",
     alignItems: "center",
-    // marginTop: 100,
   },
 
   img: {
@@ -67,7 +91,6 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.main,
     fontSize: 16,
     color: "white",
-    fontWeight: "bold",
     marginTop: 12,
   },
 
@@ -84,7 +107,6 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
     fontFamily: Fonts.main,
-    fontWeight: "bold",
     fontSize: 16,
     marginBottom: 30,
   },
@@ -92,7 +114,6 @@ const styles = StyleSheet.create({
   signOut: {
     color: "#fff",
     fontFamily: Fonts.main,
-    fontWeight: "bold",
     fontSize: 16,
     marginTop: 40,
     paddingHorizontal: 25,

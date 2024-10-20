@@ -47,10 +47,16 @@ import ContactScreen from "./screens/reminderauthenticated/ContactScreen";
 import EventLogScreen from "./screens/reminderauthenticated/EventLogScreen";
 import ProfileScreen from "./screens/reminderauthenticated/ProfileScreen";
 
+// screen - sub profile
+import Aboutus from "./screens/reminderauthenticated/subprofile/Aboutus";
+import Aboutreminderx from "./screens/reminderauthenticated/subprofile/Aboutreminderx";
+import HelpSupport from "./screens/reminderauthenticated/subprofile/HelpSupport";
+
 // components
 import HeaderTitle from "./components/header/HeaderTitle";
 import HeaderIcon from "./components/header/HeaderIcon";
 import DrawerHeader from "./components/header/DrawerHeader";
+import ChatbotScreen from "./components/dashboard/ChatbotScreen";
 
 const Stack = createNativeStackNavigator(); // stack navigator
 const Drawer = createDrawerNavigator(); // drawer navigator
@@ -211,6 +217,7 @@ function ReminderFeaturesStack() {
 function ReminderAuthenticated() {
   return (
     <Drawer.Navigator
+      drawerContentStyle={{ backgroundColor: Color.bgColor }}
       drawerContent={(props) => <DrawerHeader {...props} />}
       screenOptions={({ navigation }) => ({
         headerStyle: { backgroundColor: Color.bgColor },
@@ -226,27 +233,35 @@ function ReminderAuthenticated() {
     >
       <Drawer.Screen name="Dashboard" component={DashboardScreen} />
       <Drawer.Screen
-        name="InventoryLog"
+        name="Inventory"
         component={InventoryScreen}
         options={{
-          title: "Inventory Log",
+          title: "Medicine Storage",
         }}
       />
       <Drawer.Screen
         name="EventSchedule"
         component={ReminderScreen}
         options={{
-          title: "Event Schedule",
+          title: "Medication Reminder",
         }}
       />
-      <Drawer.Screen name="Contact" component={ContactScreen} />
       <Drawer.Screen
-        name="EventLog"
+        name="FallAlert"
         component={EventLogScreen}
         options={{
-          title: "Event Log",
+          title: "Fall Alert History",
         }}
       />
+
+      <Drawer.Screen
+        name="Contact"
+        component={ContactScreen}
+        options={{
+          title: "Contact Details",
+        }}
+      />
+
       <Drawer.Screen name="Profile" component={ProfileScreen} />
     </Drawer.Navigator>
   );
@@ -262,7 +277,7 @@ export default function App() {
       try {
         // Load fonts or any other resources
         await Font.loadAsync({
-          "work-sans": require("./assets/fonts/WorkSans-VariableFont_wght.ttf"),
+          "work-sans": require("./assets/fonts/WorkSans-Bold.ttf"),
           "merri-weather": require("./assets/fonts/Merriweather-Regular.ttf"),
           ...Fontisto.font,
           ...Feather.font,
@@ -292,7 +307,78 @@ export default function App() {
         {/* <ReminderxPolicyStack /> */}
         {/* <ReminderAuthStack /> */}
         {/* <ReminderFeaturesStack /> */}
-        <ReminderAuthenticated />
+        {/* <ReminderAuthenticated /> */}
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: { backgroundColor: Color.bgColor },
+            contentStyle: { backgroundColor: Color.bgColor },
+          }}
+        >
+          <Stack.Screen
+            name="ReminderAuthenticated"
+            component={ReminderAuthenticated}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="Chatbot"
+            component={ChatbotScreen}
+            options={{
+              title: "ReminderxAI",
+              headerTintColor: "white",
+              headerTitleAlign: "center",
+            }}
+          />
+
+          <Stack.Screen
+            name="AboutUs"
+            component={Aboutus}
+            options={{
+              title: "About Us",
+              headerTintColor: "white",
+              headerTitleAlign: "center",
+            }}
+          />
+          <Stack.Screen
+            name="AboutReminderx"
+            component={Aboutreminderx}
+            options={{
+              title: "About Reminderx",
+              headerTintColor: "white",
+              headerTitleAlign: "center",
+            }}
+          />
+
+          <Stack.Screen
+            name="HelpnSupport"
+            component={HelpSupport}
+            options={{
+              title: "Help & Support",
+              headerTintColor: "white",
+              headerTitleAlign: "center",
+            }}
+          />
+
+          <Stack.Screen
+            name="TermOfUse"
+            component={TermOfUse}
+            options={{
+              headerTintColor: "white",
+              title: "Terms of Use",
+              headerTitleAlign: "center",
+            }}
+          />
+
+          <Stack.Screen
+            name="PrivacyPolicy"
+            component={PrivacyPolicyScreen}
+            options={{
+              headerTintColor: "white",
+              title: "Privacy Policy",
+              headerTitleAlign: "center",
+            }}
+          />
+        </Stack.Navigator>
       </NavigationContainer>
     </>
   );

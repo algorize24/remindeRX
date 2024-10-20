@@ -70,14 +70,12 @@ const styles = StyleSheet.create({
   welcometext: {
     fontFamily: Fonts.main,
     color: Color.tagLine,
-    fontWeight: "bold",
     fontSize: 16,
   },
 
   text: {
     fontFamily: Fonts.main,
     color: "white",
-    fontWeight: "bold",
     fontSize: 32,
   },
 

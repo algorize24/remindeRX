@@ -10,6 +10,5 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
     fontSize: 24,
     fontFamily: Fonts.main,
-    fontWeight: "bold",
   },
 });

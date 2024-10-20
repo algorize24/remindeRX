@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
   },
   mainText: {
     fontFamily: Fonts.main,
-    fontWeight: "bold",
     fontSize: 32,
     color: "white",
   },

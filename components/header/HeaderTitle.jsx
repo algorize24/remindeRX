@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: Fonts.main,
     color: "white",
-    fontWeight: "bold",
     fontSize: 22,
   },
 

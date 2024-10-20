@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     fontFamily: Fonts.main,
-    fontWeight: "bold",
     fontSize: 16,
     textAlign: "center",
   },

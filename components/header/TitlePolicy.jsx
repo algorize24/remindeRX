@@ -17,14 +17,12 @@ export default function TitlePolicy({ text, date }) {
 const styles = StyleSheet.create({
   text: {
     fontFamily: Fonts.main,
-    fontWeight: "bold",
     fontSize: 18,
     color: "white",
   },
 
   textDate: {
     fontFamily: Fonts.main,
-    fontWeight: "bold",
     color: Color.tagLine,
   },
 

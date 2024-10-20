@@ -17,9 +17,6 @@ import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
 
 export default function DrawerHeader(props) {
-  const handleLogOut = () => {
-    props.navigation.navigate("/testing");
-  };
   return (
     <SafeAreaView style={styles.root}>
       <HeaderTitle style={styles.text} />
@@ -36,18 +33,6 @@ export default function DrawerHeader(props) {
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
-
-      <View style={styles.press}>
-        <Pressable
-          style={({ pressed }) => [
-            styles.logoutButton,
-            pressed && styles.pressed,
-          ]}
-          onPress={handleLogOut}
-        >
-          <Text style={styles.logoutText}>Sign out</Text>
-        </Pressable>
-      </View>
     </SafeAreaView>
   );
 }
@@ -64,7 +49,6 @@ const styles = StyleSheet.create({
   user: {
     marginTop: 12,
     padding: 16,
-    alignItems: "",
   },
   userIcon: {
     width: 50,
@@ -76,28 +60,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     fontFamily: Fonts.main,
-    fontWeight: "bold",
     marginBottom: 2,
   },
   userAddress: {
     fontFamily: Fonts.sub,
     fontSize: 12,
     color: Color.tagLine,
-  },
-
-  press: {
-    paddingHorizontal: 17,
-    paddingBottom: 40,
-  },
-
-  pressed: {
-    opacity: 0.7,
-  },
-
-  logoutText: {
-    color: "#fff",
-    fontSize: 16,
-    fontFamily: Fonts.main,
-    fontWeight: "bold",
   },
 });

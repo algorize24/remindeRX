@@ -1,14 +1,31 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import { Color } from "../../constants/Color";
 
 import Userprofile from "../../components/dashboard/Userprofile";
 import Realtime from "../../components/dashboard/Realtime";
 
-export default function DashboardScreen() {
+import FallDetection from "../../components/dashboard/FallDetection";
+import { Fonts } from "../../constants/Font";
+import FallHistory from "../../components/dashboard/FallHistory";
+import { useState } from "react";
+import Chatbot from "../../components/dashboard/Chatbot";
+import { ScrollView } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+
+export default function DashboardScreen({ data = [] }) {
+  const [isToggle, setIsToggle] = useState(false);
+
+  const navigation = useNavigation();
+
+  const handleToggle = (toggleState) => {
+    setIsToggle(toggleState);
+  };
+
+  // Slice data to show only the first 3 fall history items
+  const limitedHistory = Array.isArray(data) ? data.slice(0, 3) : [];
   return (
     <View style={styles.root}>
       <Userprofile />
-
       <View style={styles.dataContainer}>
         <Realtime
           name={"heartbeat-alt"}
@@ -26,6 +43,28 @@ export default function DashboardScreen() {
           label={"mmhg"}
         />
       </View>
+      <FallDetection onToggle={handleToggle} />
+      {/*fix soon, limited only to 3, fix when we have db and context */}
+      {isToggle ? (
+        <ScrollView>
+          {limitedHistory.map((item, index) => (
+            <FallHistory key={index} itemData={item} />
+          ))}
+          {data.length > 3 && (
+            <Text onPress={() => {}} style={styles.text}>
+              View more...
+            </Text>
+          )}
+        </ScrollView>
+      ) : (
+        <View style={styles.toggle}>
+          <Text style={styles.historyText}>
+            Please enable Fall Detection System to view the history.
+          </Text>
+        </View>
+      )}
+
+      <Chatbot onPress={() => navigation.navigate("Chatbot")} />
     </View>
   );
 }
@@ -40,5 +79,24 @@ const styles = StyleSheet.create({
   dataContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+
+  text: {
+    color: Color.tagLine,
+    marginTop: 20,
+    paddingLeft: 5,
+  },
+
+  toggle: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  historyText: {
+    textAlign: "center",
+    color: Color.tagLine,
+    fontFamily: Fonts.sub,
+    fontSize: 13,
   },
 });

@@ -11,15 +11,24 @@ export default function Realtime({ name, size, title, num, label }) {
   return (
     <View style={styles.realtime}>
       <View style={styles.realtimeContainer}>
-        <Fontisto name={name} size={size} color="white" />
-
         <View style={styles.data}>
+          <Fontisto name={name} size={size} color="white" />
+        </View>
+
+        <View>
           <Text style={styles.title}>{title}</Text>
 
-          <View style={styles.hr}>
-            <Text style={styles.num}>{num}</Text>
-            <Text style={styles.label}>{label}</Text>
-          </View>
+          {title === "Heart Rate" ? (
+            <View style={styles.hr}>
+              <Text style={styles.num}>{num}</Text>
+              <Text style={styles.label}>{label}</Text>
+            </View>
+          ) : (
+            <View>
+              <Text style={styles.num}>{num}</Text>
+              <Text style={styles.label}>{label}</Text>
+            </View>
+          )}
         </View>
       </View>
     </View>
@@ -36,6 +45,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 3,
+    paddingVertical: 18,
   },
 
   realtimeContainer: {
@@ -44,15 +54,14 @@ const styles = StyleSheet.create({
   },
 
   data: {
-    marginLeft: 10,
+    marginRight: 12,
   },
 
   title: {
-    fontFamily: Fonts.main,
-    fontWeight: "bold",
+    fontFamily: Fonts.sub,
     color: Color.tagLine,
-    textTransform: "uppercase",
-    fontSize: 11,
+    textTransform: "capitalize",
+    fontSize: 12,
   },
 
   hr: {
@@ -64,13 +73,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: Fonts.main,
     fontSize: 24,
-    fontWeight: "bold",
   },
 
   label: {
+    fontFamily: Fonts.sub,
     fontSize: 12,
     color: "#fff",
-    fontWeight: "bold",
     marginLeft: 5,
   },
 });
