@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet, Image } from "react-native";
+
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
+
 export default function ProfileScreen({ navigation }) {
   const handleSignOut = () => {
     navigation.navigate("");
@@ -74,6 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Color.bgColor,
     justifyContent: "center",
+    borderWidth: 2,
   },
 
   userInfo: {
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
   },
 
   links: {
-    marginTop: 99,
+    marginTop: 50,
     paddingHorizontal: 25,
   },
 

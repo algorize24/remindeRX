@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
+
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
+
 import FallHistory from "../../components/dashboard/FallHistory";
 import TextScreen from "../../components/header/TextScreen";
+
 export default function EventLogScreen() {
   const data = [
     {
@@ -11,28 +14,24 @@ export default function EventLogScreen() {
       time: new Date().toLocaleTimeString(), // Gets the current time in a readable format
       falldetails: "Severe fall detected",
     },
-
     {
       id: 2,
       date: new Date().toLocaleDateString(), // Gets the current date in a readable format
       time: new Date().toLocaleTimeString(), // Gets the current time in a readable format
       falldetails: "Severe fall detected",
     },
-
     {
       id: 3,
       date: new Date().toLocaleDateString(), // Gets the current date in a readable format
       time: new Date().toLocaleTimeString(), // Gets the current time in a readable format
       falldetails: "Severe fall detected",
     },
-
     {
       id: 4,
       date: new Date().toLocaleDateString(), // Gets the current date in a readable format
       time: new Date().toLocaleTimeString(), // Gets the current time in a readable format
       falldetails: "Severe fall detected",
     },
-
     {
       id: 5,
       date: new Date().toLocaleDateString(), // Gets the current date in a readable format
@@ -46,15 +45,28 @@ export default function EventLogScreen() {
         <TextScreen>Fall Detection History</TextScreen>
       </View>
 
-      <View style={styles.dataContainer}>
+      <View style={styles.textStyle}>
         <Text style={styles.fall}>Fall Events: {data.length}</Text>
-        <FlatList
-          bounces={false}
-          overScrollMode="never"
-          data={data}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <FallHistory itemData={item} />}
-        />
+      </View>
+
+      <View style={styles.dataContainer}>
+        <Text style={styles.eventText}>List of Events</Text>
+        {!data.length < 1 ? (
+          <FlatList
+            bounces={false}
+            overScrollMode="never"
+            data={data}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <FallHistory itemData={item} />}
+          />
+        ) : (
+          <View style={styles.history}>
+            <Text style={styles.historyText}>
+              Please enable Fall Detection System in Dashboard to view the
+              history.
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -77,10 +89,36 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
+  textStyle: {
+    alignItems: "center",
+  },
+
+  eventText: {
+    color: "white",
+    fontFamily: Fonts.main,
+    fontSize: 16,
+  },
+
   fall: {
     fontFamily: Fonts.main,
-    color: "#fff",
-    fontSize: 16,
-    marginBottom: 14,
+    color: "white",
+    backgroundColor: Color.container,
+    borderRadius: 25,
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    marginTop: 10,
+  },
+
+  history: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  historyText: {
+    textAlign: "center",
+    color: Color.tagLine,
+    fontFamily: Fonts.sub,
+    fontSize: 13,
   },
 });

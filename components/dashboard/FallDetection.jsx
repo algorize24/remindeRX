@@ -1,8 +1,10 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import Fontisto from "@expo/vector-icons/Fontisto";
+import { useState } from "react";
+
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
-import { useState } from "react";
+
+import Fontisto from "@expo/vector-icons/Fontisto";
 
 export default function FallDetection({ onToggle }) {
   const [isToggle, setIsToggle] = useState(false);

@@ -1,6 +1,8 @@
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
+
 import { Fonts } from "../../../constants/Font";
 import { Color } from "../../../constants/Color";
+
 import AuthText from "../../../components/header/AuthText";
 import TeamProfile from "../../../components/profile/TeamProfile";
 

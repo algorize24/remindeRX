@@ -10,13 +10,14 @@ export default function MainButton({
   pressedStyle,
 }) {
   return (
-    <View style={style}>
+    <View>
       <Pressable
         onPress={onPress}
         style={({ pressed }) => [
           styles.root,
           pressed && styles.pressed,
           pressedStyle,
+          style,
         ]}
       >
         <Text style={[styles.text, textStyle]}>{children}</Text>

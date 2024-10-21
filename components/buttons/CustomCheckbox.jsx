@@ -1,4 +1,4 @@
-// this component invoke in PolicyScreen.jsx
+// this component rendered in PolicyScreen.jsx
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useState } from "react";
 

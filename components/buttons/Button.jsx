@@ -1,3 +1,4 @@
+// button for policy agreement
 import { Text, StyleSheet, Pressable } from "react-native";
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";

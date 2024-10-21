@@ -1,6 +1,8 @@
 import { View, Text, Image, StyleSheet } from "react-native";
+
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
+
 export default function TeamProfile({ src, name, title }) {
   return (
     <View style={styles.profile}>

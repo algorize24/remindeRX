@@ -18,7 +18,9 @@ export default function AuthSelect({ navigation }) {
 
   return (
     <View style={styles.root}>
-      <Title />
+      <View style={styles.textContainer}>
+        <Title />
+      </View>
 
       <View style={styles.buttonView}>
         <MainButton onPress={handleLogIn} style={styles.login}>
@@ -42,6 +44,10 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     paddingHorizontal: 20,
     marginBottom: 98,
+  },
+
+  textContainer: {
+    alignItems: "center",
   },
 
   buttonStyle: {

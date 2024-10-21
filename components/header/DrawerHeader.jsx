@@ -10,11 +10,12 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
-  Pressable,
 } from "react-native";
-import HeaderTitle from "./HeaderTitle";
+
 import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
+
+import HeaderTitle from "./HeaderTitle";
 
 export default function DrawerHeader(props) {
   return (

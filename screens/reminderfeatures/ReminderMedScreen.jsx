@@ -26,7 +26,7 @@ export default function ReminderMedScreen({ navigation }) {
 
   // invoke in mainbutton
   const handleNext = () => {
-    navigation.navigate("Dashboard");
+    navigation.navigate("ReminderAuthenticated");
   };
   return (
     <SafeAreaView style={styles.root}>

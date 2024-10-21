@@ -7,10 +7,11 @@ import {
   ScrollView,
   Image,
 } from "react-native";
+
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
+
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 export default function ChatbotScreen() {
   return (
@@ -21,24 +22,16 @@ export default function ChatbotScreen() {
         style={styles.scrollView}
       >
         <View style={styles.botContainer}>
-          <Text style={styles.botText}>
-            Hi! What can I do for you?dasdasdasdasdasdas Hi! What can I do for
-            you?asdasdadasdadadad dadadasdas Hi! What can I do for
-            you?asdasdadasdadadad dadadasdas Hi! What can I do for
-            you?asdasdadasdadadad dadadasdas
-          </Text>
-          <FontAwesome6 name="robot" size={28} color={Color.purpleColor} />
+          <Text style={styles.botText}>Hi! What can I do for you?</Text>
+          <Image
+            style={styles.img}
+            source={require("../../assets/chatbot.png")}
+          />
         </View>
 
         <View style={styles.userContainer}>
           <Image source={require("../../assets/user.png")} style={styles.img} />
-          <Text style={styles.userText}>
-            Hi! What can I do for you?asdasdadasdadadad dadadasdas Hi! What can
-            I do for you?asdasdadasdadadad dadadasdas Hi! What can I do for
-            you?asdasdadasdadadad dadadasdas Hi! What can I do for
-            you?asdasdadasdadadad dadadasdas Hi! What can I do for
-            you?asdasdadasdadadad dadadasdas
-          </Text>
+          <Text style={styles.userText}>Hi! What can I do for you?</Text>
         </View>
       </ScrollView>
 
@@ -50,7 +43,11 @@ export default function ChatbotScreen() {
           placeholder="Message RemindeRX "
         />
 
-        <Pressable>
+        <Pressable
+          onPress={() => {
+            console.log("test");
+          }}
+        >
           <MaterialIcons
             style={styles.icon}
             name="send"
@@ -85,6 +82,12 @@ const styles = StyleSheet.create({
     bottom: 10,
     left: 10,
     right: 10,
+  },
+
+  img: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
 
   input: {

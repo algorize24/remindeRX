@@ -1,7 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
-import AuthText from "../../../components/header/AuthText";
+
 import { Fonts } from "../../../constants/Font";
 import { Color } from "../../../constants/Color";
+
+import AuthText from "../../../components/header/AuthText";
 
 export default function HelpSupport() {
   return (

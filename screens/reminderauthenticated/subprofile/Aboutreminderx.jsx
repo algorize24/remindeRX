@@ -1,7 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
-import AuthText from "../../../components/header/AuthText";
+
 import { Color } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Font";
+
+import AuthText from "../../../components/header/AuthText";
+
 export default function Aboutreminderx() {
   return (
     <View style={styles.root}>

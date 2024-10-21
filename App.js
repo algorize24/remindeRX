@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar"; // react-native
 import { useState, useEffect } from "react"; // react
+import { View, ActivityIndicator } from "react-native";
 
 // react-navigation
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -57,6 +58,12 @@ import HeaderTitle from "./components/header/HeaderTitle";
 import HeaderIcon from "./components/header/HeaderIcon";
 import DrawerHeader from "./components/header/DrawerHeader";
 import ChatbotScreen from "./components/dashboard/ChatbotScreen";
+
+// crud - screen
+import AddContact from "./screens/reminderauthenticated/add/AddContact";
+import AddMedicine from "./screens/reminderauthenticated/add/AddMedicine";
+import EditContact from "./screens/reminderauthenticated/edit/EditContact";
+import EditInventory from "./screens/reminderauthenticated/edit/EditInventory";
 
 const Stack = createNativeStackNavigator(); // stack navigator
 const Drawer = createDrawerNavigator(); // drawer navigator
@@ -278,6 +285,7 @@ export default function App() {
         // Load fonts or any other resources
         await Font.loadAsync({
           "work-sans": require("./assets/fonts/WorkSans-Bold.ttf"),
+          "work-light": require("./assets/fonts/WorkSans-Light.ttf"),
           "merri-weather": require("./assets/fonts/Merriweather-Regular.ttf"),
           ...Fontisto.font,
           ...Feather.font,
@@ -296,8 +304,17 @@ export default function App() {
     prepare();
   }, []);
 
+  // if (!appIsReady) {
+  //   return null; // Do not render anything while the app is loading
+  // }
+
   if (!appIsReady) {
-    return null; // Do not render anything while the app is loading
+    // Show the splash screen or a loading spinner while fonts are loading
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={Color.purpleColor} />
+      </View>
+    );
   }
 
   return (
@@ -315,6 +332,12 @@ export default function App() {
           }}
         >
           <Stack.Screen
+            name="ReminderFeaturesStack"
+            component={ReminderFeaturesStack}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
             name="ReminderAuthenticated"
             component={ReminderAuthenticated}
             options={{ headerShown: false }}
@@ -325,6 +348,46 @@ export default function App() {
             component={ChatbotScreen}
             options={{
               title: "ReminderxAI",
+              headerTintColor: "white",
+              headerTitleAlign: "center",
+            }}
+          />
+
+          <Stack.Screen
+            name="AddContact"
+            component={AddContact}
+            options={{
+              title: "Contact Information",
+              headerTintColor: "white",
+              headerTitleAlign: "center",
+            }}
+          />
+
+          <Stack.Screen
+            name="EditContact"
+            component={EditContact}
+            options={{
+              title: "Contact Information",
+              headerTintColor: "white",
+              headerTitleAlign: "center",
+            }}
+          />
+
+          <Stack.Screen
+            name="AddMedicine"
+            component={AddMedicine}
+            options={{
+              title: "Medicine Inventory",
+              headerTintColor: "white",
+              headerTitleAlign: "center",
+            }}
+          />
+
+          <Stack.Screen
+            name="EditInventory"
+            component={EditInventory}
+            options={{
+              title: "Medicine Inventory",
               headerTintColor: "white",
               headerTitleAlign: "center",
             }}

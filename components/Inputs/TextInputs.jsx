@@ -2,16 +2,24 @@ import { View, TextInput, StyleSheet } from "react-native";
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
 
-export default function TextInputs({ placeholder, secure, style }) {
+export default function TextInputs({
+  placeholder,
+  secure,
+  style,
+  inputMode,
+  keyboardType,
+}) {
   return (
     <View>
       <TextInput
+        style={[styles.text, style]}
+        inputMode={inputMode}
         autoCorrect={false}
         autoCapitalize="none"
         placeholderTextColor={Color.tagLine}
-        style={[styles.text, style]}
         placeholder={placeholder}
         secureTextEntry={secure}
+        keyboardType={keyboardType}
       />
     </View>
   );

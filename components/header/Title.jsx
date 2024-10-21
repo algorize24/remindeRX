@@ -7,19 +7,16 @@ import { Fonts } from "../../constants/Font";
 
 export default function Title({}) {
   return (
-    <View style={styles.root}>
+    <>
       <Text style={styles.mainText}>
         Reminde<Text style={styles.subText}>RX</Text>
       </Text>
       <Text style={styles.tagline}>Safe. Smart. Connected</Text>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  root: {
-    alignItems: "center",
-  },
   mainText: {
     fontFamily: Fonts.main,
     fontSize: 32,

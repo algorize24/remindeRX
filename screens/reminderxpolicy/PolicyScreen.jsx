@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
 
   titleContainer: {
     marginBottom: 113,
+    alignItems: "center",
   },
 
   text: {

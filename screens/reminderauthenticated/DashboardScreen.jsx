@@ -1,16 +1,15 @@
-import { View, StyleSheet, Text, Pressable } from "react-native";
-import { Color } from "../../constants/Color";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 
-import Userprofile from "../../components/dashboard/Userprofile";
-import Realtime from "../../components/dashboard/Realtime";
+import { Color } from "../../constants/Color";
+import { Fonts } from "../../constants/Font";
 
 import FallDetection from "../../components/dashboard/FallDetection";
-import { Fonts } from "../../constants/Font";
 import FallHistory from "../../components/dashboard/FallHistory";
-import { useState } from "react";
+import Userprofile from "../../components/dashboard/Userprofile";
+import Realtime from "../../components/dashboard/Realtime";
 import Chatbot from "../../components/dashboard/Chatbot";
-import { ScrollView } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
 
 export default function DashboardScreen({ data = [] }) {
   const [isToggle, setIsToggle] = useState(false);
