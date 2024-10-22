@@ -1,5 +1,6 @@
 import {
   View,
+  Image,
   Text,
   StyleSheet,
   SafeAreaView,
@@ -26,9 +27,16 @@ export default function CreatingAccount({ navigation }) {
   return (
     <SafeAreaView style={styles.root}>
       <AuthText style={styles.authText}>Creating an Account</AuthText>
-      <Text style={styles.text}>
-        Email sent successfully. Please check your email for verification.
-      </Text>
+
+      <View style={styles.content}>
+        <Image
+          style={styles.img}
+          source={require("../../assets/successful.png")}
+        />
+        <Text style={styles.text}>
+          Email sent successfully. Please check your email for verification.
+        </Text>
+      </View>
 
       <MainButton onPress={handleButton}>Get Started</MainButton>
     </SafeAreaView>
@@ -51,7 +59,16 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.sub,
     color: Color.tagLine,
     textAlign: "center",
+    marginBottom: 100,
+  },
+
+  content: {
     marginTop: 89,
-    marginBottom: 225,
+    alignItems: "center",
+  },
+
+  img: {
+    width: 300,
+    height: 300,
   },
 });

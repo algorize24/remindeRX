@@ -1,12 +1,23 @@
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
+import { useState } from "react";
 import { Color } from "../../../constants/Color";
 import TextScreen from "../../../components/header/TextScreen";
 import InputText from "../../../components/header/InputText";
 import TextInputs from "../../../components/Inputs/TextInputs";
 import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
+import Button from "../../../components/buttons/Button";
 
-export default function AddMedicine() {
+export default function AddMedicine({ navigation }) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAddMedicine = () => {
+    setIsLoading(true); // Set loading state to true when the button is pressed
+    setTimeout(() => {
+      setIsLoading(false); // Reset loading state after delay
+      navigation.navigate("Inventory"); // Navigate to the next screen
+    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+  };
   return (
     <View style={styles.root}>
       <ScrollView overScrollMode="never" bounces={false}>
@@ -49,14 +60,13 @@ export default function AddMedicine() {
         </View>
       </ScrollView>
 
-      <MainButton
-        onPress={() => {
-          console.log("Add Medicine");
-        }}
-        style={styles.button}
-      >
-        Add Medicine
-      </MainButton>
+      {!isLoading ? (
+        <MainButton onPress={handleAddMedicine} style={styles.button}>
+          Add Medicine
+        </MainButton>
+      ) : (
+        <Button style={styles.button}>Adding Medicine...</Button>
+      )}
     </View>
   );
 }

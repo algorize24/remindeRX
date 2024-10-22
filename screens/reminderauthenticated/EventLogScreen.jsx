@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
 
   textContainer: {
-    marginTop: 53,
+    marginTop: 20,
   },
 
   dataContainer: {

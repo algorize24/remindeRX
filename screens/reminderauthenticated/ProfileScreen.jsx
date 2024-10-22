@@ -2,12 +2,20 @@ import { View, Text, StyleSheet, Image } from "react-native";
 
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
+import { useState } from "react";
+import LoadingRoots from "../../components/loading/LoadingRoots";
 
 export default function ProfileScreen({ navigation }) {
+  const [isLoading, setIsLoading] = useState(false);
   const handleSignOut = () => {
-    navigation.navigate("");
+    setIsLoading(true); // Set loading state to true when the button is pressed
+    setTimeout(() => {
+      setIsLoading(false); // Reset loading state after delay
+      navigation.navigate("Signin");
+    }, 2000); // Delay for 2 seconds (2000 milliseconds)
   };
-  return (
+
+  let content = (
     <View style={styles.root}>
       <View style={styles.userInfo}>
         <Image style={styles.img} source={require("../../assets/user.png")} />
@@ -64,11 +72,23 @@ export default function ProfileScreen({ navigation }) {
         </Text>
       </View>
 
-      <Text onPress={handleSignOut} style={styles.signOut}>
-        Sign Out
-      </Text>
+      {!isLoading ? (
+        <Text onPress={handleSignOut} style={styles.signOut}>
+          Sign Out
+        </Text>
+      ) : (
+        <LoadingRoots />
+      )}
     </View>
   );
+
+  if (!isLoading) {
+    return content;
+  } else {
+    content = <LoadingRoots />;
+  }
+
+  return <View style={styles.root}>{content}</View>;
 }
 
 const styles = StyleSheet.create({
@@ -76,7 +96,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Color.bgColor,
     justifyContent: "center",
-    borderWidth: 2,
   },
 
   userInfo: {
@@ -100,6 +119,7 @@ const styles = StyleSheet.create({
   address: {
     fontFamily: Fonts.sub,
     color: Color.tagLine,
+    fontSize: 12,
   },
 
   links: {
@@ -118,7 +138,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontFamily: Fonts.main,
     fontSize: 16,
-    marginTop: 40,
+    marginTop: 20,
     paddingHorizontal: 25,
   },
 });

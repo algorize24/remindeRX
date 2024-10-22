@@ -1,12 +1,35 @@
 import { View, StyleSheet, ScrollView } from "react-native";
+import { useState } from "react";
 import { Color } from "../../../constants/Color";
 import TextScreen from "../../../components/header/TextScreen";
 import TextInputs from "../../../components/Inputs/TextInputs";
 import InputText from "../../../components/header/InputText";
 import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
+import Button from "../../../components/buttons/Button";
 
-export default function EditInventory() {
+export default function EditInventory({ navigation }) {
+  // loading state for main button edit
+  const [isInventoryLoading, setIsInventoryLoading] = useState(false);
+
+  // loading state for main button delete
+  const [isDeletingLoading, setIsDeletingLoading] = useState(false);
+
+  const handleEditInventory = () => {
+    setIsInventoryLoading(true); // Set loading state to true when the button is pressed
+    setTimeout(() => {
+      setIsInventoryLoading(false); // Reset loading state after delay
+      navigation.navigate("Inventory"); // Navigate to the next screen
+    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+  };
+
+  const handleDeleteInventory = () => {
+    setIsDeletingLoading(true); // Set loading state to true when the button is pressed
+    setTimeout(() => {
+      setIsDeletingLoading(false); // Reset loading state after delay
+      navigation.navigate("Inventory"); // Navigate to the next screen
+    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+  };
   return (
     <View style={styles.root}>
       <ScrollView overScrollMode="never" bounces={false}>
@@ -49,8 +72,21 @@ export default function EditInventory() {
       </ScrollView>
 
       <View style={styles.buttonContainer}>
-        <MainButton style={styles.button}>Delete</MainButton>
-        <MainButton style={styles.editButton}>Edit Contact</MainButton>
+        {!isDeletingLoading ? (
+          <MainButton onPress={handleDeleteInventory} style={styles.button}>
+            Delete
+          </MainButton>
+        ) : (
+          <Button style={styles.button}>Deleting...</Button>
+        )}
+
+        {!isInventoryLoading ? (
+          <MainButton onPress={handleEditInventory} style={styles.editButton}>
+            Edit Medicine
+          </MainButton>
+        ) : (
+          <Button style={styles.editButton}>Editing Medicine...</Button>
+        )}
       </View>
     </View>
   );

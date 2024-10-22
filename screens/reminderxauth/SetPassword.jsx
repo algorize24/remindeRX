@@ -18,15 +18,23 @@ import TextInputs from "../../components/Inputs/TextInputs";
 // icons
 import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
+import Button from "../../components/buttons/Button";
 
 export default function SetPassword({ navigation }) {
+  // loading state for handleSignUp
+  const [isLoading, setIsLoading] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
   const handleSignUp = () => {
-    navigation.navigate("CreatingAccount");
+    setIsLoading(true); // Set loading state to true when the button is pressed
+    setTimeout(() => {
+      setIsLoading(false); // Reset loading state after delay
+      navigation.navigate("CreatingAccount");
+    }, 2000);
   };
   return (
     <View style={styles.root}>
@@ -72,7 +80,11 @@ export default function SetPassword({ navigation }) {
 
       <KeyboardAvoidingView style={styles.keyboard}>
         <View style={styles.viewKey}>
-          <MainButton onPress={handleSignUp}>Sign Up</MainButton>
+          {!isLoading ? (
+            <MainButton onPress={handleSignUp}>Sign Up</MainButton>
+          ) : (
+            <Button isEnable={false}>Signing Up...</Button>
+          )}
         </View>
       </KeyboardAvoidingView>
     </View>

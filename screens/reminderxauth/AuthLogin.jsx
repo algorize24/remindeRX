@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { useState } from "react";
 
 // components
 import AuthInputs from "../../components/Inputs/AuthInputs";
@@ -7,8 +8,11 @@ import MainButton from "../../components/buttons/MainButton";
 // constants
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
+import Button from "../../components/buttons/Button";
 
 export default function AuthLogin({ navigation }) {
+  // loading state for handleSignIn
+  const [isLoading, setIsLoading] = useState(false);
   const handleSignUp = () => {
     // navigation.navigate("Signup");
     navigation.reset({
@@ -17,8 +21,12 @@ export default function AuthLogin({ navigation }) {
     });
   };
 
-  const handeSignIn = () => {
-    navigation.navigate("RealTime");
+  const handleSignIn = () => {
+    setIsLoading(true); // Set loading state to true when the button is pressed
+    setTimeout(() => {
+      setIsLoading(false); // Reset loading state after delay
+      navigation.navigate("RealTime"); // Navigate to the next screen
+    }, 2000); // Delay for 2 seconds (2000 milliseconds)
   };
 
   return (
@@ -34,7 +42,11 @@ export default function AuthLogin({ navigation }) {
 
       <KeyboardAvoidingView style={styles.keyboard}>
         <View style={styles.viewKey}>
-          <MainButton onPress={handeSignIn}>Log In</MainButton>
+          {!isLoading ? (
+            <MainButton onPress={handleSignIn}>Log In</MainButton>
+          ) : (
+            <Button isEnable={false}>Logging in...</Button>
+          )}
           <Text style={styles.subText}>
             Don't have an account?{" "}
             <Text onPress={handleSignUp} style={styles.signUpText}>
@@ -70,7 +82,8 @@ const styles = StyleSheet.create({
   welcometext: {
     fontFamily: Fonts.main,
     color: Color.tagLine,
-    fontSize: 16,
+    fontSize: 13,
+    textTransform: "uppercase",
   },
 
   text: {
@@ -92,5 +105,6 @@ const styles = StyleSheet.create({
 
   signUpText: {
     color: Color.purpleColor,
+    textDecorationLine: "underline",
   },
 });

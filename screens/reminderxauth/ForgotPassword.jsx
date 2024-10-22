@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { useState } from "react";
 
 // constants
 import { Fonts } from "../../constants/Font";
@@ -11,10 +12,18 @@ import MainButton from "../../components/buttons/MainButton";
 
 // icons
 import Fontisto from "@expo/vector-icons/Fontisto";
+import Button from "../../components/buttons/Button";
 
 export default function ForgotPassword({ navigation }) {
+  // loading state for handlePasswordReset
+  const [isLoading, setIsLoading] = useState(false);
+
   const handlePasswordReset = () => {
-    navigation.navigate("ResetPassword");
+    setIsLoading(true); // Set loading state to true when the button is pressed
+    setTimeout(() => {
+      setIsLoading(false); // Reset loading state after delay
+      navigation.navigate("ResetPassword");
+    }, 2000);
   };
   return (
     <View style={styles.root}>
@@ -26,13 +35,20 @@ export default function ForgotPassword({ navigation }) {
       <View style={styles.inputView}>
         <Fontisto name="email" size={20} color="#B3B3B3" />
         <View style={styles.input}>
-          <TextInputs placeholder={"Email"} />
+          <TextInputs
+            keyboardType={"email-address"}
+            placeholder={"Email Address"}
+          />
         </View>
       </View>
 
       <KeyboardAvoidingView style={styles.keyboard}>
         <View style={styles.viewKey}>
-          <MainButton onPress={handlePasswordReset}>Send</MainButton>
+          {!isLoading ? (
+            <MainButton onPress={handlePasswordReset}>Send</MainButton>
+          ) : (
+            <Button isEnable={false}>Sending...</Button>
+          )}
         </View>
       </KeyboardAvoidingView>
     </View>

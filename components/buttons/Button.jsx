@@ -3,13 +3,14 @@ import { Text, StyleSheet, Pressable } from "react-native";
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
 
-export default function Button({ children, onPress, isEnable }) {
+export default function Button({ children, onPress, isEnable, style }) {
   return (
     <Pressable
       style={({ pressed }) => [
         styles.root,
         !isEnable ? styles.disabled : styles.enabled, // Apply enabled or disabled styles based on isEnable
-        pressed && isEnable && styles.pressed, // Apply pressed style only when enabled
+        pressed && isEnable && styles.pressed,
+        style, // Apply pressed style only when enabled
       ]}
       onPress={isEnable ? onPress : null} // Disable press if button is not enabled
     >

@@ -304,10 +304,6 @@ export default function App() {
     prepare();
   }, []);
 
-  // if (!appIsReady) {
-  //   return null; // Do not render anything while the app is loading
-  // }
-
   if (!appIsReady) {
     // Show the splash screen or a loading spinner while fonts are loading
     return (
@@ -321,10 +317,6 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <NavigationContainer>
-        {/* <ReminderxPolicyStack /> */}
-        {/* <ReminderAuthStack /> */}
-        {/* <ReminderFeaturesStack /> */}
-        {/* <ReminderAuthenticated /> */}
         <Stack.Navigator
           screenOptions={{
             headerStyle: { backgroundColor: Color.bgColor },

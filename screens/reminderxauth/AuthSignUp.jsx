@@ -29,7 +29,10 @@ export default function AuthSignUp({ navigation }) {
       <View style={styles.inputView}>
         <Fontisto name="email" size={20} color="#B3B3B3" />
         <View style={styles.input}>
-          <TextInputs placeholder={"Email"} />
+          <TextInputs
+            keyboardType={"email-address"}
+            placeholder={"Email Address"}
+          />
         </View>
       </View>
 
@@ -96,5 +99,6 @@ const styles = StyleSheet.create({
   },
   signInText: {
     color: Color.purpleColor,
+    textDecorationLine: "underline",
   },
 });

@@ -81,5 +81,6 @@ const styles = StyleSheet.create({
 
   buttonLink: {
     color: Color.purpleColor,
+    textDecorationLine: "underline",
   },
 });

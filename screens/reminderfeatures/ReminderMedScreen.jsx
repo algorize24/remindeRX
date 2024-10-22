@@ -19,14 +19,22 @@ import MainButton from "../../components/buttons/MainButton";
 // constants
 import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
+import Button from "../../components/buttons/Button";
 
 export default function ReminderMedScreen({ navigation }) {
+  // loading state for handleNext
+  const [isLoading, setIsLoading] = useState(false);
+
   // track image loading
   const [imageLoading, setImageLoading] = useState(true);
 
   // invoke in mainbutton
   const handleNext = () => {
-    navigation.navigate("ReminderAuthenticated");
+    setIsLoading(true); // Set loading state to true when the button is pressed
+    setTimeout(() => {
+      setIsLoading(false); // Reset loading state after delay
+      navigation.navigate("ReminderAuthenticated");
+    }, 2000);
   };
   return (
     <SafeAreaView style={styles.root}>
@@ -51,9 +59,15 @@ export default function ReminderMedScreen({ navigation }) {
           health with ease.
         </Text>
 
-        <MainButton onPress={handleNext} style={styles.mainButton}>
-          Get Started
-        </MainButton>
+        {!isLoading ? (
+          <MainButton onPress={handleNext} style={styles.mainButton}>
+            Get Started
+          </MainButton>
+        ) : (
+          <Button style={styles.isLoading} isEnable={false}>
+            Getting Started...
+          </Button>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -96,6 +110,10 @@ const styles = StyleSheet.create({
   mainButton: {
     paddingHorizontal: 10,
     justifyContent: "flex-end",
+    marginTop: 88,
+  },
+
+  isLoading: {
     marginTop: 88,
   },
 });

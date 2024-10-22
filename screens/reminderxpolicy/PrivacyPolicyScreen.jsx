@@ -31,7 +31,7 @@ export default function PrivacyPolicyScreen() {
 
 const styles = StyleSheet.create({
   root: {
-    marginVertical: 50,
+    marginVertical: 10,
     paddingHorizontal: 14,
   },
 });

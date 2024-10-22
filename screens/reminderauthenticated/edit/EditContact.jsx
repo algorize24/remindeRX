@@ -1,12 +1,35 @@
 import { View, StyleSheet } from "react-native";
+import { useState } from "react";
 import { Color } from "../../../constants/Color";
 import TextScreen from "../../../components/header/TextScreen";
 import TextInputs from "../../../components/Inputs/TextInputs";
 import InputText from "../../../components/header/InputText";
 import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
+import Button from "../../../components/buttons/Button";
 
-export default function EditContact() {
+export default function EditContact({ navigation }) {
+  // loading state for main button edit
+  const [isContactLoading, setIsContactLoading] = useState(false);
+
+  // loading state for main button delete
+  const [isDeletingLoading, setIsDeletingLoading] = useState(false);
+
+  const handleEditingContact = () => {
+    setIsContactLoading(true); // Set loading state to true when the button is pressed
+    setTimeout(() => {
+      setIsContactLoading(false); // Reset loading state after delay
+      navigation.navigate("Contact"); // Navigate to the next screen
+    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+  };
+
+  const handleDeletingContact = () => {
+    setIsDeletingLoading(true); // Set loading state to true when the button is pressed
+    setTimeout(() => {
+      setIsDeletingLoading(false); // Reset loading state after delay
+      navigation.navigate("Contact"); // Navigate to the next screen
+    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+  };
   return (
     <View style={styles.root}>
       <View style={styles.textContainer}>
@@ -30,8 +53,19 @@ export default function EditContact() {
       </View>
 
       <View style={styles.buttonContainer}>
-        <MainButton style={styles.button}>Delete</MainButton>
-        <MainButton>Edit Contact</MainButton>
+        {!isDeletingLoading ? (
+          <MainButton onPress={handleDeletingContact} style={styles.button}>
+            Delete
+          </MainButton>
+        ) : (
+          <Button style={styles.button}>Deleting...</Button>
+        )}
+
+        {!isContactLoading ? (
+          <MainButton onPress={handleEditingContact}>Edit Contact</MainButton>
+        ) : (
+          <Button>Editing Contact...</Button>
+        )}
       </View>
     </View>
   );

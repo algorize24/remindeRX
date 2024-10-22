@@ -1,12 +1,25 @@
 import { View, StyleSheet } from "react-native";
+import { useState } from "react";
 import { Color } from "../../../constants/Color";
 import TextScreen from "../../../components/header/TextScreen";
 import TextInputs from "../../../components/Inputs/TextInputs";
 import InputText from "../../../components/header/InputText";
 import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
+import Button from "../../../components/buttons/Button";
 
-export default function AddContact() {
+export default function AddContact({ navigation }) {
+  // loading state for main button
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAddContact = () => {
+    setIsLoading(true); // Set loading state to true when the button is pressed
+    setTimeout(() => {
+      setIsLoading(false); // Reset loading state after delay
+      navigation.navigate("Contact"); // Navigate to the next screen
+    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+  };
+
   return (
     <View style={styles.root}>
       <View style={styles.textContainer}>
@@ -29,8 +42,13 @@ export default function AddContact() {
         <InputText>Image:</InputText>
         <UploadImage />
       </View>
-
-      <MainButton style={styles.button}>Add Contact</MainButton>
+      {!isLoading ? (
+        <MainButton onPress={handleAddContact} style={styles.button}>
+          Add Contact
+        </MainButton>
+      ) : (
+        <Button style={styles.button}>Adding Contact...</Button>
+      )}
     </View>
   );
 }
