@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: Fonts.main,
     color: "#fff",
-    fontSize: 22,
+    fontSize: 20,
     textAlign: "center",
   },
 });

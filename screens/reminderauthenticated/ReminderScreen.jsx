@@ -1,8 +1,10 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
+
 import { Color } from "../../constants/Color";
+
 import TextScreen from "../../components/header/TextScreen";
 import Label from "../../components/dashboard/Label";
-import { FlatList } from "react-native-gesture-handler";
+
 export default function ReminderScreen() {
   // const reminderData = [
   //   {

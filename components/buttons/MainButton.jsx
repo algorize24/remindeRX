@@ -1,4 +1,4 @@
-import { Pressable, Text, StyleSheet, View } from "react-native";
+import { Pressable, Text, StyleSheet } from "react-native";
 import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
 
@@ -10,19 +10,17 @@ export default function MainButton({
   pressedStyle,
 }) {
   return (
-    <View>
-      <Pressable
-        onPress={onPress}
-        style={({ pressed }) => [
-          styles.root,
-          pressed && styles.pressed,
-          pressedStyle,
-          style,
-        ]}
-      >
-        <Text style={[styles.text, textStyle]}>{children}</Text>
-      </Pressable>
-    </View>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.root,
+        pressed && styles.pressed,
+        pressedStyle,
+        style,
+      ]}
+    >
+      <Text style={[styles.text, textStyle]}>{children}</Text>
+    </Pressable>
   );
 }
 

@@ -10,18 +10,16 @@ export default function TextInputs({
   keyboardType,
 }) {
   return (
-    <View>
-      <TextInput
-        style={[styles.text, style]}
-        inputMode={inputMode}
-        autoCorrect={false}
-        autoCapitalize="none"
-        placeholderTextColor={Color.tagLine}
-        placeholder={placeholder}
-        secureTextEntry={secure}
-        keyboardType={keyboardType}
-      />
-    </View>
+    <TextInput
+      style={[styles.text, style]}
+      inputMode={inputMode}
+      autoCorrect={false}
+      autoCapitalize="none"
+      placeholderTextColor={Color.tagLine}
+      placeholder={placeholder}
+      secureTextEntry={secure}
+      keyboardType={keyboardType}
+    />
   );
 }
 

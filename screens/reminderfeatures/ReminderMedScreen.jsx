@@ -13,13 +13,13 @@ import { useState } from "react";
 
 // components
 import FeatureText from "../../components/header/FeatureText";
-import TextPolicy from "../../components/header/TextPolicy";
 import MainButton from "../../components/buttons/MainButton";
+import TextPolicy from "../../components/header/TextPolicy";
+import Button from "../../components/buttons/Button";
 
 // constants
 import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
-import Button from "../../components/buttons/Button";
 
 export default function ReminderMedScreen({ navigation }) {
   // loading state for handleNext

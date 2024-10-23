@@ -9,7 +9,7 @@ export default function ContactScreen({ navigation }) {
   const contactData = [
     {
       id: 1,
-      img: require("../../assets/user.png"),
+      img: require("../../assets/others/user.png"),
       name: "Emergency Contact",
       number: "123-456-789",
     },
@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
   },
 
   textInput: {
+    backgroundColor: Color.container,
     borderColor: Color.tagLine,
-    borderWidth: 1,
     marginTop: 30,
-    borderRadius: 16,
+    borderRadius: 12,
     paddingHorizontal: 20,
     paddingVertical: 10,
     color: Color.tagLine,

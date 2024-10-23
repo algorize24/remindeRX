@@ -11,9 +11,9 @@ import { useState } from "react";
 import { Color } from "../../constants/Color";
 
 // components
-import AuthText from "../../components/header/AuthText";
 import MainButton from "../../components/buttons/MainButton";
 import TextInputs from "../../components/Inputs/TextInputs";
+import AuthText from "../../components/header/AuthText";
 
 // icons
 import Feather from "@expo/vector-icons/Feather";

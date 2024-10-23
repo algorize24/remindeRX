@@ -2,13 +2,13 @@ import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
 import { useState } from "react";
 
 // components
-import AuthInputs from "../../components/Inputs/AuthInputs";
 import MainButton from "../../components/buttons/MainButton";
+import AuthInputs from "../../components/Inputs/AuthInputs";
+import Button from "../../components/buttons/Button";
 
 // constants
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
-import Button from "../../components/buttons/Button";
 
 export default function AuthLogin({ navigation }) {
   // loading state for handleSignIn

@@ -12,8 +12,8 @@ import {
 import { useState } from "react";
 
 // components
-import MainButton from "../../components/buttons/MainButton";
 import FeatureText from "../../components/header/FeatureText";
+import MainButton from "../../components/buttons/MainButton";
 import TextPolicy from "../../components/header/TextPolicy";
 
 // constants

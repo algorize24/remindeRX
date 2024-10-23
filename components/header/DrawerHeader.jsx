@@ -2,6 +2,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
+
 import {
   View,
   Text,
@@ -24,7 +25,7 @@ export default function DrawerHeader(props) {
       <View style={styles.user}>
         <Image
           style={styles.userIcon}
-          source={require("../../assets/user.png")}
+          source={require("../../assets/others/user.png")}
         />
         <Text style={styles.userEmail}>siuzysaur@gmail.com</Text>
         <Text style={styles.userAddress}>

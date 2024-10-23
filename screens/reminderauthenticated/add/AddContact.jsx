@@ -1,11 +1,13 @@
 import { View, StyleSheet } from "react-native";
 import { useState } from "react";
+
 import { Color } from "../../../constants/Color";
-import TextScreen from "../../../components/header/TextScreen";
-import TextInputs from "../../../components/Inputs/TextInputs";
-import InputText from "../../../components/header/InputText";
+
 import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
+import TextInputs from "../../../components/Inputs/TextInputs";
+import TextScreen from "../../../components/header/TextScreen";
+import InputText from "../../../components/header/InputText";
 import Button from "../../../components/buttons/Button";
 
 export default function AddContact({ navigation }) {

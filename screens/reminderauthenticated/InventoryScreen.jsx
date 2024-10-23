@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 
 import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
@@ -13,7 +13,7 @@ export default function InventoryScreen({ navigation }) {
   const inventoryData = [
     {
       id: 1,
-      img: require("../../assets/medicine.webp"),
+      img: require("../../assets/others/medicine.webp"),
       medicine: "Acetaminophen",
       dosage: "500",
       expDate: "01/01/2024",
@@ -21,7 +21,7 @@ export default function InventoryScreen({ navigation }) {
     },
     {
       id: 2,
-      img: require("../../assets/medicine.webp"),
+      img: require("../../assets/others/medicine.webp"),
       medicine: "Acetaminophen",
       dosage: "500",
       expDate: "01/01/2024",
@@ -29,7 +29,7 @@ export default function InventoryScreen({ navigation }) {
     },
     {
       id: 3,
-      img: require("../../assets/medicine.webp"),
+      img: require("../../assets/others/medicine.webp"),
       medicine: "Acetaminophen",
       dosage: "500",
       expDate: "01/01/2024",
@@ -37,7 +37,7 @@ export default function InventoryScreen({ navigation }) {
     },
     {
       id: 4,
-      img: require("../../assets/medicine.webp"),
+      img: require("../../assets/others/medicine.webp"),
       medicine: "Acetaminophen",
       dosage: "500",
       expDate: "01/01/2024",
@@ -45,7 +45,7 @@ export default function InventoryScreen({ navigation }) {
     },
     {
       id: 5,
-      img: require("../../assets/medicine.webp"),
+      img: require("../../assets/others/medicine.webp"),
       medicine: "Acetaminophen",
       dosage: "500",
       expDate: "01/01/2024",
@@ -53,7 +53,7 @@ export default function InventoryScreen({ navigation }) {
     },
     {
       id: 6,
-      img: require("../../assets/medicine.webp"),
+      img: require("../../assets/others/medicine.webp"),
       medicine: "Acetaminophen",
       dosage: "500",
       expDate: "01/01/2024",

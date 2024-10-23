@@ -5,9 +5,9 @@ import { useState } from "react";
 import { Color } from "../../constants/Color";
 
 // components
-import Title from "../../components/header/Title";
 import CustomCheckbox from "../../components/buttons/CustomCheckbox";
 import Button from "../../components/buttons/Button";
+import Title from "../../components/header/Title";
 
 export default function PolicyScreen({ navigation }) {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);

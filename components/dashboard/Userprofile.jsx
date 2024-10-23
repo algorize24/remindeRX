@@ -5,7 +5,10 @@ import { Color } from "../../constants/Color";
 export default function Userprofile() {
   return (
     <View style={styles.userInfo}>
-      <Image style={styles.img} source={require("../../assets/user.png")} />
+      <Image
+        style={styles.img}
+        source={require("../../assets/others/user.png")}
+      />
       <View style={styles.user}>
         <Text style={styles.email}>reminderx@gmail.com</Text>
         <Text style={styles.address}>

@@ -31,7 +31,7 @@ export default function CreatingAccount({ navigation }) {
       <View style={styles.content}>
         <Image
           style={styles.img}
-          source={require("../../assets/successful.png")}
+          source={require("../../assets/others/successful.png")}
         />
         <Text style={styles.text}>
           Email sent successfully. Please check your email for verification.

@@ -31,7 +31,7 @@ export default function AuthInputs() {
   };
 
   return (
-    <View>
+    <>
       <View style={styles.inputsContainer}>
         <View style={styles.inputView}>
           <Fontisto name="email" size={20} color="#B3B3B3" />
@@ -87,7 +87,7 @@ export default function AuthInputs() {
           </Text>
         </View>
       </View>
-    </View>
+    </>
   );
 }
 
@@ -129,11 +129,14 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
-    fontFamily: Fonts.sub,
+    fontFamily: Fonts.main,
+    fontSize: 13,
   },
 
   forgotText: {
     color: Color.purpleColor,
-    fontFamily: Fonts.sub,
+    fontFamily: Fonts.main,
+    fontSize: 13,
+    textDecorationLine: "underline",
   },
 });

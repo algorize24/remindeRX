@@ -1,9 +1,11 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { Text, ScrollView, StyleSheet } from "react-native";
 
 // components
-import TitlePolicy from "../../components/header/TitlePolicy";
-import WelcomePolicy from "../../components/header/WelcomePolicy";
 import ListPrivacyPolicy from "../../components/desc/ListPrivacyPolicy";
+import WelcomePolicy from "../../components/header/WelcomePolicy";
+
+import { Fonts } from "../../constants/Font";
+import { Color } from "../../constants/Color";
 
 export default function PrivacyPolicyScreen() {
   return (
@@ -12,11 +14,13 @@ export default function PrivacyPolicyScreen() {
       overScrollMode="never"
       style={styles.root}
     >
-      <TitlePolicy
-        text={"Privacy Policy"}
-        date={"October 2024"}
-        bounce={false}
-      />
+      <Text style={styles.text}>
+        Reminde
+        <Text style={styles.rx}>
+          RX <Text style={styles.text}>Privacy Policy</Text>
+        </Text>
+      </Text>
+      <Text style={styles.textDate}>Effective Date: October 2024</Text>
 
       <WelcomePolicy
         welcome={
@@ -33,5 +37,20 @@ const styles = StyleSheet.create({
   root: {
     marginVertical: 10,
     paddingHorizontal: 14,
+  },
+
+  text: {
+    fontFamily: Fonts.main,
+    fontSize: 18,
+    color: "white",
+  },
+
+  textDate: {
+    fontFamily: Fonts.main,
+    color: Color.tagLine,
+  },
+
+  rx: {
+    color: Color.purpleColor,
   },
 });

@@ -1,5 +1,5 @@
 // this component invoke in PolicyScreen.jsx
-import { View, Text, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 
 // constants
 import { Color } from "../../constants/Color";

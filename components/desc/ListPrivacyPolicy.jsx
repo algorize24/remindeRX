@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     marginBottom: 28,
   },
   title: {
-    fontSize: 12,
+    fontSize: 13,
     color: Color.tagLine,
   },
 });

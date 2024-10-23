@@ -1,11 +1,13 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import { useState } from "react";
+
 import { Color } from "../../../constants/Color";
+
+import UploadImage from "../../../components/buttons/UploadImage";
+import MainButton from "../../../components/buttons/MainButton";
 import TextScreen from "../../../components/header/TextScreen";
 import TextInputs from "../../../components/Inputs/TextInputs";
 import InputText from "../../../components/header/InputText";
-import UploadImage from "../../../components/buttons/UploadImage";
-import MainButton from "../../../components/buttons/MainButton";
 import Button from "../../../components/buttons/Button";
 
 export default function EditInventory({ navigation }) {

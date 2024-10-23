@@ -4,11 +4,9 @@ import { Color } from "../../constants/Color";
 
 export default function HeaderTitle({ style }) {
   return (
-    <View style={style}>
-      <Text style={styles.text}>
-        Reminde<Text style={styles.rxText}>RX</Text>
-      </Text>
-    </View>
+    <Text style={[styles.text, style]}>
+      Reminde<Text style={styles.rxText}>RX</Text>
+    </Text>
   );
 }
 
@@ -16,7 +14,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: Fonts.main,
     color: "white",
-    fontSize: 22,
+    fontSize: 19,
   },
 
   rxText: {

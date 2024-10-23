@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    marginTop: 48,
+    marginTop: 20,
   },
 
   description: {

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { Fonts } from "../../constants/Font";
 
 export default function InputText({ children }) {

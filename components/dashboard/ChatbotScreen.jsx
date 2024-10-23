@@ -25,12 +25,15 @@ export default function ChatbotScreen() {
           <Text style={styles.botText}>Hi! What can I do for you?</Text>
           <Image
             style={styles.img}
-            source={require("../../assets/chatbot.png")}
+            source={require("../../assets/others/chatbot.png")}
           />
         </View>
 
         <View style={styles.userContainer}>
-          <Image source={require("../../assets/user.png")} style={styles.img} />
+          <Image
+            source={require("../../assets/others/user.png")}
+            style={styles.img}
+          />
           <Text style={styles.userText}>Hi! What can I do for you?</Text>
         </View>
       </ScrollView>

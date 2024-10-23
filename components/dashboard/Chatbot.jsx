@@ -13,7 +13,7 @@ export default function Chatbot({ onPress }) {
         )}
         <Image
           style={styles.img}
-          source={require("../../assets/chatbot.png")}
+          source={require("../../assets/others/chatbot.png")}
           onLoad={() => setImageLoaded(true)} // Set imageLoaded to true when the image is loaded
         />
       </View>

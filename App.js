@@ -52,10 +52,10 @@ import ProfileScreen from "./screens/reminderauthenticated/ProfileScreen";
 import Aboutus from "./screens/reminderauthenticated/subprofile/Aboutus";
 import Aboutreminderx from "./screens/reminderauthenticated/subprofile/Aboutreminderx";
 import HelpSupport from "./screens/reminderauthenticated/subprofile/HelpSupport";
+import EditProfile from "./screens/reminderauthenticated/subprofile/EditProfile";
 
 // components
 import HeaderTitle from "./components/header/HeaderTitle";
-import HeaderIcon from "./components/header/HeaderIcon";
 import DrawerHeader from "./components/header/DrawerHeader";
 import ChatbotScreen from "./components/dashboard/ChatbotScreen";
 
@@ -228,14 +228,14 @@ function ReminderAuthenticated() {
       drawerContent={(props) => <DrawerHeader {...props} />}
       screenOptions={({ navigation }) => ({
         headerStyle: { backgroundColor: Color.bgColor },
-        headerRight: () => (
-          <HeaderIcon onPress={() => navigation.toggleDrawer()} />
-        ),
+        headerTintColor: "#fff",
         headerTitle: () => <HeaderTitle />,
-        headerLeft: () => null, // Remove the default menu icon on the left
+        headerTitleAlign: "center",
         drawerStyle: { backgroundColor: Color.bgColor },
         drawerLabelStyle: { color: "white" },
         drawerActiveBackgroundColor: Color.container,
+        gestureEnabled: true,
+        swipeEnabled: true,
       })}
     >
       <Drawer.Screen name="Dashboard" component={DashboardScreen} />
@@ -380,6 +380,16 @@ export default function App() {
             component={EditInventory}
             options={{
               title: "Medicine Inventory",
+              headerTintColor: "white",
+              headerTitleAlign: "center",
+            }}
+          />
+
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfile}
+            options={{
+              title: "Edit Profile",
               headerTintColor: "white",
               headerTitleAlign: "center",
             }}

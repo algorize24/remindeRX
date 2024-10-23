@@ -4,8 +4,8 @@ import { View, StyleSheet } from "react-native";
 import { Color } from "../../constants/Color";
 
 // components
-import Title from "../../components/header/Title";
 import MainButton from "../../components/buttons/MainButton";
+import Title from "../../components/header/Title";
 
 export default function AuthSelect({ navigation }) {
   const handleLogIn = () => {

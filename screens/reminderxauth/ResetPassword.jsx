@@ -25,7 +25,7 @@ export default function ResetPassword({ navigation }) {
 
       <View style={styles.textContainer}>
         <Text style={styles.text}>An email has been sent to:</Text>
-        <Text style={styles.mail}>useremail@gmail.com</Text>
+        <Text style={styles.mail}>reminderx@gmail.com</Text>
         <Text style={styles.text}>
           Please follow the instruction in the email to reset your password
           within 24 hours
@@ -67,9 +67,10 @@ const styles = StyleSheet.create({
 
   mail: {
     marginVertical: 26,
-    fontFamily: Fonts.sub,
+    fontFamily: Fonts.main,
     color: Color.purpleColor,
     textAlign: "center",
+    fontSize: 16,
   },
 
   buttonText: {

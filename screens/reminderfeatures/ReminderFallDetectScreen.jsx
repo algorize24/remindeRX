@@ -13,8 +13,8 @@ import { useState } from "react";
 
 // components
 import FeatureText from "../../components/header/FeatureText";
-import TextPolicy from "../../components/header/TextPolicy";
 import MainButton from "../../components/buttons/MainButton";
+import TextPolicy from "../../components/header/TextPolicy";
 
 // constants
 import { Fonts } from "../../constants/Font";
