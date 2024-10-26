@@ -24,7 +24,6 @@ export default function EditProfile({ navigation }) {
     <View style={styles.root}>
       <View style={styles.container}>
         <AuthText>Edit Profile</AuthText>
-
         <View style={styles.inputContainer}>
           <InputText>Email Address:</InputText>
           <TextInputs

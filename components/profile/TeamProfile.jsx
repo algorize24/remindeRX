@@ -44,9 +44,10 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: Fonts.sub,
+    fontFamily: Fonts.main,
     color: Color.tagLine,
     textTransform: "capitalize",
     maxWidth: 280,
+    fontSize: 13,
   },
 });

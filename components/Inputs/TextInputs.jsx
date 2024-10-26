@@ -1,4 +1,4 @@
-import { View, TextInput, StyleSheet } from "react-native";
+import { TextInput, StyleSheet } from "react-native";
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
 
@@ -8,6 +8,9 @@ export default function TextInputs({
   style,
   inputMode,
   keyboardType,
+  maxLength,
+  onChangeText,
+  value,
 }) {
   return (
     <TextInput
@@ -19,6 +22,9 @@ export default function TextInputs({
       placeholder={placeholder}
       secureTextEntry={secure}
       keyboardType={keyboardType}
+      maxLength={maxLength}
+      onChangeText={onChangeText}
+      value={value}
     />
   );
 }
@@ -26,7 +32,7 @@ export default function TextInputs({
 const styles = StyleSheet.create({
   text: {
     color: Color.tagLine,
-    fontFamily: Fonts.sub,
+    fontFamily: Fonts.main,
     padding: 10,
   },
 });

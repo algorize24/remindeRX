@@ -11,6 +11,7 @@ import InputText from "../../../components/header/InputText";
 import Button from "../../../components/buttons/Button";
 
 export default function AddMedicine({ navigation }) {
+  // state for button
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAddMedicine = () => {
@@ -18,8 +19,36 @@ export default function AddMedicine({ navigation }) {
     setTimeout(() => {
       setIsLoading(false); // Reset loading state after delay
       navigation.navigate("Inventory"); // Navigate to the next screen
-    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+    }, 2000);
   };
+
+  // state for expiration date text input
+  const [expirationDate, setExpirationDate] = useState("");
+
+  // date format
+  const formatDate = (input) => {
+    // Remove all non-numeric characters
+    const cleaned = input.replace(/\D/g, "");
+
+    // Format to "MM/DD/YYYY"
+    let formattedDate = cleaned;
+    if (cleaned.length > 2 && cleaned.length <= 4) {
+      formattedDate = `${cleaned.slice(0, 2)}/${cleaned.slice(2)}`;
+    } else if (cleaned.length > 4) {
+      formattedDate = `${cleaned.slice(0, 2)}/${cleaned.slice(
+        2,
+        4
+      )}/${cleaned.slice(4, 8)}`;
+    }
+
+    return formattedDate;
+  };
+
+  const expirationDateHandler = (input) => {
+    const formattedInput = formatDate(input);
+    setExpirationDate(formattedInput);
+  };
+
   return (
     <View style={styles.root}>
       <ScrollView overScrollMode="never" bounces={false}>
@@ -29,15 +58,18 @@ export default function AddMedicine({ navigation }) {
 
         <View style={styles.inputContainer}>
           <InputText>Medicine Name:</InputText>
-          <TextInputs style={styles.textInput} placeholder={"Medicine Name"} />
+          <TextInputs
+            style={styles.textInput}
+            placeholder={"Enter Medicine Name"}
+          />
 
           <InputText>Dosage:</InputText>
           <TextInputs
-            secure={true}
             inputMode={"numeric"}
             keyboardType={"numeric"}
             style={styles.textInput}
-            placeholder={"Dosage"}
+            placeholder={"Enter Dosage"}
+            maxLength={3}
           />
 
           <InputText>Quantity:</InputText>
@@ -45,7 +77,8 @@ export default function AddMedicine({ navigation }) {
             inputMode={"numeric"}
             keyboardType={"numeric"}
             style={styles.textInput}
-            placeholder={"Quantity "}
+            placeholder={"Enter Quantity "}
+            maxLength={3}
           />
 
           <InputText>Expiration Date:</InputText>
@@ -54,6 +87,9 @@ export default function AddMedicine({ navigation }) {
             keyboardType={"numeric"}
             style={styles.textInput}
             placeholder={"Expiration Date "}
+            maxLength={10}
+            onChangeText={expirationDateHandler}
+            value={expirationDate}
           />
 
           <InputText>Image:</InputText>

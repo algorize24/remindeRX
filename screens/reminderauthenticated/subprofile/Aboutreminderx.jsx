@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 
 import { Color } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Font";
@@ -12,6 +12,11 @@ export default function Aboutreminderx() {
         <AuthText>
           About Reminde<Text style={styles.rx}>RX</Text>
         </AuthText>
+
+        <Image
+          style={styles.img}
+          source={require("../../../assets/others/about.png")}
+        />
 
         <Text style={styles.description}>
           RemindeRx is an innovative health management solution designed to
@@ -56,5 +61,11 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.sub,
     color: Color.tagLine,
     marginTop: 10,
+  },
+
+  img: {
+    width: "screen",
+    height: 220,
+    // margin: "auto",
   },
 });

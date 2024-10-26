@@ -4,13 +4,17 @@ import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
 
 export default function ListContact({ itemData, onPress }) {
-  const { img, name, number } = itemData;
+  const { id, img, name, number } = itemData;
 
   const navigation = useNavigation();
   return (
     <Pressable
       onPress={() => {
-        navigation.navigate("EditContact");
+        navigation.navigate("EditContact", {
+          contactId: id,
+          name: name,
+          number: number,
+        });
       }}
       style={({ pressed }) => [styles.root, pressed && styles.press]}
     >
@@ -19,7 +23,9 @@ export default function ListContact({ itemData, onPress }) {
 
         <View style={styles.user}>
           <Text style={styles.name}>{name}</Text>
-          <Text style={styles.name}>{number}</Text>
+          <Text style={styles.number}>
+            +63 <Text style={styles.numberData}>{number} </Text>
+          </Text>
         </View>
       </View>
 
@@ -69,6 +75,15 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.main,
     color: "#fff",
     textTransform: "capitalize",
+  },
+
+  number: {
+    fontFamily: Fonts.main,
+    color: Color.tagLine,
+  },
+
+  numberData: {
+    color: "#fff",
   },
 
   user: {

@@ -1,8 +1,8 @@
 import { Text, StyleSheet } from "react-native";
 import { Fonts } from "../../constants/Font";
 
-export default function TextScreen({ children }) {
-  return <Text style={styles.text}>{children}</Text>;
+export default function TextScreen({ children, style }) {
+  return <Text style={[styles.text, style]}>{children}</Text>;
 }
 
 const styles = StyleSheet.create({

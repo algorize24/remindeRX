@@ -52,7 +52,7 @@ import ProfileScreen from "./screens/reminderauthenticated/ProfileScreen";
 import Aboutus from "./screens/reminderauthenticated/subprofile/Aboutus";
 import Aboutreminderx from "./screens/reminderauthenticated/subprofile/Aboutreminderx";
 import HelpSupport from "./screens/reminderauthenticated/subprofile/HelpSupport";
-import EditProfile from "./screens/reminderauthenticated/subprofile/EditProfile";
+import EditProfile from "./screens/reminderauthenticated/edit/EditProfile";
 
 // components
 import HeaderTitle from "./components/header/HeaderTitle";
@@ -359,7 +359,7 @@ export default function App() {
             name="EditContact"
             component={EditContact}
             options={{
-              title: "Contact Information",
+              title: "Edit Contact",
               headerTintColor: "white",
               headerTitleAlign: "center",
             }}
@@ -379,7 +379,7 @@ export default function App() {
             name="EditInventory"
             component={EditInventory}
             options={{
-              title: "Medicine Inventory",
+              title: "Edit Inventory",
               headerTintColor: "white",
               headerTitleAlign: "center",
             }}

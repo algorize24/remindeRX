@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Text } from "react-native";
 import { useState } from "react";
 
 import { Color } from "../../../constants/Color";
@@ -10,13 +10,15 @@ import TextInputs from "../../../components/Inputs/TextInputs";
 import InputText from "../../../components/header/InputText";
 import Button from "../../../components/buttons/Button";
 
-export default function EditInventory({ navigation }) {
+export default function EditInventory({ navigation, route }) {
+  const id = route.params.id;
+  const medicine = route.params.medicine;
+  const dosage = route.params.dosage;
+  const expDate = route.params.expDate;
+  const stock = route.params.stock;
+
   // loading state for main button edit
   const [isInventoryLoading, setIsInventoryLoading] = useState(false);
-
-  // loading state for main button delete
-  const [isDeletingLoading, setIsDeletingLoading] = useState(false);
-
   const handleEditInventory = () => {
     setIsInventoryLoading(true); // Set loading state to true when the button is pressed
     setTimeout(() => {
@@ -25,6 +27,8 @@ export default function EditInventory({ navigation }) {
     }, 2000); // Delay for 2 seconds (2000 milliseconds)
   };
 
+  // loading state for main button delete
+  const [isDeletingLoading, setIsDeletingLoading] = useState(false);
   const handleDeleteInventory = () => {
     setIsDeletingLoading(true); // Set loading state to true when the button is pressed
     setTimeout(() => {
@@ -32,16 +36,46 @@ export default function EditInventory({ navigation }) {
       navigation.navigate("Inventory"); // Navigate to the next screen
     }, 2000); // Delay for 2 seconds (2000 milliseconds)
   };
+
+  // state for expiration date text input
+  const [expirationDate, setExpirationDate] = useState("");
+
+  // date format
+  const formatDate = (input) => {
+    // Remove all non-numeric characters
+    const cleaned = input.replace(/\D/g, "");
+
+    // Format to "MM/DD/YYYY"
+    let formattedDate = cleaned;
+    if (cleaned.length > 2 && cleaned.length <= 4) {
+      formattedDate = `${cleaned.slice(0, 2)}/${cleaned.slice(2)}`;
+    } else if (cleaned.length > 4) {
+      formattedDate = `${cleaned.slice(0, 2)}/${cleaned.slice(
+        2,
+        4
+      )}/${cleaned.slice(4, 8)}`;
+    }
+
+    return formattedDate;
+  };
+
+  const expirationDateHandler = (input) => {
+    const formattedInput = formatDate(input);
+    setExpirationDate(formattedInput);
+  };
+
   return (
     <View style={styles.root}>
       <ScrollView overScrollMode="never" bounces={false}>
         <View style={styles.textContainer}>
-          <TextScreen>Edit Medicine</TextScreen>
+          <TextScreen style={styles.textScreen}>
+            # <Text style={styles.name}>{medicine}</Text>
+          </TextScreen>
         </View>
 
         <View style={styles.inputContainer}>
           <InputText>Medicine Name:</InputText>
-          <TextInputs style={styles.textInput} placeholder={""} />
+          <TextInputs style={styles.textInput} placeholder={medicine} />
 
           <InputText>Dosage:</InputText>
           <TextInputs
@@ -49,7 +83,8 @@ export default function EditInventory({ navigation }) {
             inputMode={"numeric"}
             keyboardType={"numeric"}
             style={styles.textInput}
-            placeholder={""}
+            placeholder={`${dosage}mg`}
+            maxLength={3}
           />
 
           <InputText>Quantity:</InputText>
@@ -57,7 +92,8 @@ export default function EditInventory({ navigation }) {
             inputMode={"numeric"}
             keyboardType={"numeric"}
             style={styles.textInput}
-            placeholder={" "}
+            placeholder={stock}
+            maxLength={3}
           />
 
           <InputText>Expiration Date:</InputText>
@@ -65,7 +101,10 @@ export default function EditInventory({ navigation }) {
             inputMode={"numeric"}
             keyboardType={"numeric"}
             style={styles.textInput}
-            placeholder={" "}
+            placeholder={expDate}
+            maxLength={10}
+            onChangeText={expirationDateHandler}
+            value={expirationDate}
           />
 
           <InputText>Image:</InputText>
@@ -127,5 +166,13 @@ const styles = StyleSheet.create({
 
   editButton: {
     marginBottom: 20,
+  },
+
+  name: {
+    color: Color.greenColor,
+  },
+
+  textScreen: {
+    color: Color.tagLine,
   },
 });

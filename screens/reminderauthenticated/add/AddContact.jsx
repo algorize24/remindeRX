@@ -2,6 +2,7 @@ import { View, StyleSheet } from "react-native";
 import { useState } from "react";
 
 import { Color } from "../../../constants/Color";
+import { Fonts } from "../../../constants/Font";
 
 import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
@@ -11,9 +12,27 @@ import InputText from "../../../components/header/InputText";
 import Button from "../../../components/buttons/Button";
 
 export default function AddContact({ navigation }) {
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  // formatter
+  const formatPhoneNumber = (input) => {
+    // Remove all non-numeric characters
+    const cleaned = input.replace(/\D/g, "");
+
+    // Format to "123 456 7890" pattern
+    const formatted = cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
+
+    return formatted.trim();
+  };
+
+  // number handler
+  const phoneNumberHandler = (input) => {
+    const formattedInput = formatPhoneNumber(input);
+    setPhoneNumber(formattedInput);
+  };
+
   // loading state for main button
   const [isLoading, setIsLoading] = useState(false);
-
   const handleAddContact = () => {
     setIsLoading(true); // Set loading state to true when the button is pressed
     setTimeout(() => {
@@ -30,15 +49,17 @@ export default function AddContact({ navigation }) {
 
       <View style={styles.inputContainer}>
         <InputText>Name:</InputText>
-        <TextInputs style={styles.textInput} placeholder={"Name"} />
+        <TextInputs style={styles.textInput} placeholder={"Enter Name"} />
 
         <InputText>Number:</InputText>
         <TextInputs
-          secure={true}
           inputMode="numeric"
           keyboardType="phone-pad"
           style={styles.textInput}
-          placeholder={"Cellphone Number"}
+          placeholder={"Enter Number"}
+          maxLength={12}
+          value={phoneNumber}
+          onChangeText={phoneNumberHandler}
         />
 
         <InputText>Image:</InputText>

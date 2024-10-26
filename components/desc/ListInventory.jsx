@@ -5,12 +5,18 @@ import { Fonts } from "../../constants/Font";
 import { useNavigation } from "@react-navigation/native";
 
 export default function ListInventory({ itemData }) {
-  const { img, medicine, dosage, expDate, stock } = itemData;
+  const { id, img, medicine, dosage, expDate, stock } = itemData;
   const navigation = useNavigation();
   return (
     <Pressable
       onPress={() => {
-        navigation.navigate("EditInventory");
+        navigation.navigate("EditInventory", {
+          id: id,
+          medicine: medicine,
+          dosage: dosage,
+          expDate: expDate,
+          stock: stock,
+        });
       }}
       style={({ pressed }) => [styles.medView, pressed && styles.pressed]}
     >
@@ -27,11 +33,11 @@ export default function ListInventory({ itemData }) {
           <View style={styles.status}>
             <View>
               <Text style={styles.statusText}>Expiration Date</Text>
-              <Text style={styles.mainText}>01/01/2025</Text>
+              <Text style={styles.mainText}>{expDate}</Text>
             </View>
             <View>
               <Text style={styles.statusText}>Stock</Text>
-              <Text style={styles.mainText}>5</Text>
+              <Text style={styles.mainText}>{stock}</Text>
             </View>
           </View>
         </View>

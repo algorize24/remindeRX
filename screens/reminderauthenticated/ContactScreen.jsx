@@ -11,7 +11,14 @@ export default function ContactScreen({ navigation }) {
       id: 1,
       img: require("../../assets/others/user.png"),
       name: "Emergency Contact",
-      number: "123-456-789",
+      number: "123 456 7890",
+    },
+
+    {
+      id: 2,
+      img: require("../../assets/others/user.png"),
+      name: "sIUzy",
+      number: "123 456 7890",
     },
   ];
   return (

@@ -7,15 +7,16 @@ export default function FallHistory({ itemData }) {
   const { date, time, falldetails } = itemData;
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>
-        Date & Time:{" "}
-        <Text style={styles.subText}>
-          {date} - {time}
-        </Text>
-      </Text>
-      <Text style={styles.text}>
-        Fall Details: <Text style={styles.subText}>{falldetails}</Text>
-      </Text>
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>{date}</Text>
+        <Text style={styles.text}>{time}</Text>
+      </View>
+
+      <View style={styles.messageContainer}></View>
+      <Text style={styles.textMessage}>Description:</Text>
+      <Text
+        style={styles.textDetails}
+      >{`${falldetails} on ${date} at ${time}.`}</Text>
     </View>
   );
 }
@@ -26,16 +27,32 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 15,
     marginTop: 10,
-    borderRadius: 14,
+    borderRadius: 12,
+  },
+
+  textContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 
   text: {
-    fontFamily: Fonts.sub,
+    fontFamily: Fonts.main,
     color: Color.tagLine,
-    fontWeight: "bold",
   },
 
-  subText: {
+  messageContainer: {
+    marginTop: 20,
+  },
+
+  textMessage: {
+    fontFamily: Fonts.main,
+    color: Color.redColor,
+  },
+
+  textDetails: {
+    fontFamily: Fonts.main,
     color: "#fff",
+    fontSize: 13,
   },
 });

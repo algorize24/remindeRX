@@ -6,7 +6,6 @@ import { Color } from "../../constants/Color";
 import ListInventory from "../../components/desc/ListInventory";
 import TextScreen from "../../components/header/TextScreen";
 
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Label from "../../components/dashboard/Label";
 
 export default function InventoryScreen({ navigation }) {
@@ -24,7 +23,7 @@ export default function InventoryScreen({ navigation }) {
       img: require("../../assets/others/medicine.webp"),
       medicine: "Acetaminophen",
       dosage: "500",
-      expDate: "01/01/2024",
+      expDate: "01/01/2025",
       stock: "5",
     },
     {
@@ -32,7 +31,7 @@ export default function InventoryScreen({ navigation }) {
       img: require("../../assets/others/medicine.webp"),
       medicine: "Acetaminophen",
       dosage: "500",
-      expDate: "01/01/2024",
+      expDate: "01/01/2026",
       stock: "5",
     },
     {
@@ -40,7 +39,7 @@ export default function InventoryScreen({ navigation }) {
       img: require("../../assets/others/medicine.webp"),
       medicine: "Acetaminophen",
       dosage: "500",
-      expDate: "01/01/2024",
+      expDate: "01/01/2027",
       stock: "5",
     },
     {
@@ -48,7 +47,7 @@ export default function InventoryScreen({ navigation }) {
       img: require("../../assets/others/medicine.webp"),
       medicine: "Acetaminophen",
       dosage: "500",
-      expDate: "01/01/2024",
+      expDate: "01/01/2028",
       stock: "5",
     },
     {
@@ -56,7 +55,7 @@ export default function InventoryScreen({ navigation }) {
       img: require("../../assets/others/medicine.webp"),
       medicine: "Acetaminophen",
       dosage: "500",
-      expDate: "01/01/2024",
+      expDate: "01/01/2029",
       stock: "5",
     },
   ];

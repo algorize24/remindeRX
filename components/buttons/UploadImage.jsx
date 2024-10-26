@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontFamily: Fonts.sub,
+    fontFamily: Fonts.main,
     color: Color.tagLine,
   },
 });
