@@ -93,7 +93,7 @@ export default function AuthInputs() {
 
 const styles = StyleSheet.create({
   inputsContainer: {
-    backgroundColor: Color.textInput,
+    backgroundColor: Color.container,
     borderRadius: 8,
     padding: 10,
   },
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
 
   borderStyle: {
     borderTopWidth: 1,
-    borderTopColor: Color.tagLine,
+    borderTopColor: Color.textInput,
   },
 
   container: {

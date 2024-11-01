@@ -158,14 +158,14 @@ function ReminderAuthStack() {
         }}
       />
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="SetPassword"
         component={SetPassword}
         options={{
           headerTintColor: "white",
           title: "",
         }}
-      />
+      /> */}
 
       <Stack.Screen
         name="CreatingAccount"

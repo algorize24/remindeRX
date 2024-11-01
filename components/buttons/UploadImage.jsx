@@ -1,9 +1,9 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
-export default function () {
+export default function ({ style }) {
   return (
-    <Pressable style={styles.root}>
+    <Pressable style={[styles.root, style]}>
       <Text style={styles.text}>Upload Image</Text>
     </Pressable>
   );
