@@ -15,7 +15,7 @@ import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-export default function AuthInputs() {
+export default function AuthInputs({ setEmail, setPassword, error }) {
   const [showPassword, setShowPassword] = useState(false); // show pass
   const [rememberMe, setRememberMe] = useState(false); // checked box
 
@@ -26,6 +26,7 @@ export default function AuthInputs() {
     setShowPassword(!showPassword);
   };
 
+  // go to ForgotPassword Screen
   const handleForgotPassword = () => {
     navigation.navigate("ForgotPassword");
   };
@@ -39,6 +40,7 @@ export default function AuthInputs() {
             <TextInputs
               keyboardType={"email-address"}
               placeholder={"Email Address"}
+              onChangeText={setEmail}
             />
           </View>
         </View>
@@ -50,6 +52,7 @@ export default function AuthInputs() {
               style={styles.borderStyle}
               secure={showPassword ? false : true}
               placeholder={"Password"}
+              onChangeText={setPassword}
             />
           </View>
           <Pressable onPress={handleShowPassword}>
@@ -62,6 +65,7 @@ export default function AuthInputs() {
         </View>
       </View>
 
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
       <View style={styles.container}>
         <View style={styles.subContainer}>
           <Pressable
@@ -138,5 +142,12 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.main,
     fontSize: 13,
     textDecorationLine: "underline",
+  },
+
+  errorText: {
+    color: Color.redColor,
+    fontFamily: Fonts.main,
+    fontSize: 13,
+    marginVertical: 10,
   },
 });

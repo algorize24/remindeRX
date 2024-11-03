@@ -14,11 +14,11 @@ import { Color } from "../../constants/Color";
 import MainButton from "../../components/buttons/MainButton";
 import TextInputs from "../../components/Inputs/TextInputs";
 import AuthText from "../../components/header/AuthText";
+import Button from "../../components/buttons/Button";
 
 // icons
 import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
-import Button from "../../components/buttons/Button";
 
 export default function SetPassword({ navigation }) {
   // loading state for handleSignUp

@@ -16,6 +16,8 @@ import {
   Feather,
   Entypo,
   MaterialCommunityIcons,
+  MaterialIcons,
+  FontAwesome6,
 } from "@expo/vector-icons";
 
 // constants
@@ -32,7 +34,7 @@ import AuthLogin from "./screens/reminderxauth/AuthLogin";
 import AuthSignUp from "./screens/reminderxauth/AuthSignUp";
 import ForgotPassword from "./screens/reminderxauth/ForgotPassword";
 import ResetPassword from "./screens/reminderxauth/ResetPassword";
-import SetPassword from "./screens/reminderxauth/SetPassword";
+// import SetPassword from "./screens/reminderxauth/SetPassword";
 import CreatingAccount from "./screens/reminderxauth/CreatingAccount";
 
 // screens - ReminderFeaturesStack
@@ -64,6 +66,9 @@ import AddContact from "./screens/reminderauthenticated/add/AddContact";
 import AddMedicine from "./screens/reminderauthenticated/add/AddMedicine";
 import EditContact from "./screens/reminderauthenticated/edit/EditContact";
 import EditInventory from "./screens/reminderauthenticated/edit/EditInventory";
+
+// context
+import AuthContextProvider from "./context/authContext";
 
 const Stack = createNativeStackNavigator(); // stack navigator
 const Drawer = createDrawerNavigator(); // drawer navigator
@@ -291,6 +296,8 @@ export default function App() {
           ...Feather.font,
           ...Entypo.font,
           ...MaterialCommunityIcons.font,
+          ...MaterialIcons.font,
+          ...FontAwesome6.font,
         });
       } catch (err) {
         console.warn(err);
@@ -317,133 +324,135 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: Color.bgColor },
-            contentStyle: { backgroundColor: Color.bgColor },
-          }}
-        >
-          <Stack.Screen
-            name="ReminderFeaturesStack"
-            component={ReminderFeaturesStack}
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="ReminderAuthenticated"
-            component={ReminderAuthenticated}
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="Chatbot"
-            component={ChatbotScreen}
-            options={{
-              title: "ReminderxAI",
-              headerTintColor: "white",
-              headerTitleAlign: "center",
+        <AuthContextProvider>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: Color.bgColor },
+              contentStyle: { backgroundColor: Color.bgColor },
             }}
-          />
+          >
+            <Stack.Screen
+              name="ReminderFeaturesStack"
+              component={ReminderFeaturesStack}
+              options={{ headerShown: false }}
+            />
 
-          <Stack.Screen
-            name="AddContact"
-            component={AddContact}
-            options={{
-              title: "Contact Information",
-              headerTintColor: "white",
-              headerTitleAlign: "center",
-            }}
-          />
+            <Stack.Screen
+              name="ReminderAuthenticated"
+              component={ReminderAuthenticated}
+              options={{ headerShown: false }}
+            />
 
-          <Stack.Screen
-            name="EditContact"
-            component={EditContact}
-            options={{
-              title: "Edit Contact",
-              headerTintColor: "white",
-              headerTitleAlign: "center",
-            }}
-          />
+            <Stack.Screen
+              name="Chatbot"
+              component={ChatbotScreen}
+              options={{
+                title: "ReminderxAI",
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
 
-          <Stack.Screen
-            name="AddMedicine"
-            component={AddMedicine}
-            options={{
-              title: "Medicine Inventory",
-              headerTintColor: "white",
-              headerTitleAlign: "center",
-            }}
-          />
+            <Stack.Screen
+              name="AddContact"
+              component={AddContact}
+              options={{
+                title: "Contact Information",
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
 
-          <Stack.Screen
-            name="EditInventory"
-            component={EditInventory}
-            options={{
-              title: "Edit Inventory",
-              headerTintColor: "white",
-              headerTitleAlign: "center",
-            }}
-          />
+            <Stack.Screen
+              name="EditContact"
+              component={EditContact}
+              options={{
+                title: "Edit Contact",
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
 
-          <Stack.Screen
-            name="EditProfile"
-            component={EditProfile}
-            options={{
-              title: "Edit Profile",
-              headerTintColor: "white",
-              headerTitleAlign: "center",
-            }}
-          />
+            <Stack.Screen
+              name="AddMedicine"
+              component={AddMedicine}
+              options={{
+                title: "Medicine Inventory",
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
 
-          <Stack.Screen
-            name="AboutUs"
-            component={Aboutus}
-            options={{
-              title: "About Us",
-              headerTintColor: "white",
-              headerTitleAlign: "center",
-            }}
-          />
-          <Stack.Screen
-            name="AboutReminderx"
-            component={Aboutreminderx}
-            options={{
-              title: "About Reminderx",
-              headerTintColor: "white",
-              headerTitleAlign: "center",
-            }}
-          />
+            <Stack.Screen
+              name="EditInventory"
+              component={EditInventory}
+              options={{
+                title: "Edit Inventory",
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
 
-          <Stack.Screen
-            name="HelpnSupport"
-            component={HelpSupport}
-            options={{
-              title: "Help & Support",
-              headerTintColor: "white",
-              headerTitleAlign: "center",
-            }}
-          />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfile}
+              options={{
+                title: "Edit Profile",
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
 
-          <Stack.Screen
-            name="TermOfUse"
-            component={TermOfUse}
-            options={{
-              headerTintColor: "white",
-              title: "Terms of Use",
-              headerTitleAlign: "center",
-            }}
-          />
+            <Stack.Screen
+              name="AboutUs"
+              component={Aboutus}
+              options={{
+                title: "About Us",
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="AboutReminderx"
+              component={Aboutreminderx}
+              options={{
+                title: "About Reminderx",
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
 
-          <Stack.Screen
-            name="PrivacyPolicy"
-            component={PrivacyPolicyScreen}
-            options={{
-              headerTintColor: "white",
-              title: "Privacy Policy",
-              headerTitleAlign: "center",
-            }}
-          />
-        </Stack.Navigator>
+            <Stack.Screen
+              name="HelpnSupport"
+              component={HelpSupport}
+              options={{
+                title: "Help & Support",
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
+
+            <Stack.Screen
+              name="TermOfUse"
+              component={TermOfUse}
+              options={{
+                headerTintColor: "white",
+                title: "Terms of Use",
+                headerTitleAlign: "center",
+              }}
+            />
+
+            <Stack.Screen
+              name="PrivacyPolicy"
+              component={PrivacyPolicyScreen}
+              options={{
+                headerTintColor: "white",
+                title: "Privacy Policy",
+                headerTitleAlign: "center",
+              }}
+            />
+          </Stack.Navigator>
+        </AuthContextProvider>
       </NavigationContainer>
     </>
   );

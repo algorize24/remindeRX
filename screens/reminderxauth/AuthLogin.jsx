@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Alert,
+} from "react-native";
 import { useState } from "react";
 
 // components
@@ -10,9 +16,24 @@ import Button from "../../components/buttons/Button";
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
 
+// context
+import { useAuth } from "../../context/authContext";
+
+// firebase
+import { auth } from "../../firebase/firebase";
+
+// axios
+import axios from "axios";
+
 export default function AuthLogin({ navigation }) {
-  // loading state for handleSignIn
-  const [isLoading, setIsLoading] = useState(false);
+  // auth states
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // error handling
+  const [isLoading, setIsLoading] = useState(false); // loading handling
+
+  const { signIn } = useAuth(); // signIn function in useAuth context
+
   const handleSignUp = () => {
     // navigation.navigate("Signup");
     navigation.reset({
@@ -21,12 +42,68 @@ export default function AuthLogin({ navigation }) {
     });
   };
 
-  const handleSignIn = () => {
-    setIsLoading(true); // Set loading state to true when the button is pressed
-    setTimeout(() => {
-      setIsLoading(false); // Reset loading state after delay
-      navigation.navigate("RealTime"); // Navigate to the next screen
-    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+  const handleSignIn = async () => {
+    // reset the error message before trying to sign in
+    setError("");
+
+    // check if email and password is empty
+    if (!email || !password) {
+      setError(
+        "Please enter your login details. The input fields cannot be empty."
+      );
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // firebase sign-in
+      await signIn(email, password);
+      const currentUser = auth.currentUser;
+
+      // get the token
+      if (currentUser) {
+        const token = await currentUser.getIdToken();
+
+        // send request to backend
+        const response = await axios.post(
+          "http://10.0.2.2:5000/api/user/signin", // Correct address for Android emulator
+          { email, password, token },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        // if success, go to this screen.
+        if (response.data.user) {
+          navigation.navigate("RealTime");
+        } else {
+          setError(
+            response.data.message || "Error signing in. Please try again."
+          );
+        }
+      } else {
+        setError("User not found, please check your credentials.");
+      }
+    } catch (error) {
+      switch (error.code) {
+        case "auth/invalid-credential":
+          setError("No account found with this email. Please sign up.");
+          break;
+        case "auth/invalid-credential":
+          setError("Incorrect password. Please try again.");
+          break;
+        case "auth/invalid-email":
+          setError("Invalid email format. Please check and try again.");
+          break;
+        case "auth/invalid-credential":
+          setError("Invalid credentials. Please try again or re-authenticate.");
+          break;
+        default:
+          setError("Sign in failed. Please check your details and try again.");
+          break;
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -38,7 +115,7 @@ export default function AuthLogin({ navigation }) {
         </Text>
       </View>
 
-      <AuthInputs />
+      <AuthInputs setEmail={setEmail} setPassword={setPassword} error={error} />
 
       <KeyboardAvoidingView style={styles.keyboard}>
         <View style={styles.viewKey}>
