@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 // components
@@ -15,11 +15,21 @@ import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-export default function AuthInputs({ setEmail, setPassword, error }) {
-  const [showPassword, setShowPassword] = useState(false); // show pass
-  const [rememberMe, setRememberMe] = useState(false); // checked box
+// asycn storage
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+export default function AuthInputs({
+  setEmail,
+  setPassword,
+  error,
+  rememberMe,
+  setRememberMe,
+  email,
+  password,
+}) {
   const navigation = useNavigation();
+
+  const [showPassword, setShowPassword] = useState(false); // show pass
 
   // invoke in pressable forgot password
   const handleShowPassword = () => {
@@ -29,6 +39,31 @@ export default function AuthInputs({ setEmail, setPassword, error }) {
   // go to ForgotPassword Screen
   const handleForgotPassword = () => {
     navigation.navigate("ForgotPassword");
+  };
+
+  // Load stored email and password when the component mounts
+  useEffect(() => {
+    const loadCredentials = async () => {
+      const storedEmail = await AsyncStorage.getItem("userEmail");
+      const storedPassword = await AsyncStorage.getItem("userPassword");
+      const storedRememberMe = await AsyncStorage.getItem("rememberMe");
+
+      if (storedEmail && storedRememberMe === "true") {
+        setEmail(storedEmail);
+        setPassword(storedPassword || ""); // load password if saved
+        setRememberMe(true);
+      }
+    };
+    loadCredentials();
+  }, []);
+
+  // Toggle Remember Me and clear AsyncStorage if unchecked
+  const handleRememberMeToggle = async () => {
+    setRememberMe(!rememberMe);
+    if (!rememberMe) {
+      await AsyncStorage.removeItem("userEmail");
+      await AsyncStorage.removeItem("userPassword");
+    }
   };
 
   return (
@@ -41,6 +76,7 @@ export default function AuthInputs({ setEmail, setPassword, error }) {
               keyboardType={"email-address"}
               placeholder={"Email Address"}
               onChangeText={setEmail}
+              value={email}
             />
           </View>
         </View>
@@ -53,6 +89,7 @@ export default function AuthInputs({ setEmail, setPassword, error }) {
               secure={showPassword ? false : true}
               placeholder={"Password"}
               onChangeText={setPassword}
+              value={password}
             />
           </View>
           <Pressable onPress={handleShowPassword}>
@@ -66,12 +103,10 @@ export default function AuthInputs({ setEmail, setPassword, error }) {
       </View>
 
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <Pressable
-            style={styles.press}
-            onPress={() => setRememberMe(!rememberMe)}
-          >
+          <Pressable style={styles.press} onPress={handleRememberMeToggle}>
             <MaterialCommunityIcons
               name={
                 rememberMe

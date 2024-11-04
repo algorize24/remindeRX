@@ -1,20 +1,74 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { useState, useEffect } from "react";
 
+// constant
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
 
+// components
 import LoadingRoots from "../../components/loading/LoadingRoots";
 
+// auth context
+import { useAuth } from "../../context/authContext";
+
+// axios
+import axios from "axios";
+
 export default function ProfileScreen({ navigation }) {
+  // state for fetching user
+  const { user, logOut } = useAuth();
+  const [userInfo, setUserInfo] = useState(null);
+  const [userLoading, setUserLoading] = useState(null);
+
+  // main loading state
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignOut = () => {
-    setIsLoading(true); // Set loading state to true when the button is pressed
-    setTimeout(() => {
-      setIsLoading(false); // Reset loading state after delay
+  // fetch the user from database
+  useEffect(() => {
+    const fetchUser = async () => {
+      // identify who user is logged in.
+      if (user) {
+        try {
+          const response = await axios.get(
+            `http://10.0.2.2:5000/api/user/${user.email}`
+          );
+          setUserInfo(response.data);
+        } catch (error) {
+          console.log("Error fetching user info", error);
+        } finally {
+          setUserLoading(false);
+        }
+      } else {
+        setUserLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [user]);
+
+  // get the email and password and set a fall back
+  const displayEmail = userInfo ? userInfo.email : "null";
+  const address = userInfo ? userInfo.address : "null";
+
+  // loading state for user info...
+  if (userLoading) {
+    return <ActivityIndicator color={Color.purpleColor} />;
+  }
+
+  // sign out fn
+  const handleSignOut = async () => {
+    setIsLoading(true);
+    try {
+      await logOut(); // Call the logOut function from context
       navigation.navigate("Signin");
-    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+    } catch (error) {
+      Alert.alert(
+        "Sign Out Failed",
+        "We encountered an issue while trying to sign you out. Please try again later. If the problem persists, contact support for assistance."
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Manage drawer behavior when loading
@@ -39,14 +93,18 @@ export default function ProfileScreen({ navigation }) {
   let content = (
     <View style={styles.root}>
       <View style={styles.userInfo}>
-        <Image
-          style={styles.img}
-          source={require("../../assets/others/user.png")}
-        />
-        <Text style={styles.email}>reminderx@gmail.com</Text>
-        <Text style={styles.address}>
-          Mandaluyong, Metro Manila, Philippines
-        </Text>
+        {userInfo && userInfo.image && (
+          <Image
+            style={styles.img}
+            source={{
+              uri:
+                userInfo.image ||
+                require("../../assets/others/user-avatar.png"),
+            }}
+          />
+        )}
+        <Text style={styles.email}>{displayEmail}</Text>
+        <Text style={styles.address}>{address}</Text>
       </View>
 
       <View style={styles.links}>
@@ -136,7 +194,7 @@ const styles = StyleSheet.create({
   },
 
   address: {
-    fontFamily: Fonts.sub,
+    fontFamily: Fonts.main,
     color: Color.tagLine,
     fontSize: 12,
   },

@@ -15,7 +15,10 @@ import MainButton from "../../components/buttons/MainButton";
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
 
-export default function ResetPassword({ navigation }) {
+export default function ResetPassword({ navigation, route }) {
+  // email from ForgotPassword.jsx
+  const { email } = route.params;
+
   const handleResetPassword = () => {
     navigation.navigate("Signin");
   };
@@ -25,7 +28,7 @@ export default function ResetPassword({ navigation }) {
 
       <View style={styles.textContainer}>
         <Text style={styles.text}>An email has been sent to:</Text>
-        <Text style={styles.mail}>reminderx@gmail.com</Text>
+        <Text style={styles.mail}>{email}</Text>
         <Text style={styles.text}>
           Please follow the instruction in the email to reset your password
           within 24 hours

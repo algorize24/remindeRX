@@ -16,7 +16,7 @@ import { Color } from "../../constants/Color";
 import AuthText from "../../components/header/AuthText";
 import MainButton from "../../components/buttons/MainButton";
 
-export default function CreatingAccount({ navigation }) {
+export default function CreatingAccount({ navigation, route }) {
   const handleButton = () => {
     navigation.reset({
       // to not go back to previous screen, focus only on one route.
@@ -24,21 +24,27 @@ export default function CreatingAccount({ navigation }) {
       routes: [{ name: "Signin" }],
     });
   };
+
+  const { emailSent } = route.params;
   return (
     <SafeAreaView style={styles.root}>
       <AuthText style={styles.authText}>Creating an Account</AuthText>
 
-      <View style={styles.content}>
-        <Image
-          style={styles.img}
-          source={require("../../assets/others/successful.png")}
-        />
-        <Text style={styles.text}>
-          Email sent successfully. Please check your email for verification.
-        </Text>
-      </View>
+      {emailSent && (
+        <>
+          <View style={styles.content}>
+            <Image
+              style={styles.img}
+              source={require("../../assets/others/successful.png")}
+            />
+            <Text style={styles.text}>
+              Email sent successfully. Please check your email for verification.
+            </Text>
+          </View>
 
-      <MainButton onPress={handleButton}>Get Started</MainButton>
+          <MainButton onPress={handleButton}>Get Started</MainButton>
+        </>
+      )}
     </SafeAreaView>
   );
 }

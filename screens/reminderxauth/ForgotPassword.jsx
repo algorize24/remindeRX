@@ -14,16 +14,48 @@ import MainButton from "../../components/buttons/MainButton";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import Button from "../../components/buttons/Button";
 
+// firebase
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../../firebase/firebase";
+
 export default function ForgotPassword({ navigation }) {
+  // state for changing password
+  const [email, setEmail] = useState("");
+
   // loading state for handlePasswordReset
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlePasswordReset = () => {
-    setIsLoading(true); // Set loading state to true when the button is pressed
-    setTimeout(() => {
-      setIsLoading(false); // Reset loading state after delay
-      navigation.navigate("ResetPassword");
-    }, 2000);
+  const [error, setError] = useState(""); // error handling
+
+  // password reset fn
+  const handlePasswordReset = async () => {
+    setIsLoading(true);
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      navigation.navigate("ResetPassword", { email });
+    } catch (error) {
+      // Check the error code and set appropriate messages
+      switch (error.code) {
+        case "auth/user-not-found":
+          setError("No user found with this email address.");
+          break;
+        case "auth/invalid-email":
+          setError("The email address is not valid.");
+          break;
+        case "auth/operation-not-allowed":
+          setError("Password reset is not allowed. Please contact support.");
+          break;
+        case "auth/user-disabled":
+          setError("This user account has been disabled.");
+          break;
+        default:
+          setError("An error occurred. Please try again later.");
+          break;
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <View style={styles.root}>
@@ -38,9 +70,12 @@ export default function ForgotPassword({ navigation }) {
           <TextInputs
             keyboardType={"email-address"}
             placeholder={"Email Address"}
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
       </View>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
       <KeyboardAvoidingView style={styles.keyboard}>
         <View style={styles.viewKey}>
@@ -89,5 +124,12 @@ const styles = StyleSheet.create({
     marginTop: 14,
     marginBottom: 17,
     maxWidth: 320,
+  },
+
+  errorText: {
+    color: Color.redColor,
+    fontFamily: Fonts.main,
+    fontSize: 13,
+    marginVertical: 10,
   },
 });

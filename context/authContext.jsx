@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendEmailVerification,
   signOut,
 } from "firebase/auth";
 
@@ -30,7 +31,19 @@ export default function AuthContextProvider({ children }) {
   // sign in with email and password
   const signIn = async (email, password) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      if (!user.emailVerified) {
+        await signOut(auth);
+        const error = new Error("Email is not verified");
+        error.code = "auth/email-not-verified";
+        throw error;
+      }
     } catch (error) {
       console.error("Sign In failed...", error);
       throw error;
@@ -40,7 +53,16 @@ export default function AuthContextProvider({ children }) {
   // sign up with email and password
   const signUp = async (email, password) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      const user = userCredential.user;
+
+      await sendEmailVerification(user); // send email verification
+      return userCredential; // Return user credentials
     } catch (error) {
       console.error("Sign Up failed...", error);
       throw error;

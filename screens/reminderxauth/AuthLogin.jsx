@@ -1,11 +1,5 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Alert,
-} from "react-native";
-import { useState } from "react";
+import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { useState, useEffect } from "react";
 
 // components
 import MainButton from "../../components/buttons/MainButton";
@@ -25,12 +19,17 @@ import { auth } from "../../firebase/firebase";
 // axios
 import axios from "axios";
 
+// async
+import AsyncStorage from "@react-native-async-storage/async-storage"; // Make sure to install this package
+
 export default function AuthLogin({ navigation }) {
   // auth states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [error, setError] = useState(""); // error handling
   const [isLoading, setIsLoading] = useState(false); // loading handling
+  const [rememberMe, setRememberMe] = useState(false); // Checkbox state
 
   const { signIn } = useAuth(); // signIn function in useAuth context
 
@@ -42,9 +41,26 @@ export default function AuthLogin({ navigation }) {
     });
   };
 
+  // Load stored email and password if rememberMe was checked
+  useEffect(() => {
+    const loadCredentials = async () => {
+      const storedEmail = await AsyncStorage.getItem("userEmail");
+      const storedPassword = await AsyncStorage.getItem("userPassword");
+      const storedRememberMe = await AsyncStorage.getItem("rememberMe");
+
+      // Only set email and password if rememberMe was previously checked
+      if (storedRememberMe === "true") {
+        setEmail(storedEmail || "");
+        setPassword(storedPassword || "");
+        setRememberMe(true);
+      }
+    };
+    loadCredentials();
+  }, []);
+
+  // function to login
   const handleSignIn = async () => {
-    // reset the error message before trying to sign in
-    setError("");
+    setError(""); // reset the error message before trying to sign in
 
     // check if email and password is empty
     if (!email || !password) {
@@ -61,20 +77,31 @@ export default function AuthLogin({ navigation }) {
       await signIn(email, password);
       const currentUser = auth.currentUser;
 
-      // get the token
+      // check if currentUser
       if (currentUser) {
-        const token = await currentUser.getIdToken();
+        const token = await currentUser.getIdToken(); // get the token
 
         // send request to backend
         const response = await axios.post(
-          "http://10.0.2.2:5000/api/user/signin", // Correct address for Android emulator
-          { email, password, token },
+          "http://10.0.2.2:5000/api/user/signin",
+          { email, password, token }, // we need these three in backend, so we will pass it.
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
-        // if success, go to this screen.
         if (response.data.user) {
-          navigation.navigate("RealTime");
+          // Store credentials if rememberMe is checked
+          if (rememberMe) {
+            await AsyncStorage.setItem("userEmail", email);
+            await AsyncStorage.setItem("userPassword", password);
+            await AsyncStorage.setItem("rememberMe", "true");
+          } else {
+            // Clear stored credentials if rememberMe is not checked
+            await AsyncStorage.removeItem("userEmail");
+            await AsyncStorage.removeItem("userPassword");
+            await AsyncStorage.setItem("rememberMe", "false");
+          }
+
+          navigation.navigate("RealTime"); // Navigate to next screen
         } else {
           setError(
             response.data.message || "Error signing in. Please try again."
@@ -85,10 +112,15 @@ export default function AuthLogin({ navigation }) {
       }
     } catch (error) {
       switch (error.code) {
+        case "auth/email-not-verified":
+          setError(
+            "Your email address is not verified. Please check your email for the verification link."
+          );
+          break;
         case "auth/invalid-credential":
           setError("No account found with this email. Please sign up.");
           break;
-        case "auth/invalid-credential":
+        case "auth/invalid-password":
           setError("Incorrect password. Please try again.");
           break;
         case "auth/invalid-email":
@@ -97,8 +129,15 @@ export default function AuthLogin({ navigation }) {
         case "auth/invalid-credential":
           setError("Invalid credentials. Please try again or re-authenticate.");
           break;
+        case "auth/network-request-failed":
+          setError(
+            "Network error. Please check your connection and try again."
+          );
+          break;
         default:
-          setError("Sign in failed. Please check your details and try again.");
+          setError(
+            "Sign in failed. An unexpected error occurred. Please try again later"
+          );
           break;
       }
     } finally {
@@ -115,7 +154,15 @@ export default function AuthLogin({ navigation }) {
         </Text>
       </View>
 
-      <AuthInputs setEmail={setEmail} setPassword={setPassword} error={error} />
+      <AuthInputs
+        setEmail={setEmail}
+        setPassword={setPassword}
+        error={error}
+        rememberMe={rememberMe}
+        setRememberMe={setRememberMe}
+        email={email}
+        password={password}
+      />
 
       <KeyboardAvoidingView style={styles.keyboard}>
         <View style={styles.viewKey}>

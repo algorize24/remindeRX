@@ -34,7 +34,7 @@ export default function ReminderMedScreen({ navigation }) {
     setTimeout(() => {
       setIsLoading(false); // Reset loading state after delay
       navigation.navigate("ReminderAuthenticated");
-    }, 2000);
+    }, 1000);
   };
   return (
     <SafeAreaView style={styles.root}>

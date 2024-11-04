@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { useState } from "react";
 
 // constants
@@ -19,30 +19,90 @@ import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
 import UploadImage from "../../components/buttons/UploadImage";
 
-export default function AuthSignUp({ navigation }) {
-  // show password icon...
-  const [showPassword, setShowPassword] = useState(false);
+// context
+import { useAuth } from "../../context/authContext";
 
-  // loading state for btn
-  const [isLoading, setIsLoading] = useState(false);
+// axios
+import axios from "axios";
+
+export default function AuthSignUp({ navigation }) {
+  // sign up state
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+
+  // error state
+  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false); // loading state
+  const [showPassword, setShowPassword] = useState(false); // show password icon...
+
+  const { signUp } = useAuth();
 
   // fn for show password
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSignUp = () => {
-    setIsLoading(true); // Set loading state to true when the button is pressed
-    setTimeout(() => {
-      setIsLoading(false); // Reset loading state after delay
-      navigation.navigate("CreatingAccount");
-    }, 2000);
-  };
-
   // go to sign in screen
   const handleSignIn = () => {
     navigation.navigate("Signin");
   };
+
+  // sign up function
+  const handleSignUp = async () => {
+    setError("");
+
+    // check if inputs are empty
+    if (!email || !password || !name || !address) {
+      setError("Please enter your details. The input fields cannot be empty.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // sign up with firebase auth
+      const firebaseUser = await signUp(email, password);
+
+      // send user details to the backend
+      await axios.post("http://10.0.2.2:5000/api/user/signup", {
+        firebaseUid: firebaseUser.user.uid,
+        email,
+        name,
+        address,
+        image: "",
+      });
+
+      navigation.navigate("CreatingAccount", { emailSent: true }); // Navigate to next screen
+    } catch (error) {
+      // error message
+      if (error.code === "auth/email-already-in-use") {
+        setEmailError(
+          "This email address is already in use. Please use a different email."
+        );
+      } else if (error.code === "auth/weak-password") {
+        setPasswordError(
+          "Password is too weak. Please choose a stronger password (minimum 6 characters)."
+        );
+      } else if (error.response) {
+        const serverError = error.response.data.errors
+          ? error.response.data.errors.map((err) => err.msg).join("\n")
+          : "Sign Up failed. Please check your details and try again.";
+        setError(serverError);
+      } else if (error.message) {
+        setError("Network error, please try again later.");
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View style={styles.root}>
       <View style={styles.textContainer}>
@@ -52,64 +112,73 @@ export default function AuthSignUp({ navigation }) {
         </Text>
       </View>
 
-      <View style={styles.inputView}>
-        <MaterialIcons name="person" size={24} color="#B3B3B3" />
-        <View style={styles.input}>
-          <TextInputs placeholder={"Name"} />
-        </View>
-      </View>
-
-      <View style={styles.inputView}>
-        <Fontisto name="email" size={20} color="#B3B3B3" />
-        <View style={styles.input}>
-          <TextInputs
-            keyboardType={"email-address"}
-            placeholder={"Email Address"}
-          />
-        </View>
-      </View>
-
-      <View style={styles.inputView}>
-        <Feather name="lock" size={20} color="#B3B3B3" />
-
-        <View style={styles.input}>
-          <TextInputs
-            placeholder={"Password"}
-            secure={showPassword ? false : true}
-          />
+      <ScrollView>
+        <View style={styles.inputView}>
+          <MaterialIcons name="person" size={24} color="#B3B3B3" />
+          <View style={styles.input}>
+            <TextInputs placeholder={"Name"} onChangeText={setName} />
+          </View>
         </View>
 
-        <Pressable onPress={handleShowPassword}>
-          <Entypo
-            name={showPassword ? "eye" : "eye-with-line"}
-            size={20}
-            color="#B3B3B3"
-          />
-        </Pressable>
-      </View>
-
-      <View style={styles.inputView}>
-        <FontAwesome6 name="location-dot" size={20} color="#B3B3B3" />
-        <View style={styles.input}>
-          <TextInputs placeholder={"Address"} />
+        <View style={styles.inputView}>
+          <Fontisto name="email" size={20} color="#B3B3B3" />
+          <View style={styles.input}>
+            <TextInputs
+              keyboardType={"email-address"}
+              placeholder={"Email Address"}
+              onChangeText={setEmail}
+            />
+          </View>
         </View>
-      </View>
+        {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
 
-      <UploadImage style={styles.uploadImage} />
+        <View style={styles.inputView}>
+          <Feather name="lock" size={20} color="#B3B3B3" />
 
-      <View style={styles.viewKey}>
-        {!isLoading ? (
-          <MainButton onPress={handleSignUp}>Sign Up</MainButton>
-        ) : (
-          <Button isEnable={false}>Signing Up...</Button>
-        )}
-        <Text style={styles.subText}>
-          I have an account?{" "}
-          <Text onPress={handleSignIn} style={styles.signInText}>
-            Sign In
+          <View style={styles.input}>
+            <TextInputs
+              placeholder={"Password"}
+              secure={showPassword ? false : true}
+              onChangeText={setPassword}
+            />
+          </View>
+
+          <Pressable onPress={handleShowPassword}>
+            <Entypo
+              name={showPassword ? "eye" : "eye-with-line"}
+              size={20}
+              color="#B3B3B3"
+            />
+          </Pressable>
+        </View>
+        {passwordError ? (
+          <Text style={styles.errorText}>{passwordError}</Text>
+        ) : null}
+
+        <View style={styles.inputView}>
+          <FontAwesome6 name="location-dot" size={20} color="#B3B3B3" />
+          <View style={styles.input}>
+            <TextInputs placeholder={"Address"} onChangeText={setAddress} />
+          </View>
+        </View>
+
+        <UploadImage style={styles.uploadImage} />
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+        <View style={styles.viewKey}>
+          {!isLoading ? (
+            <MainButton onPress={handleSignUp}>Sign Up</MainButton>
+          ) : (
+            <Button isEnable={false}>Signing Up...</Button>
+          )}
+          <Text style={styles.subText}>
+            I have an account?{" "}
+            <Text onPress={handleSignIn} style={styles.signInText}>
+              Sign In
+            </Text>
           </Text>
-        </Text>
-      </View>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -167,5 +236,12 @@ const styles = StyleSheet.create({
 
   uploadImage: {
     marginTop: 22,
+  },
+
+  errorText: {
+    color: Color.redColor,
+    fontFamily: Fonts.main,
+    fontSize: 13,
+    marginVertical: 10,
   },
 });
