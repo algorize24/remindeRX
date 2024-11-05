@@ -1,5 +1,14 @@
-import { View, Text, StyleSheet, Image, Alert } from "react-native";
-import { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
+import { useState, useEffect, useCallback } from "react";
+
+import { useFocusEffect } from "@react-navigation/native";
 
 // constant
 import { Color } from "../../constants/Color";
@@ -24,36 +33,35 @@ export default function ProfileScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
 
   // fetch the user from database
-  useEffect(() => {
-    const fetchUser = async () => {
-      // identify who user is logged in.
-      if (user) {
-        try {
-          const response = await axios.get(
-            `http://10.0.2.2:5000/api/user/${user.email}`
-          );
-          setUserInfo(response.data);
-        } catch (error) {
-          console.log("Error fetching user info", error);
-        } finally {
-          setUserLoading(false);
-        }
-      } else {
+  const fetchUser = async () => {
+    // identify who user is logged in.
+    if (user) {
+      try {
+        const response = await axios.get(
+          `http://10.0.2.2:5000/api/user/${user.email}`
+        );
+        setUserInfo(response.data);
+      } catch (error) {
+        console.log("Error fetching user info", error);
+      } finally {
         setUserLoading(false);
       }
-    };
+    } else {
+      setUserLoading(false);
+    }
+  };
 
-    fetchUser();
-  }, [user]);
+  // Fetch user data on component mount and when screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      setUserLoading(true); // Set loading before fetch
+      fetchUser(); // Refetch user data when screen is focused
+    }, [user])
+  );
 
   // get the email and password and set a fall back
   const displayEmail = userInfo ? userInfo.email : "null";
   const address = userInfo ? userInfo.address : "null";
-
-  // loading state for user info...
-  if (userLoading) {
-    return <ActivityIndicator color={Color.purpleColor} />;
-  }
 
   // sign out fn
   const handleSignOut = async () => {
@@ -92,20 +100,24 @@ export default function ProfileScreen({ navigation }) {
 
   let content = (
     <View style={styles.root}>
-      <View style={styles.userInfo}>
-        {userInfo && userInfo.image && (
-          <Image
-            style={styles.img}
-            source={{
-              uri:
-                userInfo.image ||
-                require("../../assets/others/user-avatar.png"),
-            }}
-          />
-        )}
-        <Text style={styles.email}>{displayEmail}</Text>
-        <Text style={styles.address}>{address}</Text>
-      </View>
+      {userLoading ? (
+        <ActivityIndicator color={Color.purpleColor} />
+      ) : (
+        <View style={styles.userInfo}>
+          {userInfo && userInfo.image && (
+            <Image
+              style={styles.img}
+              source={{
+                uri:
+                  userInfo.image ||
+                  require("../../assets/others/user-avatar.png"),
+              }}
+            />
+          )}
+          <Text style={styles.email}>{displayEmail}</Text>
+          <Text style={styles.address}>{address}</Text>
+        </View>
+      )}
 
       <View style={styles.links}>
         <Text
@@ -184,6 +196,8 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
+    borderWidth: 1,
+    borderColor: Color.textInput,
   },
 
   email: {

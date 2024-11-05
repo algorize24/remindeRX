@@ -1,5 +1,6 @@
-import { View, Text, Image, StyleSheet } from "react-native";
-import { useEffect, useState } from "react";
+import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
+import { useEffect, useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 
 // constant
 import { Fonts } from "../../constants/Font";
@@ -17,27 +18,32 @@ export default function Userprofile() {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      // identify who user is logged in.
-      if (user) {
-        try {
-          const response = await axios.get(
-            `http://10.0.2.2:5000/api/user/${user.email}`
-          );
-          setUserInfo(response.data);
-        } catch (error) {
-          console.log("Error fetching user info", error);
-        } finally {
-          setLoading(false);
-        }
-      } else {
+  // fetch the user from database
+  const fetchUser = async () => {
+    // identify who user is logged in.
+    if (user) {
+      try {
+        const response = await axios.get(
+          `http://10.0.2.2:5000/api/user/${user.email}`
+        );
+        setUserInfo(response.data);
+      } catch (error) {
+        console.log("Error fetching user info", error);
+      } finally {
         setLoading(false);
       }
-    };
+    } else {
+      setLoading(false);
+    }
+  };
 
-    fetchUser();
-  }, [user]);
+  // Re-fetch user data when screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true); // Set loading before fetch
+      fetchUser();
+    }, [user])
+  );
 
   // get the email and password and set a fall back
   const displayName = userInfo ? userInfo.name : "null";
@@ -60,7 +66,9 @@ export default function Userprofile() {
         />
       )}
       <View style={styles.user}>
-        <Text style={styles.email}>Hi! {displayName}</Text>
+        <Text style={styles.email}>
+          <Text style={styles.text}>Hi!</Text> {displayName}
+        </Text>
         <Text style={styles.address}>{address}</Text>
       </View>
     </View>
@@ -75,9 +83,11 @@ const styles = StyleSheet.create({
   },
 
   img: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 45,
+    height: 45,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: Color.textInput,
   },
 
   user: {
@@ -95,5 +105,9 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.main,
     color: Color.tagLine,
     fontSize: 13,
+  },
+
+  text: {
+    color: Color.purpleColor,
   },
 });

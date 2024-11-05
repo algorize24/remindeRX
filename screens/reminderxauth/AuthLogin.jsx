@@ -20,7 +20,7 @@ import { auth } from "../../firebase/firebase";
 import axios from "axios";
 
 // async
-import AsyncStorage from "@react-native-async-storage/async-storage"; // Make sure to install this package
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AuthLogin({ navigation }) {
   // auth states

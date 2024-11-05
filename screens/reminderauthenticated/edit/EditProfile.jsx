@@ -1,8 +1,9 @@
 import { View, StyleSheet } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Color } from "../../../constants/Color";
 
+// components
 import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
 import TextInputs from "../../../components/Inputs/TextInputs";
@@ -10,16 +11,70 @@ import InputText from "../../../components/header/InputText";
 import AuthText from "../../../components/header/AuthText";
 import Button from "../../../components/buttons/Button";
 
+// axios
+import axios from "axios";
+
+// context
+import { useAuth } from "../../../context/authContext";
+
 export default function EditProfile({ navigation }) {
+  // user state
+  const [userInfo, setUserInfo] = useState(null);
+  const [userLoading, setUserLoading] = useState(null);
+
+  // editing state
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+
+  // context
+  const { user } = useAuth();
+
+  // main loading state
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleEditProfile = () => {
-    setIsLoading(true); // Set loading state to true when the button is pressed
-    setTimeout(() => {
-      setIsLoading(false); // Reset loading state after delay
-      navigation.navigate("Profile"); // Navigate to the next screen
-    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+  // fetch the user from database
+  useEffect(() => {
+    const fetchUser = async () => {
+      // identify who user is logged in.
+      if (user) {
+        try {
+          const response = await axios.get(
+            `http://10.0.2.2:5000/api/user/${user.email}`
+          );
+          setUserInfo(response.data);
+        } catch (error) {
+          console.log("Error fetching user info", error);
+        } finally {
+          setUserLoading(false);
+        }
+      } else {
+        setUserLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [user]);
+
+  // edit the name, address, image
+  const handleEditProfile = async () => {
+    setIsLoading(true);
+
+    try {
+      // Send the updated data to the backend
+      await axios.patch(`http://10.0.2.2:5000/api/user/${userInfo._id}`, {
+        name,
+        address,
+      });
+
+      // On success, navigate back to the profile screen
+      navigation.navigate("Profile");
+    } catch (error) {
+      console.error("Error updating profile", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <View style={styles.root}>
       <View style={styles.container}>
@@ -27,16 +82,26 @@ export default function EditProfile({ navigation }) {
         <View style={styles.inputContainer}>
           <InputText>Email Address:</InputText>
           <TextInputs
-            style={styles.inputs}
-            keyboardType={"email-address"}
-            placeholder={"Email Address"}
+            style={[styles.inputs, styles.email]}
+            value={userInfo ? userInfo.email : "Email Address"}
+            editable={false}
           />
 
           <InputText>Name:</InputText>
-          <TextInputs style={styles.inputs} placeholder={"Name"} />
+          <TextInputs
+            style={styles.inputs}
+            placeholder={userInfo ? userInfo.name : "Name"}
+            value={name}
+            onChangeText={(text) => setName(text)}
+          />
           <InputText>Address:</InputText>
 
-          <TextInputs style={styles.inputs} placeholder={"Address"} />
+          <TextInputs
+            style={styles.inputs}
+            placeholder={userInfo ? userInfo.address : "Address"}
+            value={address}
+            onChangeText={(text) => setAddress(text)}
+          />
 
           <InputText>Profile Image:</InputText>
 
@@ -72,5 +137,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 20,
+  },
+
+  email: {
+    opacity: 0.5,
   },
 });

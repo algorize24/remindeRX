@@ -10,11 +10,17 @@ import {
   signOut,
 } from "firebase/auth";
 
+// -- context section --
+
+// create a context
 const AuthContext = createContext();
 
+// make accessing context easier
 export const useAuth = () => useContext(AuthContext);
 
+// main component
 export default function AuthContextProvider({ children }) {
+  // user state
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,8 +42,10 @@ export default function AuthContextProvider({ children }) {
         email,
         password
       );
+
       const user = userCredential.user;
 
+      // check if email is verified
       if (!user.emailVerified) {
         await signOut(auth);
         const error = new Error("Email is not verified");

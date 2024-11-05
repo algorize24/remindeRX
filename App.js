@@ -347,7 +347,7 @@ export default function App() {
               name="Chatbot"
               component={ChatbotScreen}
               options={{
-                title: "ReminderxAI",
+                title: "RemindeRX Assistant",
                 headerTintColor: "white",
                 headerTitleAlign: "center",
               }}

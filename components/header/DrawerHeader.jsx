@@ -14,7 +14,9 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+
+import { useFocusEffect } from "@react-navigation/native";
 
 // constant
 import { Fonts } from "../../constants/Font";
@@ -35,27 +37,32 @@ export default function DrawerHeader(props) {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      // identify who user is logged in.
-      if (user) {
-        try {
-          const response = await axios.get(
-            `http://10.0.2.2:5000/api/user/${user.email}`
-          );
-          setUserInfo(response.data);
-        } catch (error) {
-          console.log("Error fetching user info", error);
-        } finally {
-          setLoading(false);
-        }
-      } else {
+  // fetch the user from database
+  const fetchUser = async () => {
+    // identify who logged in
+    if (user) {
+      try {
+        const response = await axios.get(
+          `http://10.0.2.2:5000/api/user/${user.email}`
+        );
+        setUserInfo(response.data);
+      } catch (error) {
+        console.log("Error fetching user info", error);
+      } finally {
         setLoading(false);
       }
-    };
+    } else {
+      setLoading(false);
+    }
+  };
 
-    fetchUser();
-  }, [user]);
+  // Re-fetch user data when drawer gains focus
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true); // Set loading before fetch
+      fetchUser();
+    }, [user])
+  );
 
   // get the email and password and set a fall back
   const displayEmail = userInfo ? userInfo.email : "null";
@@ -104,10 +111,12 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   userIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 65,
+    height: 65,
+    borderRadius: 40,
     marginBottom: 8,
+    borderWidth: 1,
+    borderColor: Color.textInput,
   },
   userEmail: {
     color: "white",

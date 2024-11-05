@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   historyText: {
     textAlign: "center",
     color: Color.tagLine,
-    fontFamily: Fonts.sub,
+    fontFamily: Fonts.main,
     fontSize: 13,
   },
 });

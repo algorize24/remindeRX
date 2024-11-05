@@ -11,6 +11,7 @@ export default function TextInputs({
   maxLength,
   onChangeText,
   value,
+  editable,
 }) {
   return (
     <TextInput
@@ -25,6 +26,7 @@ export default function TextInputs({
       maxLength={maxLength}
       onChangeText={onChangeText}
       value={value}
+      editable={editable}
     />
   );
 }
