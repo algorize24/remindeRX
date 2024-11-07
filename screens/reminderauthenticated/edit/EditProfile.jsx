@@ -1,7 +1,9 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { useState, useEffect } from "react";
 
+// constants
 import { Color } from "../../../constants/Color";
+import { Fonts } from "../../../constants/Font";
 
 // components
 import UploadImage from "../../../components/buttons/UploadImage";
@@ -25,6 +27,8 @@ export default function EditProfile({ navigation }) {
   // editing state
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
+
+  const [error, setError] = useState(""); // error state
 
   // context
   const { user } = useAuth();
@@ -59,17 +63,23 @@ export default function EditProfile({ navigation }) {
   const handleEditProfile = async () => {
     setIsLoading(true);
 
-    try {
-      // Send the updated data to the backend
-      await axios.patch(`http://10.0.2.2:5000/api/user/${userInfo._id}`, {
-        name,
-        address,
-      });
+    // Only include fields that have values to avoid overwriting
+    const updatedData = {};
+    if (name) updatedData.name = name;
+    if (address) updatedData.address = address;
 
-      // On success, navigate back to the profile screen
+    try {
+      // send the updated data to the backend
+      await axios.patch(
+        `http://10.0.2.2:5000/api/user/${userInfo._id}`,
+        updatedData
+      );
+
+      // on success, navigate back to the profile screen
       navigation.navigate("Profile");
     } catch (error) {
       console.error("Error updating profile", error);
+      setError("Error updating your profile. Please try again later.");
     } finally {
       setIsLoading(false);
     }
@@ -107,6 +117,8 @@ export default function EditProfile({ navigation }) {
 
           <UploadImage />
         </View>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
         {!isLoading ? (
           <MainButton onPress={handleEditProfile}>Edit Profile</MainButton>
         ) : (
@@ -129,7 +141,7 @@ const styles = StyleSheet.create({
 
   inputContainer: {
     marginTop: 20,
-    marginBottom: 40,
+    marginBottom: 15,
   },
 
   inputs: {
@@ -141,5 +153,12 @@ const styles = StyleSheet.create({
 
   email: {
     opacity: 0.5,
+  },
+
+  errorText: {
+    color: Color.redColor,
+    fontFamily: Fonts.main,
+    fontSize: 13,
+    marginBottom: 40,
   },
 });

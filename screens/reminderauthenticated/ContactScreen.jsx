@@ -24,6 +24,9 @@ import axios from "axios";
 // auth context
 import { useAuth } from "../../context/authContext";
 
+// firebase
+import { auth } from "../../firebase/firebase";
+
 export default function ContactScreen({ navigation }) {
   // context
   const { user } = useAuth();
@@ -36,20 +39,30 @@ export default function ContactScreen({ navigation }) {
   const [searchContact, setSearchContact] = useState([]);
   const [search, setSearch] = useState("");
 
-  // display contact
+  // display contact by certain user
   const fetchContact = async () => {
-    if (user) {
-      try {
-        setIsLoading(true);
-        const response = await axios.get("http://10.0.2.2:5000/api/contact");
+    setIsLoading(true);
+
+    // get the currentUser
+    try {
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        const token = await currentUser.getIdToken(); // get the token
+
+        // send a request to the backend
+        const response = await axios.get("http://10.0.2.2:5000/api/contact", {
+          headers: {
+            Authorization: `Bearer ${token}`, // pass the firebase token to verify.
+          },
+        });
+
         setDisplayContact(response.data.contacts);
         setSearchContact(response.data.contacts);
-      } catch (error) {
-        console.log("Error fetching contact list", error);
-      } finally {
-        setIsLoading(false);
       }
-    } else {
+    } catch (error) {
+      console.log("Error fetching contact list", error);
+    } finally {
       setIsLoading(false);
     }
   };
