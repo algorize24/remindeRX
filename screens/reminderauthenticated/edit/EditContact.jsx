@@ -1,9 +1,11 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Alert } from "react-native";
 import { useState } from "react";
 
+// constants
 import { Color } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Font";
 
+// components
 import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
 import TextInputs from "../../../components/Inputs/TextInputs";
@@ -11,77 +13,121 @@ import TextScreen from "../../../components/header/TextScreen";
 import InputText from "../../../components/header/InputText";
 import Button from "../../../components/buttons/Button";
 
+// axios
+import axios from "axios";
+
 export default function EditContact({ navigation, route }) {
-  const id = route.params.contactId;
-  const name = route.params.name;
-  const number = route.params.number;
+  // this data is from ListContact.jsx
+  const _id = route.params.contactId;
+  const initialName = route.params.name;
+  const initialPhoneNumber = route.params.number;
 
-  // loading state for main button edit
+  // state to edit
+  const [name, setName] = useState(initialName);
+  const [phoneNumber, setPhoneNumber] = useState(initialPhoneNumber.toString());
+
+  // loading state
   const [isContactLoading, setIsContactLoading] = useState(false);
-  const handleEditingContact = () => {
-    setIsContactLoading(true); // Set loading state to true when the button is pressed
-    setTimeout(() => {
-      setIsContactLoading(false); // Reset loading state after delay
-      navigation.navigate("Contact"); // Navigate to the next screen
-    }, 2000); // Delay for 2 seconds (2000 milliseconds)
-  };
-
-  // loading state for main button delete
   const [isDeletingLoading, setIsDeletingLoading] = useState(false);
+
+  // error state
+  const [error, setError] = useState("");
+
+  // Handler to edit contact
+  const handleEditingContact = async () => {
+    setIsContactLoading(true);
+
+    try {
+      // send the updated data to the backend
+      await axios.patch(`http://10.0.2.2:5000/api/contact/${_id}`, {
+        name,
+        phone_number: phoneNumber,
+      });
+
+      // on success, navigate back to the contact list
+      Alert.alert(
+        "Contact Updated",
+        "The contact details were updated successfully."
+      );
+      navigation.navigate("Contact");
+    } catch (error) {
+      setError("Failed to update contact. Please try againd later", error);
+    } finally {
+      setIsContactLoading(false); // Reset loading state
+    }
+  };
+
   const handleDeletingContact = () => {
-    setIsDeletingLoading(true); // Set loading state to true when the button is pressed
-    setTimeout(() => {
-      setIsDeletingLoading(false); // Reset loading state after delay
-      navigation.navigate("Contact"); // Navigate to the next screen
-    }, 2000); // Delay for 2 seconds (2000 milliseconds)
-  };
+    // Show confirmation dialog
+    Alert.alert(
+      "Delete Contact",
+      "Are you sure you want to delete this contact? This action cannot be undone.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: async () => {
+            setIsDeletingLoading(true); // Set loading state to true when the button is pressed
 
-  // state for number
-  const [phoneNumber, setPhoneNumber] = useState("");
+            try {
+              // Send DELETE request to the backend
+              await axios.delete(`http://10.0.2.2:5000/api/contact/${_id}`);
 
-  // formatter
-  const formatPhoneNumber = (input) => {
-    // Remove all non-numeric characters
-    const cleaned = input.replace(/\D/g, "");
-
-    // Format to "123 456 7890" pattern
-    const formatted = cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
-
-    return formatted.trim();
-  };
-
-  // number handler
-  const phoneNumberHandler = (input) => {
-    const formattedInput = formatPhoneNumber(input);
-    setPhoneNumber(formattedInput);
+              // On success, navigate back to the contact list
+              Alert.alert(
+                "Contact deleted",
+                "The contact was deleted successfully."
+              );
+              navigation.navigate("Contact");
+            } catch (error) {
+              setError(
+                "Failed to delete the contact. Please try again later",
+                error
+              );
+            } finally {
+              setIsDeletingLoading(false); // Reset loading state
+            }
+          },
+        },
+      ],
+      { cancelable: true } // allows the alert to be dismissed by tapping outside
+    );
   };
 
   return (
     <View style={styles.root}>
       <View style={styles.textContainer}>
         <TextScreen style={styles.textScreen}>
-          # <Text style={styles.name}>{name}</Text>
+          # <Text style={styles.name}>{name || ""}</Text>
         </TextScreen>
       </View>
 
       <View style={styles.inputContainer}>
         <InputText>Name:</InputText>
-        <TextInputs style={styles.textInput} placeholder={name} />
+        <TextInputs
+          style={styles.textInput}
+          placeholder="Name"
+          value={name}
+          onChangeText={setName}
+        />
 
         <InputText>Number:</InputText>
         <TextInputs
-          inputMode="numeric"
-          keyboardType="phone-pad"
+          keyboardType="numeric"
           style={styles.textInput}
-          placeholder={number}
-          maxLength={12}
+          placeholder="Phone Number"
           value={phoneNumber}
-          onChangeText={phoneNumberHandler}
+          onChangeText={setPhoneNumber}
+          maxLength={11}
         />
 
         <InputText>Image:</InputText>
         <UploadImage />
       </View>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
       <View style={styles.buttonContainer}>
         {!isDeletingLoading ? (
@@ -135,9 +181,18 @@ const styles = StyleSheet.create({
 
   name: {
     color: Color.greenColor,
+    textTransform: "capitalize",
   },
 
   textScreen: {
     color: Color.tagLine,
+    textTransform: "capitalize",
+  },
+
+  errorText: {
+    color: Color.redColor,
+    fontFamily: Fonts.main,
+    fontSize: 13,
+    marginVertical: 10,
   },
 });

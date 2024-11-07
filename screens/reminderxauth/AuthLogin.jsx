@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ActivityIndicator,
+} from "react-native";
 import { useState, useEffect } from "react";
 
 // components
@@ -88,6 +94,8 @@ export default function AuthLogin({ navigation }) {
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
+        // console.log(token);
+
         if (response.data.user) {
           // Store credentials if rememberMe is checked
           if (rememberMe) {
@@ -169,7 +177,12 @@ export default function AuthLogin({ navigation }) {
           {!isLoading ? (
             <MainButton onPress={handleSignIn}>Log In</MainButton>
           ) : (
-            <Button isEnable={false}>Logging in...</Button>
+            <Button isEnable={false}>
+              <View style={styles.loadingView}>
+                <Text style={styles.loadingText}> Logging in</Text>
+                <ActivityIndicator size={"small"} color={Color.purpleColor} />
+              </View>
+            </Button>
           )}
           <Text style={styles.subText}>
             Don't have an account?{" "}
@@ -230,5 +243,18 @@ const styles = StyleSheet.create({
   signUpText: {
     color: Color.purpleColor,
     textDecorationLine: "underline",
+  },
+
+  loadingView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  loadingText: {
+    marginRight: 5,
+    color: "white",
+    fontFamily: Fonts.main,
+    fontSize: 16,
   },
 });

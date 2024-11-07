@@ -1,9 +1,12 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import { useState } from "react";
 
 import { Color } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Font";
 
+// navigation.navigate("Contact");
+
+// components
 import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
 import TextInputs from "../../../components/Inputs/TextInputs";
@@ -11,34 +14,71 @@ import TextScreen from "../../../components/header/TextScreen";
 import InputText from "../../../components/header/InputText";
 import Button from "../../../components/buttons/Button";
 
+// axios
+import axios from "axios";
+
+// firebase
+import { auth } from "../../../firebase/firebase";
+
 export default function AddContact({ navigation }) {
+  // state to add a contact
+  const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [image, setImage] = useState("");
 
-  // formatter
-  const formatPhoneNumber = (input) => {
-    // Remove all non-numeric characters
-    const cleaned = input.replace(/\D/g, "");
+  const [isLoading, setIsLoading] = useState(false); // loading state for main button
+  const [error, setError] = useState(""); // error state
 
-    // Format to "123 456 7890" pattern
-    const formatted = cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
+  // function to create a contact
+  const handleAddContact = async () => {
+    // set the loading to true
+    setIsLoading(true);
 
-    return formatted.trim();
-  };
+    try {
+      // get the currentUser
+      const currentUser = auth.currentUser;
 
-  // number handler
-  const phoneNumberHandler = (input) => {
-    const formattedInput = formatPhoneNumber(input);
-    setPhoneNumber(formattedInput);
-  };
+      // if currentUser
+      if (currentUser) {
+        // get the token to pass in the backend
+        const token = await currentUser.getIdToken();
 
-  // loading state for main button
-  const [isLoading, setIsLoading] = useState(false);
-  const handleAddContact = () => {
-    setIsLoading(true); // Set loading state to true when the button is pressed
-    setTimeout(() => {
-      setIsLoading(false); // Reset loading state after delay
-      navigation.navigate("Contact"); // Navigate to the next screen
-    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+        // contactData structure this is what we send in backend
+        const contactData = {
+          name,
+          phone_number: phoneNumber,
+          image: image || "",
+        };
+
+        // post request to this api
+        const response = await axios.post(
+          "http://10.0.2.2:5000/api/contact/createcontact",
+          contactData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // header authorization to create a contact
+            },
+          }
+        );
+
+        // handle successful response
+        if (response.status === 201) {
+          Alert.alert("Success", "Contact created successfully!");
+
+          // reset the form
+          setName("");
+          setPhoneNumber("");
+          setImage("");
+
+          // go to...
+          navigation.navigate("Contact");
+        }
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,22 +89,26 @@ export default function AddContact({ navigation }) {
 
       <View style={styles.inputContainer}>
         <InputText>Name:</InputText>
-        <TextInputs style={styles.textInput} placeholder={"Enter Name"} />
-
+        <TextInputs
+          style={styles.textInput}
+          placeholder={"Enter Name"}
+          value={name}
+          onChangeText={setName}
+        />
         <InputText>Number:</InputText>
         <TextInputs
-          inputMode="numeric"
-          keyboardType="phone-pad"
           style={styles.textInput}
-          placeholder={"Enter Number"}
-          maxLength={12}
+          placeholder="Enter Number"
           value={phoneNumber}
-          onChangeText={phoneNumberHandler}
+          onChangeText={setPhoneNumber}
+          keyboardType="numeric"
+          maxLength={11}
         />
-
         <InputText>Image:</InputText>
         <UploadImage />
       </View>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
       {!isLoading ? (
         <MainButton onPress={handleAddContact} style={styles.button}>
           Add Contact
@@ -100,5 +144,12 @@ const styles = StyleSheet.create({
 
   button: {
     marginTop: 60,
+  },
+
+  errorText: {
+    color: Color.redColor,
+    fontFamily: Fonts.main,
+    fontSize: 13,
+    marginVertical: 10,
   },
 });

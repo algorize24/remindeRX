@@ -51,7 +51,9 @@ export default function Userprofile() {
 
   // loading state for user info...
   if (loading) {
-    return <ActivityIndicator color={Color.purpleColor} />;
+    return (
+      <ActivityIndicator style={styles.loading} color={Color.purpleColor} />
+    );
   }
 
   return (
@@ -109,5 +111,9 @@ const styles = StyleSheet.create({
 
   text: {
     color: Color.purpleColor,
+  },
+
+  loading: {
+    marginVertical: 30,
   },
 });

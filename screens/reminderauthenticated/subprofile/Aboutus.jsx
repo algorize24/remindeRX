@@ -42,7 +42,7 @@ export default function Aboutus() {
           <TeamProfile
             src={require("../../../assets/profile/lim.png")}
             name={"rinaldo samudio lim jr."}
-            title={"project manager & embedded system engineer"}
+            title={"project manager "}
           />
 
           <TeamProfile

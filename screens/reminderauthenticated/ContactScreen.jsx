@@ -1,26 +1,77 @@
-import { View, StyleSheet, TextInput, FlatList } from "react-native";
-import { Color } from "../../constants/Color";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import { useState, useCallback } from "react";
 
+// constant
+import { Color } from "../../constants/Color";
+import { Fonts } from "../../constants/Font";
+
+// components
 import TextScreen from "../../components/header/TextScreen";
 import ListContact from "../../components/desc/ListContact";
 import Label from "../../components/dashboard/Label";
 
-export default function ContactScreen({ navigation }) {
-  const contactData = [
-    {
-      id: 1,
-      img: require("../../assets/others/user.png"),
-      name: "Emergency Contact",
-      number: "123 456 7890",
-    },
+// axios
+import axios from "axios";
 
-    {
-      id: 2,
-      img: require("../../assets/others/user.png"),
-      name: "sIUzy",
-      number: "123 456 7890",
-    },
-  ];
+// auth context
+import { useAuth } from "../../context/authContext";
+
+export default function ContactScreen({ navigation }) {
+  // context
+  const { user } = useAuth();
+
+  // state for displaying contact
+  const [displayContact, setDisplayContact] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // loading state
+
+  // search state
+  const [searchContact, setSearchContact] = useState([]);
+  const [search, setSearch] = useState("");
+
+  // display contact
+  const fetchContact = async () => {
+    if (user) {
+      try {
+        setIsLoading(true);
+        const response = await axios.get("http://10.0.2.2:5000/api/contact");
+        setDisplayContact(response.data.contacts);
+        setSearchContact(response.data.contacts);
+      } catch (error) {
+        console.log("Error fetching contact list", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSearch = (query) => {
+    setSearch(query); // update the search query state
+    if (query === "") {
+      setSearchContact(displayContact); // if the search is empty, show all contacts
+    } else {
+      const filtered = displayContact.filter(
+        (contact) => contact.name.toLowerCase().includes(query.toLowerCase()) // case-insensitive filter
+      );
+      setSearchContact(filtered);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchContact(); // Refetch contact list when the screen is focused
+    }, [user])
+  );
+
   return (
     <View style={styles.root}>
       <View style={styles.textContainer}>
@@ -31,6 +82,8 @@ export default function ContactScreen({ navigation }) {
         style={styles.textInput}
         placeholder="Search Contact..."
         placeholderTextColor={Color.tagLine}
+        value={search}
+        onChangeText={handleSearch}
       />
 
       <View style={styles.dataContainer}>
@@ -41,14 +94,19 @@ export default function ContactScreen({ navigation }) {
         >
           All Contact
         </Label>
-
-        <FlatList
-          overScrollMode="never"
-          bounces={false}
-          data={contactData}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <ListContact itemData={item} />}
-        />
+        {isLoading ? (
+          <ActivityIndicator size={"large"} color={Color.purpleColor} />
+        ) : searchContact.length > 0 ? (
+          <FlatList
+            overScrollMode="never"
+            bounces={false}
+            data={searchContact} // display filtered contacts
+            keyExtractor={(item) => item._id.toString()}
+            renderItem={({ item }) => <ListContact itemData={item} />}
+          />
+        ) : (
+          <Text style={styles.noContactsMessage}>No contacts found</Text> // Show message if no results found
+        )}
       </View>
     </View>
   );
@@ -79,5 +137,12 @@ const styles = StyleSheet.create({
     marginTop: 54,
     flex: 1,
     marginBottom: 20,
+  },
+
+  noContactsMessage: {
+    textAlign: "center",
+    color: Color.tagLine,
+    fontFamily: Fonts.main,
+    fontSize: 14,
   },
 });
