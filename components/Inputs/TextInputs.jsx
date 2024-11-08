@@ -12,6 +12,7 @@ export default function TextInputs({
   onChangeText,
   value,
   editable,
+  placeholderTextColor,
 }) {
   return (
     <TextInput
@@ -19,7 +20,7 @@ export default function TextInputs({
       inputMode={inputMode}
       autoCorrect={false}
       autoCapitalize="none"
-      placeholderTextColor={Color.tagLine}
+      placeholderTextColor={placeholderTextColor || Color.tagLine}
       placeholder={placeholder}
       secureTextEntry={secure}
       keyboardType={keyboardType}

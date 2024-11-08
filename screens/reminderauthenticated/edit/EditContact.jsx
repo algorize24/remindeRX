@@ -51,7 +51,7 @@ export default function EditContact({ navigation, route }) {
       );
       navigation.navigate("Contact");
     } catch (error) {
-      setError("Failed to update contact. Please try againd later", error);
+      setError("Failed to update contact. Please try again later", error);
     } finally {
       setIsContactLoading(false); // Reset loading state
     }

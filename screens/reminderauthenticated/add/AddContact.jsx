@@ -63,7 +63,7 @@ export default function AddContact({ navigation }) {
 
         // handle successful response
         if (response.status === 201) {
-          Alert.alert("Success", "Contact created successfully!");
+          Alert.alert("Contact Created", "New contact created successfully!");
 
           // reset the form
           setName("");

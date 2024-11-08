@@ -1,8 +1,18 @@
-import { View, StyleSheet, ScrollView, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Text,
+  Alert,
+  Pressable,
+} from "react-native";
 import { useState } from "react";
 
+// constants
 import { Color } from "../../../constants/Color";
+import { Fonts } from "../../../constants/Font";
 
+// components
 import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
 import TextScreen from "../../../components/header/TextScreen";
@@ -10,81 +20,148 @@ import TextInputs from "../../../components/Inputs/TextInputs";
 import InputText from "../../../components/header/InputText";
 import Button from "../../../components/buttons/Button";
 
+// date & time picker expo
+import DateTimePicker from "@react-native-community/datetimepicker";
+
+// axios
+import axios from "axios";
+
 export default function EditInventory({ navigation, route }) {
-  const id = route.params.id;
-  const medicine = route.params.medicine;
-  const dosage = route.params.dosage;
-  const expDate = route.params.expDate;
-  const stock = route.params.stock;
+  // this data is from ListInventory.jsx
+  const _id = route.params.medicineId;
+  const initialMedicineName = route.params.medicine;
+  const initialDosage = route.params.dosage;
+  const initialExpirationDate = route.params.expiration_date;
+  const initialStock = route.params.stock;
 
-  // loading state for main button edit
+  // state to edit
+  const [medicineName, setMedicineName] = useState(initialMedicineName);
+  const [dosage, setDosage] = useState(initialDosage.toString());
+  const [expirationDate, setExpirationDate] = useState(
+    initialExpirationDate ? new Date(initialExpirationDate) : null
+  );
+  const [stock, setStock] = useState(initialStock.toString());
+
+  // loading state
   const [isInventoryLoading, setIsInventoryLoading] = useState(false);
-  const handleEditInventory = () => {
-    setIsInventoryLoading(true); // Set loading state to true when the button is pressed
-    setTimeout(() => {
-      setIsInventoryLoading(false); // Reset loading state after delay
-      navigation.navigate("Inventory"); // Navigate to the next screen
-    }, 2000); // Delay for 2 seconds (2000 milliseconds)
-  };
-
-  // loading state for main button delete
   const [isDeletingLoading, setIsDeletingLoading] = useState(false);
-  const handleDeleteInventory = () => {
-    setIsDeletingLoading(true); // Set loading state to true when the button is pressed
-    setTimeout(() => {
-      setIsDeletingLoading(false); // Reset loading state after delay
-      navigation.navigate("Inventory"); // Navigate to the next screen
-    }, 2000); // Delay for 2 seconds (2000 milliseconds)
-  };
 
-  // state for expiration date text input
-  const [expirationDate, setExpirationDate] = useState("");
+  const [error, setError] = useState(""); // error state
+  const [showDatePicker, setShowDatePicker] = useState(false); // showDatePicker state
 
-  // date format
-  const formatDate = (input) => {
-    // Remove all non-numeric characters
-    const cleaned = input.replace(/\D/g, "");
+  // edit inventory fn
+  const handleEditInventory = async () => {
+    setIsInventoryLoading(true);
 
-    // Format to "MM/DD/YYYY"
-    let formattedDate = cleaned;
-    if (cleaned.length > 2 && cleaned.length <= 4) {
-      formattedDate = `${cleaned.slice(0, 2)}/${cleaned.slice(2)}`;
-    } else if (cleaned.length > 4) {
-      formattedDate = `${cleaned.slice(0, 2)}/${cleaned.slice(
-        2,
-        4
-      )}/${cleaned.slice(4, 8)}`;
+    try {
+      // request to the backend
+      await axios.patch(`http://10.0.2.2:5000/api/inventory/${_id}`, {
+        // these are the data i want to edit
+        medicine_name: medicineName,
+        dosage,
+        expiration_date: expirationDate.toISOString(),
+        stock,
+      });
+
+      // show alert message
+      Alert.alert(
+        "Inventory Updated",
+        `The ${medicineName} inventory details were updated successfully`
+      );
+      // after, go to..
+      navigation.navigate("Inventory");
+    } catch (error) {
+      // if there's an error
+      setError(
+        `Failed to update ${medicineName} inventory. Please try again later.`,
+        error
+      );
+    } finally {
+      setIsInventoryLoading(false);
     }
-
-    return formattedDate;
   };
 
-  const expirationDateHandler = (input) => {
-    const formattedInput = formatDate(input);
-    setExpirationDate(formattedInput);
+  // delete inventory fn
+  const handleDeleteInventory = () => {
+    // show confirmation dialog
+    Alert.alert(
+      `Delete ${medicineName}`,
+      "Are you sure you want to delete this medicine? This action cannot be undone.",
+      [
+        {
+          // cancel
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          // yes
+          text: "Yes",
+          onPress: async () => {
+            setIsDeletingLoading(true);
+
+            try {
+              // request to the backend
+              await axios.delete(`http://10.0.2.2:5000/api/inventory/${_id}`);
+
+              // show an alert message after deleting
+              Alert.alert(
+                "Inventory Deleted",
+                `The ${medicineName} inventory was deleted successfully`
+              );
+
+              // go to this screen
+              navigation.navigate("Inventory");
+            } catch (error) {
+              // if there's an error
+              setError(
+                `Failed to delete the ${medicineName} inventory. Please try again later.`,
+                error
+              );
+            } finally {
+              setIsDeletingLoading(false);
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  // show and update the date
+  const handleDateChange = (event, selectedDate) => {
+    setShowDatePicker(false); // Hide the picker once a date is selected
+    if (selectedDate) {
+      setExpirationDate(selectedDate); // Update the expiration date
+    }
   };
 
   return (
-    <View style={styles.root}>
-      <ScrollView overScrollMode="never" bounces={false}>
+    <ScrollView style={styles.root} overScrollMode="never" bounces={false}>
+      <View>
         <View style={styles.textContainer}>
           <TextScreen style={styles.textScreen}>
-            # <Text style={styles.name}>{medicine}</Text>
+            # <Text style={styles.name}>{medicineName || ""}</Text>
           </TextScreen>
         </View>
 
         <View style={styles.inputContainer}>
           <InputText>Medicine Name:</InputText>
-          <TextInputs style={styles.textInput} placeholder={medicine} />
+          <TextInputs
+            style={styles.textInput}
+            placeholder={"Medicine Name"}
+            value={medicineName}
+            onChangeText={setMedicineName}
+          />
 
           <InputText>Dosage:</InputText>
           <TextInputs
-            secure={true}
             inputMode={"numeric"}
             keyboardType={"numeric"}
             style={styles.textInput}
-            placeholder={`${dosage}mg`}
+            placeholder={"Dosage"}
             maxLength={3}
+            value={dosage}
+            onChangeText={setDosage}
           />
 
           <InputText>Quantity:</InputText>
@@ -92,25 +169,44 @@ export default function EditInventory({ navigation, route }) {
             inputMode={"numeric"}
             keyboardType={"numeric"}
             style={styles.textInput}
-            placeholder={stock}
+            placeholder={"Stock"}
             maxLength={3}
+            value={stock}
+            onChangeText={setStock}
           />
 
           <InputText>Expiration Date:</InputText>
-          <TextInputs
-            inputMode={"numeric"}
-            keyboardType={"numeric"}
-            style={styles.textInput}
-            placeholder={expDate}
-            maxLength={10}
-            onChangeText={expirationDateHandler}
-            value={expirationDate}
-          />
+          <Pressable
+            style={[styles.textInput, styles.selectExpirationDate]}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text style={styles.textSelect}>Tap to Select a Date</Text>
+          </Pressable>
+
+          {expirationDate && (
+            <TextInputs
+              style={[styles.selectedDate, styles.textInput]}
+              editable={false}
+              placeholder={`Selected Date: ${expirationDate.toDateString()}`}
+              placeholderTextColor={Color.greenColor}
+            />
+          )}
+
+          {showDatePicker && (
+            <DateTimePicker
+              value={expirationDate || new Date()} // Default to current date if none selected
+              mode="date"
+              display="default"
+              onChange={handleDateChange}
+            />
+          )}
 
           <InputText>Image:</InputText>
           <UploadImage />
         </View>
-      </ScrollView>
+
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+      </View>
 
       <View style={styles.buttonContainer}>
         {!isDeletingLoading ? (
@@ -129,7 +225,7 @@ export default function EditInventory({ navigation, route }) {
           <Button style={styles.editButton}>Editing Medicine...</Button>
         )}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -156,7 +252,7 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    marginTop: 0,
+    marginVertical: 50,
   },
 
   button: {
@@ -174,5 +270,25 @@ const styles = StyleSheet.create({
 
   textScreen: {
     color: Color.tagLine,
+  },
+
+  selectedDate: {
+    opacity: 0.7,
+  },
+
+  textSelect: {
+    fontFamily: Fonts.main,
+    color: Color.tagLine,
+  },
+
+  selectExpirationDate: {
+    padding: 10,
+  },
+
+  errorText: {
+    color: Color.redColor,
+    fontFamily: Fonts.main,
+    fontSize: 13,
+    marginVertical: 10,
   },
 });

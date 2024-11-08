@@ -36,7 +36,7 @@ export default function EditProfile({ navigation }) {
   // main loading state
   const [isLoading, setIsLoading] = useState(false);
 
-  // fetch the user from database
+  // fetch the user from mongo database
   useEffect(() => {
     const fetchUser = async () => {
       // identify who user is logged in.

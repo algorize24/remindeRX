@@ -10,6 +10,6 @@ const styles = StyleSheet.create({
     marginBottom: 7,
     fontFamily: Fonts.main,
     color: "#fff",
-    fontSize: 16,
+    fontSize: 13,
   },
 });

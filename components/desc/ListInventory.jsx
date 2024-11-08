@@ -5,37 +5,47 @@ import { Fonts } from "../../constants/Font";
 import { useNavigation } from "@react-navigation/native";
 
 export default function ListInventory({ itemData }) {
-  const { id, img, medicine, dosage, expDate, stock } = itemData;
+  // this data is from the InventoryScreen.jsx
+  const { _id, image, medicine_name, dosage, expiration_date, stock } =
+    itemData;
   const navigation = useNavigation();
+
+  // format expiration date YYYY/MM/DD
+  const formattedDate = new Date(expiration_date).toISOString().split("T")[0];
   return (
     <Pressable
       onPress={() => {
         navigation.navigate("EditInventory", {
-          id: id,
-          medicine: medicine,
-          dosage: dosage,
-          expDate: expDate,
-          stock: stock,
+          medicineId: _id,
+          medicine: medicine_name,
+          dosage,
+          expiration_date,
+          stock,
         });
       }}
       style={({ pressed }) => [styles.medView, pressed && styles.pressed]}
     >
       <View style={styles.container}>
         <View>
-          <Image style={styles.img} source={img} />
+          <Image
+            style={styles.img}
+            source={{
+              uri: image || require("../../assets/others/medicine.webp"),
+            }}
+          />
         </View>
 
         <View style={styles.textContainer}>
           <Text style={styles.medText}>
-            {medicine}, {dosage}mg
+            {medicine_name}, <Text style={styles.dosageText}>{dosage}mg</Text>
           </Text>
 
           <View style={styles.status}>
-            <View>
+            <View style={styles.statusSection}>
               <Text style={styles.statusText}>Expiration Date</Text>
-              <Text style={styles.mainText}>{expDate}</Text>
+              <Text style={styles.mainText}>{formattedDate}</Text>
             </View>
-            <View>
+            <View style={styles.statusSection}>
               <Text style={styles.statusText}>Stock</Text>
               <Text style={styles.mainText}>{stock}</Text>
             </View>
@@ -50,7 +60,7 @@ const styles = StyleSheet.create({
   medView: {
     flex: 1,
     backgroundColor: Color.container,
-    borderRadius: 10,
+    borderRadius: 4,
     margin: 5,
     padding: 12,
   },
@@ -77,22 +87,33 @@ const styles = StyleSheet.create({
   medText: {
     fontFamily: Fonts.main,
     color: "#fff",
+    textTransform: "capitalize",
   },
 
   status: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
+    width: "100%",
+  },
+
+  statusSection: {
+    flex: 1,
   },
 
   statusText: {
     fontFamily: Fonts.mainLight,
     color: Color.tagLine,
-    fontSize: 10,
+    fontSize: 12,
   },
 
   mainText: {
     color: "#fff",
     fontFamily: Fonts.main,
+  },
+
+  dosageText: {
+    color: Color.tagLine,
+    textTransform: "lowercase",
   },
 });
