@@ -64,6 +64,7 @@ import ChatbotScreen from "./components/dashboard/ChatbotScreen";
 // crud - screen
 import AddContact from "./screens/reminderauthenticated/add/AddContact";
 import AddMedicine from "./screens/reminderauthenticated/add/AddMedicine";
+import AddReminder from "./screens/reminderauthenticated/add/AddReminder";
 import EditContact from "./screens/reminderauthenticated/edit/EditContact";
 import EditInventory from "./screens/reminderauthenticated/edit/EditInventory";
 
@@ -262,7 +263,7 @@ function ReminderAuthenticated() {
         name="FallAlert"
         component={EventLogScreen}
         options={{
-          title: "Fall Alert History",
+          title: "Fall Detection History",
         }}
       />
 
@@ -270,7 +271,7 @@ function ReminderAuthenticated() {
         name="Contact"
         component={ContactScreen}
         options={{
-          title: "Contact Details",
+          title: "Emergency Contact ",
         }}
       />
 
@@ -368,6 +369,16 @@ export default function App() {
               component={EditContact}
               options={{
                 title: "Edit Contact",
+                headerTintColor: "white",
+                headerTitleAlign: "center",
+              }}
+            />
+
+            <Stack.Screen
+              name="AddReminder"
+              component={AddReminder}
+              options={{
+                title: "Add Reminder",
                 headerTintColor: "white",
                 headerTitleAlign: "center",
               }}

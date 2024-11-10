@@ -1,43 +1,56 @@
 import { View, StyleSheet, FlatList } from "react-native";
 
+// constants
 import { Color } from "../../constants/Color";
+import { Fonts } from "../../constants/Font";
 
-import TextScreen from "../../components/header/TextScreen";
-import Label from "../../components/dashboard/Label";
+// component
+import CalendarList from "../../components/dashboard/CalendarList";
+import MainButton from "../../components/buttons/MainButton";
+import ReminderContainer from "../../components/dashboard/ReminderContainer";
+import IsEmpty from "../../components/dashboard/isEmpty";
 
-export default function ReminderScreen() {
-  // const reminderData = [
-  //   {
-  //     id: 1,
-  //     name: "Biogesic",
-  //     img: require("../../assets/medicine.webp"),
-  //     qty: "1",
-  //     dosage: "500",
-  //     duration: [
-  //       {
-  //         time: '7',
+const fakeData = [
+  {
+    id: 1,
+    image: require("../../assets/others/pill.png"),
+    medicine_name: "Biogesic",
+    pills: "1",
+    time: "7:00am",
+  },
+  {
+    id: 2,
+    image: require("../../assets/others/pill.png"),
+    medicine_name: "Biogesic",
+    pills: "1",
+    time: "8:00am",
+  },
+];
 
-  //       }
-  //     ]
-  //   },
-  // ];
+export default function ReminderScreen({ navigation }) {
   return (
     <View style={styles.root}>
-      <View style={styles.textContainer}>
-        <TextScreen>Medication Reminder</TextScreen>
-      </View>
+      <CalendarList />
 
-      <View style={styles.dataContainer}>
-        <Label
-          onPress={() => {
-            console.log("test");
-          }}
-        >
-          Lists of Reminder
-        </Label>
+      {fakeData.length === 0 ? (
+        <IsEmpty />
+      ) : (
+        <FlatList
+          alwaysBounceVertical={false}
+          bounces={false}
+          overScrollMode="never"
+          data={fakeData}
+          renderItem={({ item }) => <ReminderContainer itemData={item} />}
+          keyExtractor={(item) => item.id}
+        />
+      )}
 
-        <FlatList overScrollMode="never" bounces={false} data />
-      </View>
+      <MainButton
+        onPress={() => navigation.navigate("AddReminder")}
+        style={styles.button}
+      >
+        Add Reminder
+      </MainButton>
     </View>
   );
 }
@@ -57,5 +70,18 @@ const styles = StyleSheet.create({
     marginTop: 54,
     flex: 1,
     marginBottom: 20,
+  },
+
+  button: {
+    marginVertical: 30,
+  },
+
+  textLength: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    fontFamily: Fonts.main,
+    textAlign: "center",
+    color: Color.tagLine,
   },
 });
