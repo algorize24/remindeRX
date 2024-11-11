@@ -1,14 +1,45 @@
 import { View, Text, StyleSheet } from "react-native";
+import { useState } from "react";
 
 // component
-import AuthText from "../../../components/header/AuthText";
+import MainButton from "../../../components/buttons/MainButton";
 import TextInputs from "../../../components/Inputs/TextInputs";
+import AuthText from "../../../components/header/AuthText";
 
 // constants
 import { Color } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Font";
-import MainButton from "../../../components/buttons/MainButton";
-export default function AddReminder() {
+
+// context
+import { useReminder } from "../../../context/reminderContext";
+
+export default function AddReminder({ navigation }) {
+  // from ReminderContext
+  const { medicationName, setMedicationName } = useReminder();
+
+  // state for inputs
+  const [medName, setMedName] = useState(medicationName);
+
+  // error state
+  const [error, setError] = useState("");
+
+  // fn for MainButton
+  const handleMedicationName = () => {
+    // reset the error
+    setError("");
+
+    // check if medName is not empty or whitespace
+    if (medName.trim()) {
+      setMedicationName(medName);
+      navigation.navigate("Interval");
+
+      // reset the field
+      setMedName("");
+    } else {
+      setError("Medication name cannot be empty.");
+    }
+  };
+
   return (
     <View style={styles.root}>
       <AuthText style={styles.text}>
@@ -19,11 +50,21 @@ export default function AddReminder() {
         <View style={styles.subContainer}>
           <Text style={styles.medText}>Type your medication name</Text>
 
-          <TextInputs style={styles.inputs} placeholder={"e.g., Paracetamol"} />
+          <TextInputs
+            style={styles.inputs}
+            placeholder={"e.g., Paracetamol"}
+            placeholderTextColor={"#fff"}
+            value={medName}
+            onChangeText={(text) => setMedName(text)}
+          />
+
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
 
         <View style={styles.buttonView}>
-          <MainButton style={styles.button}>Next</MainButton>
+          <MainButton onPress={handleMedicationName} style={styles.button}>
+            Next
+          </MainButton>
         </View>
       </View>
     </View>
@@ -66,6 +107,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bgColor,
     borderRadius: 8,
     marginTop: 10,
+    color: "#fff",
   },
 
   buttonView: {
@@ -74,5 +116,12 @@ const styles = StyleSheet.create({
 
   button: {
     width: "90%",
+  },
+
+  errorText: {
+    color: Color.redColor,
+    fontFamily: Fonts.main,
+    fontSize: 13,
+    marginVertical: 10,
   },
 });

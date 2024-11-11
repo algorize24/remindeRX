@@ -15,7 +15,7 @@ import {
 // create a context
 const AuthContext = createContext();
 
-// make accessing context easier
+// custom hook for easy access to the context
 export const useAuth = () => useContext(AuthContext);
 
 // main component
