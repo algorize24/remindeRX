@@ -26,7 +26,7 @@ export default function RealTimeScreen({ navigation }) {
 
   // invoke in mainbutton
   const handleNext = () => {
-    navigation.navigate("FallDetection");
+    navigation.navigate("MedicineReminder");
   };
   return (
     <SafeAreaView style={styles.root}>
@@ -46,9 +46,9 @@ export default function RealTimeScreen({ navigation }) {
 
         <Text style={styles.mainText}>
           Monitor your <Text style={styles.rxText}>vital signs</Text> and{" "}
-          <Text style={styles.rxText}>blood pressure</Text> in real-time,
-          ensuring up-to-the-minue insights into your health. Stay informed with
-          live updates for better health management.
+          <Text style={styles.rxText}>glucose</Text> in real-time, ensuring
+          up-to-the-minue insights into your health. Stay informed with live
+          updates for better health management.
         </Text>
 
         <MainButton onPress={handleNext} style={styles.mainButton}>

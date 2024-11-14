@@ -8,9 +8,9 @@ export default function Chatbot({ onPress }) {
   return (
     <Pressable onPress={onPress} style={styles.pressContainer}>
       <View style={styles.chatbot}>
-        {imageLoaded && (
+        {/* {imageLoaded && (
           <Text style={styles.robotText}>Hi! What can I do for you?</Text>
-        )}
+        )} */}
         <Image
           style={styles.img}
           source={require("../../assets/others/chatbot.png")}

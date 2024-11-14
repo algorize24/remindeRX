@@ -1,5 +1,12 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import { useLayoutEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
+import { useLayoutEffect, useState } from "react";
 
 // context
 import { useReminder } from "../../../../context/reminderContext";
@@ -11,10 +18,20 @@ import { Color } from "../../../../constants/Color";
 // components
 import AuthText from "../../../../components/header/AuthText";
 import MainButton from "../../../../components/buttons/MainButton";
+import Button from "../../../../components/buttons/Button";
+
+// firebase
+import { auth } from "../../../../firebase/firebase";
+
+// axios
+import axios from "axios";
 
 export default function SetReminder({ navigation }) {
   // reminderContext
-  const { medicationName } = useReminder();
+  const { medicationName, pillCount, reminderTime, frequency, specificDays } =
+    useReminder();
+
+  const [isLoading, setIsLoading] = useState(false); // loading state
 
   // avoid flickering the headerTitle
   useLayoutEffect(() => {
@@ -26,8 +43,54 @@ export default function SetReminder({ navigation }) {
   }, [navigation, medicationName]);
 
   // fn for mainbutton
+  // const handleAddReminder = async () => {
+  //   navigation.navigate("EventSchedule");
+  // };
+
   const handleAddReminder = async () => {
-    navigation.navigate("EventSchedule");
+    setIsLoading(true);
+
+    try {
+      // get the currentUser
+      const currentUser = auth.currentUser;
+
+      // if there's a currentUser
+      if (currentUser) {
+        // get the token
+        const token = await currentUser.getIdToken();
+
+        // create an object to send to database
+        const reminderData = {
+          medicine_name: medicationName,
+          schedule,
+          frequency,
+          specificDays,
+          dosage: pillCount,
+          time: [reminderTime],
+        };
+
+        // request to the backend together with object we created
+        const response = await axios.post(
+          "http://10.0.2.2:5000/api/reminder/createreminder",
+          reminderData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        // if successfully created
+        if (response.status === 201) {
+          Alert.alert("Reminder Created", "New reminder created successfully");
+          navigation.navigate("EventSchedule");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <View style={styles.root}>
@@ -41,9 +104,18 @@ export default function SetReminder({ navigation }) {
       />
 
       <View style={styles.buttonView}>
-        <MainButton onPress={handleAddReminder} style={styles.button}>
-          Add Reminder
-        </MainButton>
+        {!isLoading ? (
+          <MainButton onPress={handleAddReminder} style={styles.button}>
+            Add Reminder
+          </MainButton>
+        ) : (
+          <Button style={styles.button} isEnable={false}>
+            <View style={styles.loadingView}>
+              <Text style={styles.loadingText}> Adding Reminder</Text>
+              <ActivityIndicator size={"small"} color={Color.purpleColor} />
+            </View>
+          </Button>
+        )}
       </View>
     </View>
   );
@@ -59,6 +131,11 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
     color: "#fff",
     fontSize: 19,
+  },
+
+  testText: {
+    fontFamily: Fonts.main,
+    color: "#fff",
   },
 
   text: {
@@ -80,10 +157,25 @@ const styles = StyleSheet.create({
   rx: {
     color: Color.purpleColor,
   },
+
   buttonView: {
     alignItems: "center",
   },
+
   button: {
     width: "90%",
+  },
+
+  loadingView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  loadingText: {
+    marginRight: 5,
+    color: "white",
+    fontFamily: Fonts.main,
+    fontSize: 16,
   },
 });

@@ -126,6 +126,11 @@ export default function ProfileScreen({ navigation }) {
         >
           Edit Profile
         </Text>
+
+        <Text onPress={() => navigation.navigate("Doctor")} style={styles.text}>
+          Doctor List
+        </Text>
+
         <Text
           onPress={() => navigation.navigate("TermOfUse")}
           style={styles.text}

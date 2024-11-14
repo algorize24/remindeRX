@@ -29,7 +29,7 @@ export default function DashboardScreen({ data = [] }) {
         <Realtime
           name={"heartbeat-alt"}
           size={42}
-          title={"Heart Rate"}
+          title={"Pulse Rate"}
           num={"72"}
           label={"bpm"}
         />
@@ -37,14 +37,26 @@ export default function DashboardScreen({ data = [] }) {
         <Realtime
           name={"blood-drop"}
           size={32}
-          title={"Blood Pressure"}
-          num={"120 / 80"}
-          label={"mmhg"}
+          title={"Glucose"}
+          num={"90"}
+          label={"mg/dL"}
         />
       </View>
-      <FallDetection onToggle={handleToggle} />
+
+      <View style={styles.dataContainer}>
+        <Realtime size={42} title={"Temperature"} num={"72"} label={"°C"} />
+
+        <Realtime
+          name={"blood-drop"}
+          size={32}
+          title={"Oxygen Sat'"}
+          num={"90"}
+          label={"%"}
+        />
+      </View>
+      {/* <FallDetection onToggle={handleToggle} /> */}
       {/*fix soon, limited only to 3, fix when we have db and context */}
-      {isToggle ? (
+      {/* {isToggle ? (
         <ScrollView>
           {limitedHistory.map((item, index) => (
             <FallHistory key={index} itemData={item} />
@@ -61,9 +73,11 @@ export default function DashboardScreen({ data = [] }) {
             Please enable Fall Detection System to view the history.
           </Text>
         </View>
-      )}
+      )} */}
 
-      <Chatbot onPress={() => navigation.navigate("Chatbot")} />
+      <View style={styles.chatView}>
+        <Chatbot onPress={() => navigation.navigate("Chatbot")} />
+      </View>
     </View>
   );
 }
@@ -97,5 +111,10 @@ const styles = StyleSheet.create({
     color: Color.tagLine,
     fontFamily: Fonts.main,
     fontSize: 13,
+  },
+
+  chatView: {
+    flex: 1,
+    justifyContent: "flex-end",
   },
 });

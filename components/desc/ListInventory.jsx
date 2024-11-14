@@ -1,4 +1,6 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+
+// constants
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
 

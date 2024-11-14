@@ -13,7 +13,7 @@ import { useReminder } from "../../../context/reminderContext";
 
 export default function Frequency({ navigation, route }) {
   // reminderContext
-  const { medicationName } = useReminder();
+  const { medicationName, setFrequency, setSpecificDays } = useReminder();
 
   // data from IntervalRx.jsx
   const everyDay = route.params.everyday;
@@ -27,6 +27,12 @@ export default function Frequency({ navigation, route }) {
     });
   }, [navigation, medicationName]);
 
+  // navigate to different screens
+  const handleNavigate = (frequency) => {
+    setFrequency(frequency);
+    navigation.navigate(frequency, { frequency }); // pass frequency to the next screen
+  };
+
   return (
     <View style={styles.root}>
       {everyDay ? (
@@ -36,9 +42,7 @@ export default function Frequency({ navigation, route }) {
           <View style={styles.container}>
             <View style={styles.subContainer}>
               <Pressable
-                onPress={() => {
-                  navigation.navigate("");
-                }}
+                onPress={() => handleNavigate("Onceday")}
                 style={({ pressed }) => [
                   styles.inputs,
                   pressed && styles.press,
@@ -46,11 +50,8 @@ export default function Frequency({ navigation, route }) {
               >
                 <Text style={styles.textInterval}>Once a day</Text>
               </Pressable>
-
               <Pressable
-                onPress={() => {
-                  navigation.navigate("");
-                }}
+                onPress={() => handleNavigate("Twiceday")}
                 style={({ pressed }) => [
                   styles.inputs,
                   pressed && styles.press,
@@ -60,9 +61,7 @@ export default function Frequency({ navigation, route }) {
               </Pressable>
 
               <Pressable
-                onPress={() => {
-                  navigation.navigate("");
-                }}
+                onPress={() => handleNavigate("Thriceday")}
                 style={({ pressed }) => [
                   styles.inputs,
                   pressed && styles.press,
@@ -70,10 +69,9 @@ export default function Frequency({ navigation, route }) {
               >
                 <Text style={styles.textInterval}>3 times a day</Text>
               </Pressable>
-
               <Pressable
                 onPress={() => {
-                  navigation.navigate("");
+                  navigation.navigate("SetInterval");
                 }}
                 style={({ pressed }) => [
                   styles.inputs,
@@ -95,7 +93,7 @@ export default function Frequency({ navigation, route }) {
             <View style={styles.subContainer}>
               <Pressable
                 onPress={() => {
-                  navigation.navigate("Week");
+                  setSpecificDays(["Sunday"]), handleNavigate("Week");
                 }}
                 style={({ pressed }) => [
                   styles.inputs,
@@ -107,7 +105,7 @@ export default function Frequency({ navigation, route }) {
 
               <Pressable
                 onPress={() => {
-                  navigation.navigate("");
+                  setSpecificDays(["Sunday"]), handleNavigate("Monday");
                 }}
                 style={({ pressed }) => [
                   styles.inputs,
@@ -119,7 +117,7 @@ export default function Frequency({ navigation, route }) {
 
               <Pressable
                 onPress={() => {
-                  navigation.navigate("");
+                  setSpecificDays(["Tuesday"]), handleNavigate("Monday");
                 }}
                 style={({ pressed }) => [
                   styles.inputs,
@@ -131,7 +129,7 @@ export default function Frequency({ navigation, route }) {
 
               <Pressable
                 onPress={() => {
-                  navigation.navigate("");
+                  setSpecificDays(["Wednesday"]), handleNavigate("Monday");
                 }}
                 style={({ pressed }) => [
                   styles.inputs,
@@ -143,7 +141,7 @@ export default function Frequency({ navigation, route }) {
 
               <Pressable
                 onPress={() => {
-                  navigation.navigate("");
+                  setSpecificDays(["Thursday"]), handleNavigate("Monday");
                 }}
                 style={({ pressed }) => [
                   styles.inputs,
@@ -155,7 +153,7 @@ export default function Frequency({ navigation, route }) {
 
               <Pressable
                 onPress={() => {
-                  navigation.navigate("");
+                  setSpecificDays(["Friday"]), handleNavigate("Monday");
                 }}
                 style={({ pressed }) => [
                   styles.inputs,
@@ -167,7 +165,7 @@ export default function Frequency({ navigation, route }) {
 
               <Pressable
                 onPress={() => {
-                  navigation.navigate("");
+                  setSpecificDays(["Saturday"]), handleNavigate("Monday");
                 }}
                 style={({ pressed }) => [
                   styles.inputs,

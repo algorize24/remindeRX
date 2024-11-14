@@ -19,10 +19,12 @@ import {
   MaterialIcons,
   FontAwesome6,
   Ionicons,
+  FontAwesome,
 } from "@expo/vector-icons";
 
 // constants
 import { Color } from "./constants/Color";
+import { Fonts } from "./constants/Font";
 
 // screens - ReminderxPolicyStack
 import PolicyScreen from "./screens/reminderxpolicy/PolicyScreen";
@@ -52,10 +54,11 @@ import EventLogScreen from "./screens/reminderauthenticated/EventLogScreen";
 import ProfileScreen from "./screens/reminderauthenticated/ProfileScreen";
 
 // screen - sub profile
-import Aboutus from "./screens/reminderauthenticated/subprofile/Aboutus";
 import Aboutreminderx from "./screens/reminderauthenticated/subprofile/Aboutreminderx";
 import HelpSupport from "./screens/reminderauthenticated/subprofile/HelpSupport";
+import DoctorList from "./screens/reminderauthenticated/subprofile/DoctorList";
 import EditProfile from "./screens/reminderauthenticated/edit/EditProfile";
+import Aboutus from "./screens/reminderauthenticated/subprofile/Aboutus";
 
 // components
 import HeaderTitle from "./components/header/HeaderTitle";
@@ -66,15 +69,24 @@ import ChatbotScreen from "./components/dashboard/ChatbotScreen";
 import AddContact from "./screens/reminderauthenticated/add/AddContact";
 import AddMedicine from "./screens/reminderauthenticated/add/AddMedicine";
 import AddReminder from "./screens/reminderauthenticated/add/AddReminder";
+import AddDoctor from "./screens/reminderauthenticated/add/AddDoctor";
 import EditContact from "./screens/reminderauthenticated/edit/EditContact";
 import EditInventory from "./screens/reminderauthenticated/edit/EditInventory";
 import EditPills from "./screens/reminderauthenticated/edit/EditPills";
+import EditDoctors from "./screens/reminderauthenticated/edit/EditDoctors";
 
 // reminderx - notif
 import IntervalRx from "./screens/reminderauthenticated/reminderx/IntervalRx";
 import Frequency from "./screens/reminderauthenticated/reminderx/Frequency";
 import Week from "./screens/reminderauthenticated/reminderx/selection/Week"; // specific days of the week
+import OnceDay from "./screens/reminderauthenticated/reminderx/selection/OnceDay"; // once a day
+import TwiceDay from "./screens/reminderauthenticated/reminderx/selection/TwiceDay"; // twice a day
+import ThriceDay from "./screens/reminderauthenticated/reminderx/selection/ThriceDay"; // 3 times a day
+import EveryX from "./screens/reminderauthenticated/reminderx/selection/EveryX"; // every X hours
 import SetReminder from "./screens/reminderauthenticated/reminderx/selection/SetReminder";
+import TimeSelector from "./screens/reminderauthenticated/reminderx/selection/TimeSelector";
+import Reviewreminder from "./screens/reminderauthenticated/reminderx/selection/Reviewreminder";
+import SetInterval from "./screens/reminderauthenticated/reminderx/selection/SetInterval";
 
 // context
 import AuthContextProvider from "./context/authContext";
@@ -217,13 +229,14 @@ function ReminderFeaturesStack() {
           headerShown: false,
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="FallDetection"
         component={ReminderFallDetectScreen}
         options={{
           headerShown: false,
         }}
-      />
+      /> */}
+
       <Stack.Screen
         name="MedicineReminder"
         component={ReminderMedScreen}
@@ -247,18 +260,30 @@ function ReminderAuthenticated() {
         headerTitle: () => <HeaderTitle />,
         headerTitleAlign: "center",
         drawerStyle: { backgroundColor: Color.bgColor },
-        drawerLabelStyle: { color: "white" },
+        drawerLabelStyle: { color: Color.tagLine, marginLeft: -20 },
         drawerActiveBackgroundColor: Color.container,
         gestureEnabled: true,
         swipeEnabled: true,
       })}
     >
-      <Drawer.Screen name="Dashboard" component={DashboardScreen} />
+      <Drawer.Screen
+        name="Dashboard"
+        component={DashboardScreen}
+        options={{
+          title: "Dashboard",
+          drawerIcon: () => (
+            <MaterialIcons name="dashboard" size={20} color={Color.tagLine} />
+          ),
+        }}
+      />
       <Drawer.Screen
         name="Inventory"
         component={InventoryScreen}
         options={{
           title: "Medicine Storage",
+          drawerIcon: () => (
+            <FontAwesome6 name="list" size={20} color={Color.tagLine} />
+          ),
         }}
       />
       <Drawer.Screen
@@ -266,25 +291,43 @@ function ReminderAuthenticated() {
         component={ReminderScreen}
         options={{
           title: "Medication Reminder",
+          drawerIcon: () => (
+            <MaterialIcons
+              name="notifications"
+              size={22}
+              color={Color.tagLine}
+            />
+          ),
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="FallAlert"
         component={EventLogScreen}
         options={{
           title: "Fall Detection History",
         }}
-      />
+      /> */}
 
       <Drawer.Screen
         name="Contact"
         component={ContactScreen}
         options={{
           title: "Emergency Contact ",
+          drawerIcon: () => (
+            <FontAwesome name="phone" size={24} color={Color.tagLine} />
+          ),
         }}
       />
 
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
+      <Drawer.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          drawerIcon: () => (
+            <Feather name="user" size={20} color={Color.tagLine} />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 }
@@ -414,6 +457,69 @@ export default function App() {
               />
 
               <Stack.Screen
+                name="Timeselector"
+                component={TimeSelector}
+                options={{
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                }}
+              />
+
+              <Stack.Screen
+                name="Review"
+                component={Reviewreminder}
+                options={{
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                }}
+              />
+
+              <Stack.Screen
+                name="SetInterval"
+                component={SetInterval}
+                options={{
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                }}
+              />
+
+              <Stack.Screen
+                name="Onceday"
+                component={OnceDay}
+                options={{
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                }}
+              />
+
+              <Stack.Screen
+                name="Twiceday"
+                component={TwiceDay}
+                options={{
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                }}
+              />
+
+              <Stack.Screen
+                name="Thriceday"
+                component={ThriceDay}
+                options={{
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                }}
+              />
+
+              <Stack.Screen
+                name="EveryX"
+                component={EveryX}
+                options={{
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                }}
+              />
+
+              <Stack.Screen
                 name="Week"
                 component={Week}
                 options={{
@@ -468,6 +574,49 @@ export default function App() {
                   headerTintColor: "white",
                   headerTitleAlign: "center",
                 }}
+              />
+
+              <Stack.Screen
+                name="AddDoctor"
+                component={AddDoctor}
+                options={{
+                  title: "Add Doctor",
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main },
+                }}
+              />
+
+              <Stack.Screen
+                name="EditDoctor"
+                component={EditDoctors}
+                options={{
+                  title: "Edit Doctor",
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main },
+                }}
+              />
+
+              <Stack.Screen
+                name="Doctor"
+                component={DoctorList}
+                options={({ navigation }) => ({
+                  title: "Doctor",
+                  headerTitleStyle: { fontFamily: Fonts.main },
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                  headerRight: () => (
+                    <Ionicons
+                      name="add"
+                      size={24}
+                      color="#fff"
+                      onPress={() => {
+                        navigation.navigate("AddDoctor");
+                      }}
+                    />
+                  ),
+                })}
               />
 
               <Stack.Screen

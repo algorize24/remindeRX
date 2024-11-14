@@ -94,7 +94,7 @@ export default function AuthLogin({ navigation }) {
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
-        // console.log(token);
+        console.log(token);
 
         if (response.data.user) {
           // Store credentials if rememberMe is checked

@@ -1,21 +1,27 @@
-import { View, Text, StyleSheet } from "react-native";
-import { useLayoutEffect } from "react";
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import { useLayoutEffect, useState } from "react";
 
-// constant
-import { Color } from "../../../constants/Color";
-import { Fonts } from "../../../constants/Font";
+// constants
+import { Color } from "../../../../constants/Color";
+import { Fonts } from "../../../../constants/Font";
 
-// components
-import MainButton from "../../../components/buttons/MainButton";
-import TextInputs from "../../../components/Inputs/TextInputs";
-import AuthText from "../../../components/header/AuthText";
+// component
+import MainButton from "../../../../components/buttons/MainButton";
+import AuthText from "../../../../components/header/AuthText";
+import TextInputs from "../../../../components/Inputs/TextInputs";
 
 // context
-import { useReminder } from "../../../context/reminderContext";
+import { useReminder } from "../../../../context/reminderContext";
 
-export default function EditPills({ navigation }) {
+// icon
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
+// date & time picker expo
+import DateTimePicker from "@react-native-community/datetimepicker";
+
+export default function SetInterval({ navigation }) {
   // reminderContext
-  const { medicationName, pillCount, setPillCount } = useReminder();
+  const { medicationName } = useReminder();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -24,35 +30,30 @@ export default function EditPills({ navigation }) {
       ),
     });
   }, [navigation, medicationName]);
-
-  const handlePills = () => {
-    navigation.goBack();
-  };
   return (
     <View style={styles.root}>
-      <AuthText style={styles.text}>How many pill(s) do you take?</AuthText>
-
+      <AuthText style={styles.text}>Set hours interval</AuthText>
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <Text style={styles.note}>
-            Set the default dose. You can adjust it later for each reminder
-            time.
-          </Text>
-
+          <Text style={styles.header}>Every</Text>
           <View style={styles.inputView}>
             <TextInputs
               style={styles.input}
               maxLength={2}
               keyboardType="numeric"
-              value={String(pillCount)} // display the pill count from context
-              onChangeText={(text) => setPillCount(Number(text) || 1)} // update state in context.
             />
-            <Text style={styles.pills}>Pill(s)</Text>
           </View>
+          <Text style={styles.header}>Hours</Text>
         </View>
+
         <View style={styles.buttonView}>
-          <MainButton onPress={handlePills} style={styles.button}>
-            Set
+          <MainButton
+            onPress={() => {
+              navigation.navigate("EveryX");
+            }}
+            style={styles.button}
+          >
+            Next
           </MainButton>
         </View>
       </View>
@@ -81,6 +82,13 @@ const styles = StyleSheet.create({
     fontSize: 19,
   },
 
+  header: {
+    fontFamily: Fonts.main,
+    color: "#fff",
+    fontSize: 18,
+    textAlign: "center",
+  },
+
   container: {
     flex: 1,
     backgroundColor: Color.container,
@@ -95,17 +103,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
 
-  note: {
-    fontFamily: Fonts.main,
-    color: "#fff",
-  },
-
-  inputView: {
-    margin: "auto",
-    width: "30%",
-    marginTop: 50,
-  },
-
   input: {
     backgroundColor: Color.bgColor,
     borderRadius: 8,
@@ -114,12 +111,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  pills: {
-    textAlign: "center",
-    marginTop: 5,
-    fontFamily: Fonts.main,
-    fontSize: 15,
-    color: "#fff",
+  inputView: {
+    margin: "auto",
+    width: "30%",
+    marginVertical: 10,
   },
 
   buttonView: {
