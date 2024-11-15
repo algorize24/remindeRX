@@ -9,8 +9,8 @@ export default function Aboutreminderx() {
   return (
     <View style={styles.root}>
       <View style={styles.container}>
-        <AuthText>
-          About Reminde<Text style={styles.rx}>RX</Text>
+        <AuthText style={styles.text}>
+          About Reminde<Text style={styles.rx}>rx</Text>
         </AuthText>
 
         <Image
@@ -61,6 +61,10 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.sub,
     color: Color.tagLine,
     marginTop: 10,
+  },
+
+  text: {
+    textTransform: "none",
   },
 
   img: {

@@ -54,26 +54,6 @@ export default function DashboardScreen({ data = [] }) {
           label={"%"}
         />
       </View>
-      {/* <FallDetection onToggle={handleToggle} /> */}
-      {/*fix soon, limited only to 3, fix when we have db and context */}
-      {/* {isToggle ? (
-        <ScrollView>
-          {limitedHistory.map((item, index) => (
-            <FallHistory key={index} itemData={item} />
-          ))}
-          {data.length > 3 && (
-            <Text onPress={() => {}} style={styles.text}>
-              View more...
-            </Text>
-          )}
-        </ScrollView>
-      ) : (
-        <View style={styles.toggle}>
-          <Text style={styles.historyText}>
-            Please enable Fall Detection System to view the history.
-          </Text>
-        </View>
-      )} */}
 
       <View style={styles.chatView}>
         <Chatbot onPress={() => navigation.navigate("Chatbot")} />
@@ -92,6 +72,7 @@ const styles = StyleSheet.create({
   dataContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    marginTop: 10,
   },
 
   text: {

@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ActivityIndicator,
+} from "react-native";
 import { useState } from "react";
 
 // constants
@@ -82,7 +88,9 @@ export default function ForgotPassword({ navigation }) {
           {!isLoading ? (
             <MainButton onPress={handlePasswordReset}>Send</MainButton>
           ) : (
-            <Button isEnable={false}>Sending...</Button>
+            <Button isEnable={false}>
+              <ActivityIndicator color={"#fff"} />
+            </Button>
           )}
         </View>
       </KeyboardAvoidingView>
@@ -109,7 +117,7 @@ const styles = StyleSheet.create({
   inputView: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Color.textInput,
+    backgroundColor: Color.container,
     borderRadius: 12,
     paddingHorizontal: 12,
     marginTop: 17,

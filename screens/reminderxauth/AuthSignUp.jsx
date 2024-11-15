@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import { useState } from "react";
 
 // constants
@@ -17,7 +24,6 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
-import UploadImage from "../../components/buttons/UploadImage";
 
 // context
 import { useAuth } from "../../context/authContext";
@@ -74,7 +80,6 @@ export default function AuthSignUp({ navigation }) {
         email,
         name,
         address,
-        image: "",
       });
 
       navigation.navigate("CreatingAccount", { emailSent: true }); // Navigate to next screen
@@ -162,17 +167,21 @@ export default function AuthSignUp({ navigation }) {
           </View>
         </View>
 
-        <UploadImage style={styles.uploadImage} />
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
         <View style={styles.viewKey}>
           {!isLoading ? (
             <MainButton onPress={handleSignUp}>Sign Up</MainButton>
           ) : (
-            <Button isEnable={false}>Signing Up...</Button>
+            <Button isEnable={false}>
+              <View style={styles.loadingView}>
+                <Text style={styles.loadingText}>Signing Up</Text>
+                <ActivityIndicator size={"small"} color={"#fff"} />
+              </View>
+            </Button>
           )}
           <Text style={styles.subText}>
-            I have an account?{" "}
+            Already a member?{" "}
             <Text onPress={handleSignIn} style={styles.signInText}>
               Sign In
             </Text>
@@ -219,7 +228,7 @@ const styles = StyleSheet.create({
   },
 
   viewKey: {
-    marginTop: 50,
+    marginTop: 130,
     marginBottom: 20,
   },
 
@@ -234,14 +243,23 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
 
-  uploadImage: {
-    marginTop: 22,
-  },
-
   errorText: {
     color: Color.redColor,
     fontFamily: Fonts.main,
     fontSize: 13,
     marginVertical: 10,
+  },
+
+  loadingView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  loadingText: {
+    marginRight: 5,
+    color: "white",
+    fontFamily: Fonts.main,
+    fontSize: 16,
   },
 });

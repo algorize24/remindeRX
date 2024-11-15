@@ -76,10 +76,6 @@ export default function InventoryScreen({ navigation }) {
   );
   return (
     <View style={styles.root}>
-      <View style={styles.textContainer}>
-        <TextScreen>Medicine Inventory</TextScreen>
-      </View>
-
       <View style={styles.dataContainer}>
         <Label
           onPress={() => {
@@ -120,10 +116,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Color.bgColor,
     paddingHorizontal: 18,
-  },
-
-  textContainer: {
-    marginTop: 20,
   },
 
   dataContainer: {

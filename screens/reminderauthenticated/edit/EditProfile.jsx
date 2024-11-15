@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
 import { useState, useEffect } from "react";
 
 // constants
@@ -6,7 +6,6 @@ import { Color } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Font";
 
 // components
-import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
 import TextInputs from "../../../components/Inputs/TextInputs";
 import InputText from "../../../components/header/InputText";
@@ -59,7 +58,7 @@ export default function EditProfile({ navigation }) {
     fetchUser();
   }, [user]);
 
-  // edit the name, address, image
+  // edit the name, address
   const handleEditProfile = async () => {
     setIsLoading(true);
 
@@ -90,39 +89,43 @@ export default function EditProfile({ navigation }) {
       <View style={styles.container}>
         <AuthText>Edit Profile</AuthText>
         <View style={styles.inputContainer}>
-          <InputText>Email Address:</InputText>
+          <InputText style={styles.input}>Email Address:</InputText>
           <TextInputs
             style={[styles.inputs, styles.email]}
             value={userInfo ? userInfo.email : "Email Address"}
             editable={false}
           />
 
-          <InputText>Name:</InputText>
+          <InputText style={styles.input}>Name:</InputText>
           <TextInputs
             style={styles.inputs}
             placeholder={userInfo ? userInfo.name : "Name"}
             value={name}
             onChangeText={(text) => setName(text)}
+            placeholderTextColor={"#fff"}
           />
-          <InputText>Address:</InputText>
+          <InputText style={styles.input}>Address:</InputText>
 
           <TextInputs
             style={styles.inputs}
             placeholder={userInfo ? userInfo.address : "Address"}
             value={address}
             onChangeText={(text) => setAddress(text)}
+            placeholderTextColor={"#fff"}
           />
-
-          <InputText>Profile Image:</InputText>
-
-          <UploadImage />
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+      </View>
 
+      <View>
         {!isLoading ? (
-          <MainButton onPress={handleEditProfile}>Edit Profile</MainButton>
+          <MainButton style={styles.button} onPress={handleEditProfile}>
+            Edit Profile
+          </MainButton>
         ) : (
-          <Button>Editing Profile</Button>
+          <Button style={styles.button}>
+            <ActivityIndicator color={"#fff"} />
+          </Button>
         )}
       </View>
     </View>
@@ -133,6 +136,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     paddingHorizontal: 18,
+    justifyContent: "space-between",
   },
 
   container: {
@@ -149,6 +153,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 20,
+    color: "#fff",
+  },
+
+  input: {
+    color: Color.tagLine,
   },
 
   email: {
@@ -160,5 +169,10 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.main,
     fontSize: 13,
     marginBottom: 40,
+  },
+
+  button: {
+    backgroundColor: Color.greenColor,
+    marginVertical: 30,
   },
 });

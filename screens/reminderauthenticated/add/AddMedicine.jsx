@@ -5,6 +5,7 @@ import {
   Alert,
   Pressable,
   Text,
+  ActivityIndicator,
 } from "react-native";
 import { useState } from "react";
 
@@ -13,7 +14,6 @@ import { Color } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Font";
 
 // components
-import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
 import TextScreen from "../../../components/header/TextScreen";
 import TextInputs from "../../../components/Inputs/TextInputs";
@@ -35,7 +35,6 @@ export default function AddMedicine({ navigation }) {
   const [dosage, setDosage] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   const [stock, setStock] = useState("");
-  const [image, setImage] = useState("");
 
   const [showDatePicker, setShowDatePicker] = useState(false); // showDatePicker state
   const [isLoading, setIsLoading] = useState(false); // loading state
@@ -65,7 +64,6 @@ export default function AddMedicine({ navigation }) {
           dosage,
           expiration_date: expirationDate.toISOString(),
           stock,
-          image: image || "",
         };
 
         // request to the backend together with object we created
@@ -92,7 +90,6 @@ export default function AddMedicine({ navigation }) {
           setDosage("");
           setExpirationDate("");
           setStock("");
-          setImage("");
 
           // after that, go to this screen.
           navigation.navigate("Inventory");
@@ -121,15 +118,16 @@ export default function AddMedicine({ navigation }) {
         </View>
 
         <View style={styles.inputContainer}>
-          <InputText>Medicine Name:</InputText>
+          <InputText style={styles.input}>Medicine Name:</InputText>
           <TextInputs
             style={styles.textInput}
             placeholder={"Enter Medicine Name"}
             value={medicineName}
             onChangeText={setMedicineName}
+            placeholderTextColor={"#fff"}
           />
 
-          <InputText>Dosage:</InputText>
+          <InputText style={styles.input}>Dosage:</InputText>
           <TextInputs
             inputMode={"numeric"}
             keyboardType={"numeric"}
@@ -138,9 +136,10 @@ export default function AddMedicine({ navigation }) {
             maxLength={3}
             value={dosage}
             onChangeText={setDosage}
+            placeholderTextColor={"#fff"}
           />
 
-          <InputText>Quantity:</InputText>
+          <InputText style={styles.input}>Quantity:</InputText>
           <TextInputs
             inputMode={"numeric"}
             keyboardType={"numeric"}
@@ -149,9 +148,10 @@ export default function AddMedicine({ navigation }) {
             maxLength={3}
             value={stock}
             onChangeText={setStock}
+            placeholderTextColor={"#fff"}
           />
 
-          <InputText>Expiration Date:</InputText>
+          <InputText style={styles.input}>Expiration Date:</InputText>
           <Pressable
             style={[styles.textInput, styles.selectExpirationDate]}
             onPress={() => setShowDatePicker(true)}
@@ -163,7 +163,7 @@ export default function AddMedicine({ navigation }) {
               style={[styles.selectedDate, styles.textInput]}
               editable={false}
               placeholder={`Selected Date: ${expirationDate.toDateString()}`}
-              placeholderTextColor={Color.purpleColor}
+              placeholderTextColor={Color.tagLine}
             />
           )}
 
@@ -176,10 +176,6 @@ export default function AddMedicine({ navigation }) {
             />
           )}
 
-          <InputText>Image:</InputText>
-
-          <UploadImage />
-
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
       </ScrollView>
@@ -189,7 +185,9 @@ export default function AddMedicine({ navigation }) {
           Add Medicine
         </MainButton>
       ) : (
-        <Button style={styles.button}>Adding Medicine...</Button>
+        <Button style={styles.button}>
+          <ActivityIndicator color={"#fff"} />
+        </Button>
       )}
     </View>
   );
@@ -210,11 +208,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
+  input: {
+    color: Color.tagLine,
+  },
+
   textInput: {
     backgroundColor: Color.container,
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 10,
+    color: "#fff",
   },
 
   button: {
@@ -231,7 +234,7 @@ const styles = StyleSheet.create({
 
   textSelect: {
     fontFamily: Fonts.main,
-    color: Color.tagLine,
+    color: "#fff",
   },
 
   selectedDate: {

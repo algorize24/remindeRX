@@ -87,10 +87,6 @@ export default function ContactScreen({ navigation }) {
 
   return (
     <View style={styles.root}>
-      <View style={styles.textContainer}>
-        <TextScreen>Contact Information</TextScreen>
-      </View>
-
       <TextInput
         style={styles.textInput}
         placeholder="Search Contact..."
@@ -132,14 +128,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
   },
 
-  textContainer: {
-    marginTop: 20,
-  },
-
   textInput: {
     backgroundColor: Color.container,
     borderColor: Color.tagLine,
-    marginTop: 30,
+    marginTop: 54,
     borderRadius: 12,
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -147,7 +139,7 @@ const styles = StyleSheet.create({
   },
 
   dataContainer: {
-    marginTop: 54,
+    marginTop: 40,
     flex: 1,
     marginBottom: 20,
   },

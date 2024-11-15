@@ -1,4 +1,4 @@
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, Text, ActivityIndicator } from "react-native";
 import { useState } from "react";
 
 import { Color } from "../../../constants/Color";
@@ -7,7 +7,6 @@ import { Fonts } from "../../../constants/Font";
 // navigation.navigate("Contact");
 
 // components
-import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
 import TextInputs from "../../../components/Inputs/TextInputs";
 import TextScreen from "../../../components/header/TextScreen";
@@ -24,7 +23,6 @@ export default function AddContact({ navigation }) {
   // state to add a contact
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [image, setImage] = useState("");
 
   const [isLoading, setIsLoading] = useState(false); // loading state for main button
   const [error, setError] = useState(""); // error state
@@ -43,11 +41,15 @@ export default function AddContact({ navigation }) {
         // get the token to pass in the backend
         const token = await currentUser.getIdToken();
 
+        if (!name || !phoneNumber) {
+          setError("Please complete all fields. Thank you!");
+          return;
+        }
+
         // contactData structure this is what we send in backend
         const contactData = {
           name,
           phone_number: phoneNumber,
-          image: image || "",
         };
 
         // post request to this api
@@ -68,7 +70,6 @@ export default function AddContact({ navigation }) {
           // reset the form
           setName("");
           setPhoneNumber("");
-          setImage("");
 
           // go to...
           navigation.navigate("Contact");
@@ -83,19 +84,19 @@ export default function AddContact({ navigation }) {
 
   return (
     <View style={styles.root}>
-      <View style={styles.textContainer}>
-        <TextScreen>Add Contact</TextScreen>
-      </View>
-
       <View style={styles.inputContainer}>
-        <InputText>Name:</InputText>
+        <View style={styles.textContainer}>
+          <TextScreen>Add Contact</TextScreen>
+        </View>
+        <InputText style={styles.input}>Name:</InputText>
         <TextInputs
           style={styles.textInput}
           placeholder={"Enter Name"}
           value={name}
           onChangeText={setName}
+          placeholderTextColor={"#fff"}
         />
-        <InputText>Number:</InputText>
+        <InputText style={styles.input}>Number:</InputText>
         <TextInputs
           style={styles.textInput}
           placeholder="Enter Number"
@@ -103,19 +104,22 @@ export default function AddContact({ navigation }) {
           onChangeText={setPhoneNumber}
           keyboardType="numeric"
           maxLength={11}
+          placeholderTextColor={"#fff"}
         />
-        <InputText>Image:</InputText>
-        <UploadImage />
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-      {!isLoading ? (
-        <MainButton onPress={handleAddContact} style={styles.button}>
-          Add Contact
-        </MainButton>
-      ) : (
-        <Button style={styles.button}>Adding Contact...</Button>
-      )}
+      <View>
+        {!isLoading ? (
+          <MainButton onPress={handleAddContact} style={styles.button}>
+            Add Contact
+          </MainButton>
+        ) : (
+          <Button style={styles.button}>
+            <ActivityIndicator color={"#fff"} />
+          </Button>
+        )}
+      </View>
     </View>
   );
 }
@@ -124,15 +128,20 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     paddingHorizontal: 18,
+    justifyContent: "space-between",
   },
 
   textContainer: {
-    marginTop: 49,
+    marginBottom: 20,
     alignItems: "flex-start",
   },
 
   inputContainer: {
-    marginTop: 20,
+    marginTop: 49,
+  },
+
+  input: {
+    color: Color.tagLine,
   },
 
   textInput: {
@@ -140,10 +149,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 10,
+    color: "#fff",
   },
 
   button: {
-    marginTop: 60,
+    marginBottom: 20,
   },
 
   errorText: {

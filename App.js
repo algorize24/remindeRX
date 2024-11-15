@@ -113,6 +113,7 @@ function ReminderxPolicyStack() {
           headerTintColor: "white",
           title: "Terms of Use",
           headerTitleAlign: "center",
+          headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
         }}
       />
       <Stack.Screen
@@ -122,6 +123,7 @@ function ReminderxPolicyStack() {
           headerTintColor: "white",
           title: "Privacy Policy",
           headerTitleAlign: "center",
+          headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
         }}
       />
     </Stack.Navigator>
@@ -402,9 +404,11 @@ export default function App() {
                 name="Chatbot"
                 component={ChatbotScreen}
                 options={{
-                  title: "RemindeRX Assistant",
+                  title: "RX Intelligence",
                   headerTintColor: "white",
                   headerTitleAlign: "center",
+                  headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
                 }}
               />
 
@@ -415,6 +419,7 @@ export default function App() {
                   title: "Contact Information",
                   headerTintColor: "white",
                   headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
                 }}
               />
 
@@ -425,6 +430,7 @@ export default function App() {
                   title: "Edit Contact",
                   headerTintColor: "white",
                   headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
                 }}
               />
 
@@ -553,6 +559,8 @@ export default function App() {
                   title: "Medicine Inventory",
                   headerTintColor: "white",
                   headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main },
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
                 }}
               />
 
@@ -563,6 +571,7 @@ export default function App() {
                   title: "Edit Inventory",
                   headerTintColor: "white",
                   headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
                 }}
               />
 
@@ -570,9 +579,8 @@ export default function App() {
                 name="EditProfile"
                 component={EditProfile}
                 options={{
-                  title: "Edit Profile",
+                  title: "",
                   headerTintColor: "white",
-                  headerTitleAlign: "center",
                 }}
               />
 
@@ -583,7 +591,7 @@ export default function App() {
                   title: "Add Doctor",
                   headerTintColor: "white",
                   headerTitleAlign: "center",
-                  headerTitleStyle: { fontFamily: Fonts.main },
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
                 }}
               />
 
@@ -594,7 +602,7 @@ export default function App() {
                   title: "Edit Doctor",
                   headerTintColor: "white",
                   headerTitleAlign: "center",
-                  headerTitleStyle: { fontFamily: Fonts.main },
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
                 }}
               />
 
@@ -603,7 +611,7 @@ export default function App() {
                 component={DoctorList}
                 options={({ navigation }) => ({
                   title: "Doctor",
-                  headerTitleStyle: { fontFamily: Fonts.main },
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
                   headerTintColor: "white",
                   headerTitleAlign: "center",
                   headerRight: () => (
@@ -623,18 +631,16 @@ export default function App() {
                 name="AboutUs"
                 component={Aboutus}
                 options={{
-                  title: "About Us",
+                  title: "",
                   headerTintColor: "white",
-                  headerTitleAlign: "center",
                 }}
               />
               <Stack.Screen
                 name="AboutReminderx"
                 component={Aboutreminderx}
                 options={{
-                  title: "About Reminderx",
+                  title: "",
                   headerTintColor: "white",
-                  headerTitleAlign: "center",
                 }}
               />
 
@@ -642,9 +648,8 @@ export default function App() {
                 name="HelpnSupport"
                 component={HelpSupport}
                 options={{
-                  title: "Help & Support",
+                  title: "",
                   headerTintColor: "white",
-                  headerTitleAlign: "center",
                 }}
               />
 
@@ -655,6 +660,7 @@ export default function App() {
                   headerTintColor: "white",
                   title: "Terms of Use",
                   headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
                 }}
               />
 
@@ -665,6 +671,7 @@ export default function App() {
                   headerTintColor: "white",
                   title: "Privacy Policy",
                   headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
                 }}
               />
             </Stack.Navigator>

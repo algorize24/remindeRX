@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Alert } from "react-native";
+import { View, StyleSheet, Text, Alert, ActivityIndicator } from "react-native";
 import { useState } from "react";
 
 // constants
@@ -6,7 +6,6 @@ import { Color } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Font";
 
 // components
-import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
 import TextInputs from "../../../components/Inputs/TextInputs";
 import TextScreen from "../../../components/header/TextScreen";
@@ -99,13 +98,13 @@ export default function EditContact({ navigation, route }) {
 
   return (
     <View style={styles.root}>
-      <View style={styles.textContainer}>
-        <TextScreen style={styles.textScreen}>
-          # <Text style={styles.name}>{name || ""}</Text>
-        </TextScreen>
-      </View>
-
       <View style={styles.inputContainer}>
+        <View style={styles.textContainer}>
+          <TextScreen style={styles.textScreen}>
+            # <Text style={styles.name}>{name || ""}</Text>
+          </TextScreen>
+        </View>
+
         <InputText>Name:</InputText>
         <TextInputs
           style={styles.textInput}
@@ -123,25 +122,28 @@ export default function EditContact({ navigation, route }) {
           onChangeText={setPhoneNumber}
           maxLength={11}
         />
-
-        <InputText>Image:</InputText>
-        <UploadImage />
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
       </View>
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
       <View style={styles.buttonContainer}>
-        {!isDeletingLoading ? (
-          <MainButton onPress={handleDeletingContact} style={styles.button}>
-            Delete
+        {!isContactLoading ? (
+          <MainButton style={styles.editContact} onPress={handleEditingContact}>
+            Edit Contact
           </MainButton>
         ) : (
-          <Button style={styles.button}>Deleting...</Button>
+          <Button style={styles.editContact}>
+            <ActivityIndicator color={"#fff"} />
+          </Button>
         )}
 
-        {!isContactLoading ? (
-          <MainButton onPress={handleEditingContact}>Edit Contact</MainButton>
+        {!isDeletingLoading ? (
+          <MainButton onPress={handleDeletingContact} style={styles.button}>
+            Delete Contact
+          </MainButton>
         ) : (
-          <Button>Editing Contact...</Button>
+          <Button style={styles.button}>
+            <ActivityIndicator color={"#fff"} />
+          </Button>
         )}
       </View>
     </View>
@@ -152,15 +154,16 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     paddingHorizontal: 18,
+    justifyContent: "space-between",
   },
 
   textContainer: {
-    marginTop: 49,
     alignItems: "flex-start",
+    marginBottom: 20,
   },
 
   inputContainer: {
-    marginTop: 20,
+    marginTop: 49,
   },
 
   textInput: {
@@ -171,12 +174,12 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    marginBottom: 10,
+    marginBottom: 20,
     backgroundColor: Color.redColor,
   },
 
   buttonContainer: {
-    marginTop: 163,
+    // marginTop: 163,
   },
 
   name: {
@@ -194,5 +197,10 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.main,
     fontSize: 13,
     marginVertical: 10,
+  },
+
+  editContact: {
+    backgroundColor: Color.greenColor,
+    marginBottom: 10,
   },
 });

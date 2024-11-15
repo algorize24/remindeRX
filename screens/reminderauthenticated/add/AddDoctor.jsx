@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import { useState } from "react";
 
 // constants
@@ -92,32 +92,35 @@ export default function AddDoctor({ navigation }) {
   return (
     <View style={styles.root}>
       <View style={styles.inputContainer}>
-        <InputText>Name:</InputText>
+        <InputText style={styles.input}>Name:</InputText>
         <TextInputs
           style={styles.inputText}
           placeholder={"Doctor's Name"}
           value={name}
           onChangeText={setName}
+          placeholderTextColor={"#fff"}
         />
 
-        <InputText>Specialty:</InputText>
+        <InputText style={styles.input}>Specialty:</InputText>
         <TextInputs
           style={styles.inputText}
           placeholder={"e.g., neurologist "}
           value={specialty}
           onChangeText={setSpecialty}
+          placeholderTextColor={"#fff"}
         />
 
-        <InputText>Email Address:</InputText>
+        <InputText style={styles.input}>Email Address:</InputText>
         <TextInputs
           style={styles.inputText}
           placeholder={"Doctor's email"}
           value={email}
           onChangeText={setEmail}
           keyboardType={"email-address"}
+          placeholderTextColor={"#fff"}
         />
 
-        <InputText>Phone Number:</InputText>
+        <InputText style={styles.input}>Phone Number:</InputText>
         <TextInputs
           style={styles.inputText}
           placeholder={"Doctor's number"}
@@ -125,14 +128,16 @@ export default function AddDoctor({ navigation }) {
           onChangeText={setNumber}
           keyboardType={"numeric"}
           maxLength={11}
+          placeholderTextColor={"#fff"}
         />
 
-        <InputText>Address:</InputText>
+        <InputText style={styles.input}>Address:</InputText>
         <TextInputs
           style={styles.inputText}
           placeholder={"Hospital address "}
           value={address}
           onChangeText={setAddress}
+          placeholderTextColor={"#fff"}
         />
 
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
@@ -140,11 +145,11 @@ export default function AddDoctor({ navigation }) {
 
       <View style={styles.buttonView}>
         {!isLoading ? (
-          <MainButton onPress={handleAddDoctor} style={styles.button}>
-            Add Doctor
-          </MainButton>
+          <MainButton onPress={handleAddDoctor}>Add Doctor</MainButton>
         ) : (
-          <Button style={styles.button}>Adding Doctor...</Button>
+          <Button style={styles.button}>
+            <ActivityIndicator color={"#fff"} />
+          </Button>
         )}
       </View>
     </View>
@@ -167,6 +172,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 10,
+  },
+
+  input: {
+    color: Color.tagLine,
   },
 
   buttonView: {

@@ -5,6 +5,7 @@ import {
   Text,
   Alert,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { useState } from "react";
 
@@ -13,7 +14,6 @@ import { Color } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Font";
 
 // components
-import UploadImage from "../../../components/buttons/UploadImage";
 import MainButton from "../../../components/buttons/MainButton";
 import TextScreen from "../../../components/header/TextScreen";
 import TextInputs from "../../../components/Inputs/TextInputs";
@@ -136,96 +136,99 @@ export default function EditInventory({ navigation, route }) {
   };
 
   return (
-    <ScrollView style={styles.root} overScrollMode="never" bounces={false}>
-      <View>
-        <View style={styles.textContainer}>
-          <TextScreen style={styles.textScreen}>
-            # <Text style={styles.name}>{medicineName || ""}</Text>
-          </TextScreen>
-        </View>
+    <View style={styles.root}>
+      <ScrollView overScrollMode="never" bounces={false}>
+        <View>
+          <View style={styles.textContainer}>
+            <TextScreen style={styles.textScreen}>
+              # <Text style={styles.name}>{medicineName || ""}</Text>
+            </TextScreen>
+          </View>
 
-        <View style={styles.inputContainer}>
-          <InputText>Medicine Name:</InputText>
-          <TextInputs
-            style={styles.textInput}
-            placeholder={"Medicine Name"}
-            value={medicineName}
-            onChangeText={setMedicineName}
-          />
-
-          <InputText>Dosage:</InputText>
-          <TextInputs
-            inputMode={"numeric"}
-            keyboardType={"numeric"}
-            style={styles.textInput}
-            placeholder={"Dosage"}
-            maxLength={3}
-            value={dosage}
-            onChangeText={setDosage}
-          />
-
-          <InputText>Quantity:</InputText>
-          <TextInputs
-            inputMode={"numeric"}
-            keyboardType={"numeric"}
-            style={styles.textInput}
-            placeholder={"Stock"}
-            maxLength={3}
-            value={stock}
-            onChangeText={setStock}
-          />
-
-          <InputText>Expiration Date:</InputText>
-          <Pressable
-            style={[styles.textInput, styles.selectExpirationDate]}
-            onPress={() => setShowDatePicker(true)}
-          >
-            <Text style={styles.textSelect}>Tap to Select a Date</Text>
-          </Pressable>
-
-          {expirationDate && (
+          <View style={styles.inputContainer}>
+            <InputText style={styles.input}>Medicine Name:</InputText>
             <TextInputs
-              style={[styles.selectedDate, styles.textInput]}
-              editable={false}
-              placeholder={`Selected Date: ${expirationDate.toDateString()}`}
-              placeholderTextColor={Color.greenColor}
+              style={styles.textInput}
+              placeholder={"Medicine Name"}
+              value={medicineName}
+              onChangeText={setMedicineName}
             />
-          )}
 
-          {showDatePicker && (
-            <DateTimePicker
-              value={expirationDate || new Date()} // Default to current date if none selected
-              mode="date"
-              display="default"
-              onChange={handleDateChange}
+            <InputText style={styles.input}>Dosage:</InputText>
+            <TextInputs
+              inputMode={"numeric"}
+              keyboardType={"numeric"}
+              style={styles.textInput}
+              placeholder={"Dosage"}
+              maxLength={3}
+              value={dosage}
+              onChangeText={setDosage}
             />
-          )}
 
-          <InputText>Image:</InputText>
-          <UploadImage />
+            <InputText style={styles.input}>Quantity:</InputText>
+            <TextInputs
+              inputMode={"numeric"}
+              keyboardType={"numeric"}
+              style={styles.textInput}
+              placeholder={"Stock"}
+              maxLength={3}
+              value={stock}
+              onChangeText={setStock}
+            />
+
+            <InputText style={styles.input}>Expiration Date:</InputText>
+            <Pressable
+              style={[styles.textInput, styles.selectExpirationDate]}
+              onPress={() => setShowDatePicker(true)}
+            >
+              <Text style={styles.textSelect}>Tap to Select a Date</Text>
+            </Pressable>
+
+            {expirationDate && (
+              <TextInputs
+                style={[styles.selectedDate, styles.textInput]}
+                editable={false}
+                placeholder={`Selected Date: ${expirationDate.toDateString()}`}
+                placeholderTextColor={Color.tagLine}
+              />
+            )}
+
+            {showDatePicker && (
+              <DateTimePicker
+                value={expirationDate || new Date()} // Default to current date if none selected
+                mode="date"
+                display="default"
+                onChange={handleDateChange}
+              />
+            )}
+          </View>
+
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
+      </ScrollView>
 
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
-      </View>
-
-      <View style={styles.buttonContainer}>
-        {!isDeletingLoading ? (
-          <MainButton onPress={handleDeleteInventory} style={styles.button}>
-            Delete
-          </MainButton>
-        ) : (
-          <Button style={styles.button}>Deleting...</Button>
-        )}
-
+      <View>
         {!isInventoryLoading ? (
           <MainButton onPress={handleEditInventory} style={styles.editButton}>
             Edit Medicine
           </MainButton>
         ) : (
-          <Button style={styles.editButton}>Editing Medicine...</Button>
+          <Button style={styles.editButton}>
+            <ActivityIndicator color={"#fff"} />
+          </Button>
+        )}
+
+        {!isDeletingLoading ? (
+          <MainButton onPress={handleDeleteInventory} style={styles.button}>
+            Delete Medicine
+          </MainButton>
+        ) : (
+          <Button style={styles.button}>
+            <ActivityIndicator color={"#fff"} />
+          </Button>
         )}
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -233,6 +236,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     paddingHorizontal: 18,
+    justifyContent: "space-between",
   },
 
   textContainer: {
@@ -249,19 +253,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 10,
+    color: "#fff",
   },
 
-  buttonContainer: {
-    marginVertical: 50,
+  input: {
+    color: Color.tagLine,
   },
 
   button: {
-    marginBottom: 10,
+    marginBottom: 20,
     backgroundColor: Color.redColor,
   },
 
   editButton: {
-    marginBottom: 20,
+    marginBottom: 10,
+    backgroundColor: Color.greenColor,
   },
 
   name: {
@@ -278,7 +284,7 @@ const styles = StyleSheet.create({
 
   textSelect: {
     fontFamily: Fonts.main,
-    color: Color.tagLine,
+    color: "#fff",
   },
 
   selectExpirationDate: {

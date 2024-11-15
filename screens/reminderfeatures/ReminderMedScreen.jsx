@@ -65,7 +65,7 @@ export default function ReminderMedScreen({ navigation }) {
           </MainButton>
         ) : (
           <Button style={styles.isLoading} isEnable={false}>
-            Getting Started
+            <ActivityIndicator color={"#fff"} />
           </Button>
         )}
       </View>

@@ -180,7 +180,7 @@ export default function AuthLogin({ navigation }) {
             <Button isEnable={false}>
               <View style={styles.loadingView}>
                 <Text style={styles.loadingText}> Logging in</Text>
-                <ActivityIndicator size={"small"} color={Color.purpleColor} />
+                <ActivityIndicator size={"small"} color={"#fff"} />
               </View>
             </Button>
           )}

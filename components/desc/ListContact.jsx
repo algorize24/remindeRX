@@ -13,7 +13,7 @@ import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
 
 export default function ListContact({ itemData }) {
-  const { _id, image, name, phone_number } = itemData;
+  const { _id, name, phone_number } = itemData;
 
   const navigation = useNavigation();
 
@@ -58,7 +58,7 @@ export default function ListContact({ itemData }) {
       <View style={styles.container}>
         <Image
           style={styles.img}
-          source={{ uri: image || require("../../assets/others/user.png") }}
+          source={require("../../assets/others/user-avatar.png")}
         />
 
         <View style={styles.user}>

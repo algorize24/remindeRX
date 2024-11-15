@@ -8,8 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function ListInventory({ itemData }) {
   // this data is from the InventoryScreen.jsx
-  const { _id, image, medicine_name, dosage, expiration_date, stock } =
-    itemData;
+  const { _id, medicine_name, dosage, expiration_date, stock } = itemData;
   const navigation = useNavigation();
 
   // format expiration date YYYY/MM/DD
@@ -31,9 +30,7 @@ export default function ListInventory({ itemData }) {
         <View>
           <Image
             style={styles.img}
-            source={{
-              uri: image || require("../../assets/others/medicine.webp"),
-            }}
+            source={require("../../assets/others/medicine.webp")}
           />
         </View>
 
@@ -115,7 +112,7 @@ const styles = StyleSheet.create({
   },
 
   dosageText: {
-    color: Color.tagLine,
+    color: "#fff",
     textTransform: "lowercase",
   },
 });

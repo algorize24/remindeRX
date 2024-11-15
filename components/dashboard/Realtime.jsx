@@ -42,7 +42,6 @@ export default function Realtime({ name, size, title, num, label }) {
 
 const styles = StyleSheet.create({
   realtime: {
-    marginTop: 21,
     backgroundColor: Color.container,
     borderRadius: 8,
     minHeight: 92,

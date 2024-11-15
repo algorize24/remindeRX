@@ -79,7 +79,7 @@ export default function Userprofile() {
 
 const styles = StyleSheet.create({
   userInfo: {
-    marginTop: 24,
+    marginVertical: 24,
     flexDirection: "row",
     alignItems: "center",
   },
