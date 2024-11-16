@@ -5,19 +5,19 @@ import { useEffect } from "react";
 import { useReminder } from "../../../../context/reminderContext";
 
 export default function OnceDay({ navigation }) {
-  const { frequency, specificDays } = useReminder();
+  const { setFrequency } = useReminder();
 
-  useEffect(() => {
-    if (frequency) {
-      console.log("Reminder frequency is set to: ", frequency);
-    } else if (specificDays.length) {
-      console.log("Reminder is set for specific days: ", specificDays);
-    }
-  }, [frequency, specificDays]);
+  const handleNext = () => {
+    // Set frequency to "once" when selecting one dose
+    setFrequency("Once a day");
+    navigation.navigate("SetReminder");
+  };
+
   return (
     <TimeSelector
       navigation={navigation}
-      header={"When do you need to take the dose?"}
+      header="When do you need to take your medicine?"
+      onNext={handleNext}
     />
   );
 }

@@ -28,8 +28,18 @@ import axios from "axios";
 
 export default function SetReminder({ navigation }) {
   // reminderContext
-  const { medicationName, pillCount, reminderTime, frequency, specificDays } =
-    useReminder();
+  const {
+    medicationName,
+    pillCount,
+    reminderTime,
+    frequency,
+    specificDays,
+    setMedicationName,
+    setPillCount,
+    setReminderTime,
+    setFrequency,
+    setSpecificDays,
+  } = useReminder();
 
   const [isLoading, setIsLoading] = useState(false); // loading state
 
@@ -42,10 +52,14 @@ export default function SetReminder({ navigation }) {
     });
   }, [navigation, medicationName]);
 
-  // fn for mainbutton
-  // const handleAddReminder = async () => {
-  //   navigation.navigate("EventSchedule");
-  // };
+  // helper fn to clear fields
+  const clearFields = () => {
+    setMedicationName("");
+    setPillCount(1);
+    setReminderTime([]);
+    setFrequency("");
+    setSpecificDays([]);
+  };
 
   const handleAddReminder = async () => {
     setIsLoading(true);
@@ -59,15 +73,22 @@ export default function SetReminder({ navigation }) {
         // get the token
         const token = await currentUser.getIdToken();
 
+        // Validate reminderTime before proceeding
+        if (!Array.isArray(reminderTime) || reminderTime.length === 0) {
+          Alert.alert("Error", "Please set at least one reminder time.");
+          return;
+        }
+
         // create an object to send to database
         const reminderData = {
-          medicine_name: medicationName,
-          schedule,
-          frequency,
-          specificDays,
-          dosage: pillCount,
-          time: [reminderTime],
+          medicineName: medicationName, // Matches schema field
+          frequency, // Matches enum values in schema
+          specificDays, // Array of valid days or an empty array
+          dosage: pillCount, // Numeric value >= 1
+          times: (reminderTime || []).map((time) => time.toISOString()), // Convert to ISO format
         };
+
+        console.log("Reminder Data:", reminderData);
 
         // request to the backend together with object we created
         const response = await axios.post(
@@ -83,6 +104,7 @@ export default function SetReminder({ navigation }) {
         // if successfully created
         if (response.status === 201) {
           Alert.alert("Reminder Created", "New reminder created successfully");
+          clearFields(); // Reset the fields
           navigation.navigate("EventSchedule");
         }
       }

@@ -27,7 +27,7 @@ export default function Frequency({ navigation, route }) {
     });
   }, [navigation, medicationName]);
 
-  // navigate to different screens
+  // // navigate to different screens
   const handleNavigate = (frequency) => {
     setFrequency(frequency);
     navigation.navigate(frequency, { frequency }); // pass frequency to the next screen
@@ -42,7 +42,7 @@ export default function Frequency({ navigation, route }) {
           <View style={styles.container}>
             <View style={styles.subContainer}>
               <Pressable
-                onPress={() => handleNavigate("Onceday")}
+                onPress={() => handleNavigate("Once a day")}
                 style={({ pressed }) => [
                   styles.inputs,
                   pressed && styles.press,
@@ -51,7 +51,7 @@ export default function Frequency({ navigation, route }) {
                 <Text style={styles.textInterval}>Once a day</Text>
               </Pressable>
               <Pressable
-                onPress={() => handleNavigate("Twiceday")}
+                onPress={() => handleNavigate("Twice a day")}
                 style={({ pressed }) => [
                   styles.inputs,
                   pressed && styles.press,
@@ -61,7 +61,7 @@ export default function Frequency({ navigation, route }) {
               </Pressable>
 
               <Pressable
-                onPress={() => handleNavigate("Thriceday")}
+                onPress={() => handleNavigate("3 times a day")}
                 style={({ pressed }) => [
                   styles.inputs,
                   pressed && styles.press,

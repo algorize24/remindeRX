@@ -17,13 +17,13 @@ export default function TimePicker() {
   const [show, setShow] = useState(false);
 
   // reminder context
-  const { setReminderTime } = useReminder();
+  const { addReminderTime } = useReminder();
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || time;
     setShow(false);
     setTime(currentDate); // This date object includes both date and time
-    setReminderTime(currentDate);
+    addReminderTime(currentDate); // Add the new reminder time to the array
   };
 
   return (
@@ -31,17 +31,13 @@ export default function TimePicker() {
       <Pressable onPress={() => setShow(true)}>
         <Text style={styles.selectTime}>Tap to set the reminder time</Text>
       </Pressable>
-      <Text style={styles.selectedTime}>
-        Selected Time: {time.toLocaleTimeString()}
-      </Text>
-      {/* <Text style={styles.selectedTime}>Date: {time.toDateString()}</Text> */}
 
       {show && (
         <DateTimePicker
           value={time}
           mode="time"
           is24Hour={false}
-          display="default"
+          display="spinner"
           onChange={onChange}
         />
       )}

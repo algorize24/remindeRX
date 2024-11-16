@@ -11,31 +11,37 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function ReminderContainer({ itemData }) {
   // this data is from ReminderScreen.jsx
-  const { image, medicine_name, pills, time } = itemData;
+  const { medicineName, dosage, time } = itemData;
+
+  // format the time for display
+  const formattedTime = new Date(time).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true, // 12-hour format with AM/PM, if false, military time.
+  });
 
   // state for modal visibility
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.root}>
-      <Text style={styles.time}>{time}</Text>
-
-      {/* container section */}
-      <Pressable
-        onPress={() => setModalVisible(true)}
-        style={styles.mainContainer}
-      >
-        <View style={styles.container}>
-          <View>
-            <Image style={styles.img} source={image} />
+      <View style={styles.mapContainer}>
+        <Text style={styles.time}>{formattedTime}</Text>
+        <Pressable onPress={() => {}} style={styles.mainContainer}>
+          {/* Display medicine details */}
+          <View style={styles.container}>
+            <Image
+              style={styles.img}
+              source={require("../../assets/others/pill.png")}
+            />
+            <View style={styles.textContainer}>
+              <Text style={styles.medName}>{medicineName}</Text>
+              <Text style={styles.description}>
+                Take {dosage} Pill(s) of {medicineName}.
+              </Text>
+            </View>
           </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.medName}>{medicine_name}</Text>
-            <Text style={styles.description}>
-              Take {pills} Pill(s) of {medicine_name}.
-            </Text>
-          </View>
-        </View>
-      </Pressable>
+        </Pressable>
+      </View>
 
       {/* modal section */}
       <Modal
@@ -54,18 +60,23 @@ export default function ReminderContainer({ itemData }) {
             </Pressable>
 
             <View style={styles.modalHeader}>
-              <Image style={styles.img} source={image} />
-              <Text style={styles.modalTitle}>{medicine_name}</Text>
+              <Image
+                style={styles.img}
+                source={require("../../assets/others/pill.png")}
+              />
+              <Text style={styles.modalTitle}>{medicineName}</Text>
             </View>
 
             <View style={styles.infoContainer}>
               <MaterialIcons name="schedule" size={24} color="#fff" />
-              <Text style={styles.modalTime}>Scheduled for {time}, today</Text>
+              <Text style={styles.modalTime}>
+                Scheduled for {formattedTime}, today
+              </Text>
             </View>
 
             <View style={styles.infoContainer}>
               <MaterialCommunityIcons name="pill" size={24} color="#fff" />
-              <Text style={styles.modalDescription}>Take {pills} pill(s)</Text>
+              <Text style={styles.modalDescription}>Take {dosage} pill(s)</Text>
             </View>
 
             <View style={styles.actionButtons}>
@@ -83,6 +94,10 @@ export default function ReminderContainer({ itemData }) {
 }
 
 const styles = StyleSheet.create({
+  mapContainer: {
+    marginBottom: 13,
+  },
+
   root: {
     flex: 1,
     marginVertical: 10,
@@ -99,7 +114,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.main,
     fontSize: 18,
     color: "#fff",
-    marginBottom: 5,
+    marginBottom: 10,
   },
 
   container: {
@@ -122,12 +137,17 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.main,
     fontSize: 16,
     color: "#fff",
+    textTransform: "capitalize",
   },
 
   description: {
     fontFamily: Fonts.main,
     color: Color.tagLine,
     fontSize: 12,
+  },
+
+  textDesc: {
+    textTransform: "capitalize",
   },
 
   modalOverlay: {
@@ -156,6 +176,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     marginBottom: 30,
+    textTransform: "capitalize",
   },
 
   infoContainer: {

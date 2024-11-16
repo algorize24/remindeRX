@@ -490,7 +490,7 @@ export default function App() {
               />
 
               <Stack.Screen
-                name="Onceday"
+                name="Once a day"
                 component={OnceDay}
                 options={{
                   headerTintColor: "white",
@@ -499,7 +499,7 @@ export default function App() {
               />
 
               <Stack.Screen
-                name="Twiceday"
+                name="Twice a day"
                 component={TwiceDay}
                 options={{
                   headerTintColor: "white",
@@ -508,7 +508,7 @@ export default function App() {
               />
 
               <Stack.Screen
-                name="Thriceday"
+                name="3 times a day"
                 component={ThriceDay}
                 options={{
                   headerTintColor: "white",

@@ -16,11 +16,15 @@ import { useReminder } from "../../../../context/reminderContext";
 // icon
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-export default function TimeSelector({ navigation, header, routeReview }) {
-  // reminderContext
+export default function TimeSelector({
+  navigation,
+  header,
+  onNext,
+  routeReview,
+}) {
   const { medicationName, pillCount } = useReminder();
 
-  // avoid flickering the headerTitle
+  // Header title logic
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
@@ -29,11 +33,15 @@ export default function TimeSelector({ navigation, header, routeReview }) {
     });
   }, [navigation, medicationName]);
 
-  navigation;
   const handleRouting = () => {
-    if (routeReview) {
+    if (onNext) {
+      // Call the onNext handler to determine the flow
+      onNext();
+    } else if (routeReview) {
+      // Navigate to Review screen
       navigation.navigate("Review");
     } else {
+      // Navigate to SetReminder screen
       navigation.navigate("SetReminder");
     }
   };
