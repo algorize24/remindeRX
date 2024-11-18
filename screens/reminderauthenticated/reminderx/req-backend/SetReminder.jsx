@@ -30,14 +30,14 @@ export default function SetReminder({ navigation }) {
   // reminderContext
   const {
     medicationName,
-    pillCount,
-    reminderTime,
-    frequency,
-    specificDays,
     setMedicationName,
-    setPillCount,
+    dosages,
+    setDosages,
+    reminderTime,
     setReminderTime,
+    frequency,
     setFrequency,
+    specificDays,
     setSpecificDays,
   } = useReminder();
 
@@ -55,42 +55,49 @@ export default function SetReminder({ navigation }) {
   // helper fn to clear fields
   const clearFields = () => {
     setMedicationName("");
-    setPillCount(1);
+    setDosages([]);
     setReminderTime([]);
     setFrequency("");
     setSpecificDays([]);
   };
 
   const handleAddReminder = async () => {
+    if (reminderTime.length === 0) {
+      Alert.alert("Error", "Please set a reminder time.");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      // get the currentUser
+      // Get the currentUser
       const currentUser = auth.currentUser;
 
-      // if there's a currentUser
+      // If there's a currentUser
       if (currentUser) {
-        // get the token
+        // Get the token
         const token = await currentUser.getIdToken();
 
-        // Validate reminderTime before proceeding
-        if (!Array.isArray(reminderTime) || reminderTime.length === 0) {
-          Alert.alert("Error", "Please set at least one reminder time.");
-          return;
-        }
+        // Ensure dosage values are numbers
+        const correctedDosages = dosages.map((dosage) => ({
+          time: dosage.time,
+          dosage: Number(dosage.dosage), // Convert string to number
+        }));
 
-        // create an object to send to database
+        // Create an object to send to the database
         const reminderData = {
-          medicineName: medicationName, // Matches schema field
-          frequency, // Matches enum values in schema
-          specificDays, // Array of valid days or an empty array
-          dosage: pillCount, // Numeric value >= 1
-          times: (reminderTime || []).map((time) => time.toISOString()), // Convert to ISO format
+          medicineName: medicationName,
+          frequency,
+          specificDays,
+          dosage: correctedDosages, // Use the corrected dosages
+          times: Array.isArray(reminderTime)
+            ? reminderTime.map((time) => time.toISOString())
+            : [], // Fallback to an empty array if reminderTime is not an array
         };
 
         console.log("Reminder Data:", reminderData);
 
-        // request to the backend together with object we created
+        // Request to the backend with the created object
         const response = await axios.post(
           "http://10.0.2.2:5000/api/reminder/createreminder",
           reminderData,
@@ -101,7 +108,7 @@ export default function SetReminder({ navigation }) {
           }
         );
 
-        // if successfully created
+        // If successfully created
         if (response.status === 201) {
           Alert.alert("Reminder Created", "New reminder created successfully");
           clearFields(); // Reset the fields
@@ -114,16 +121,20 @@ export default function SetReminder({ navigation }) {
       setIsLoading(false);
     }
   };
+
   return (
     <View style={styles.root}>
-      <AuthText style={styles.text}>
-        Your medication <Text style={styles.rx}>reminder</Text> is ready to go.
-      </AuthText>
+      <View style={styles.container}>
+        <AuthText style={styles.text}>
+          Your medication <Text style={styles.rx}>reminder</Text> is ready to
+          go.
+        </AuthText>
 
-      <Image
-        style={styles.img}
-        source={require("../../../../assets/others/successful.png")}
-      />
+        <Image
+          style={styles.img}
+          source={require("../../../../assets/others/successful.png")}
+        />
+      </View>
 
       <View style={styles.buttonView}>
         {!isLoading ? (
@@ -146,13 +157,21 @@ export default function SetReminder({ navigation }) {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    justifyContent: "space-between",
+  },
+
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    // borderWidth: 2,
+    marginVertical: 50,
   },
 
   title: {
     fontFamily: Fonts.main,
     textTransform: "capitalize",
     color: "#fff",
-    fontSize: 19,
+    fontSize: 14,
   },
 
   testText: {
@@ -163,7 +182,7 @@ const styles = StyleSheet.create({
   text: {
     textTransform: "none",
     marginHorizontal: 18,
-    marginTop: 50,
+    // marginTop: 50,
     fontSize: 20,
     width: 320,
   },
@@ -172,7 +191,7 @@ const styles = StyleSheet.create({
     width: 380,
     height: 320,
     borderWidth: 2,
-    marginVertical: 50,
+    // marginVertical: 50,
     margin: "auto",
   },
 
@@ -182,6 +201,7 @@ const styles = StyleSheet.create({
 
   buttonView: {
     alignItems: "center",
+    marginBottom: 20,
   },
 
   button: {

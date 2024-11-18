@@ -13,7 +13,7 @@ export default function ReminderContextProvider({ children }) {
   const [medicationName, setMedicationName] = useState("");
 
   // dosage / pill count
-  const [pillCount, setPillCount] = useState(1);
+  const [dosages, setDosages] = useState([]);
 
   // time picker
   const [reminderTime, setReminderTime] = useState([]);
@@ -24,40 +24,19 @@ export default function ReminderContextProvider({ children }) {
   // track specific days for 'specificdays'
   const [specificDays, setSpecificDays] = useState([]);
 
-  // Function to add or reset reminder time based on frequency
-  const addReminderTime = (time) => {
-    setReminderTime((prevTimes) => {
-      if (frequency === "Once a day") {
-        return [time]; // Replace with a single time for "Once a day"
-      } else if (frequency === "Twice a day") {
-        if (prevTimes.length === 0) {
-          return [time]; // Add the first time
-        } else if (prevTimes.length === 1) {
-          return [...prevTimes, time]; // Add the second time
-        } else {
-          const updatedTimes = [...prevTimes];
-          updatedTimes[1] = time; // Update the second dose time
-          return updatedTimes;
-        }
-      }
-      // Add additional frequency handling logic here if needed
-      return prevTimes; // Default case, return the previous state
-    });
-  };
-
   // value pass to provider
   value = {
     medicationName,
     setMedicationName,
-    pillCount,
-    setPillCount,
+    dosages,
+    setDosages,
     reminderTime,
     setReminderTime,
     frequency,
     setFrequency,
     specificDays,
     setSpecificDays,
-    addReminderTime,
+    updateDosages: (newDosages) => setDosages(newDosages),
   };
   return (
     <ReminderContext.Provider value={value}>

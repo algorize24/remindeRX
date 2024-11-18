@@ -68,25 +68,29 @@ import ChatbotScreen from "./components/dashboard/ChatbotScreen";
 // crud - screen
 import AddContact from "./screens/reminderauthenticated/add/AddContact";
 import AddMedicine from "./screens/reminderauthenticated/add/AddMedicine";
-import AddReminder from "./screens/reminderauthenticated/add/AddReminder";
 import AddDoctor from "./screens/reminderauthenticated/add/AddDoctor";
 import EditContact from "./screens/reminderauthenticated/edit/EditContact";
 import EditInventory from "./screens/reminderauthenticated/edit/EditInventory";
-import EditPills from "./screens/reminderauthenticated/edit/EditPills";
 import EditDoctors from "./screens/reminderauthenticated/edit/EditDoctors";
 
-// reminderx - notif
-import IntervalRx from "./screens/reminderauthenticated/reminderx/IntervalRx";
-import Frequency from "./screens/reminderauthenticated/reminderx/Frequency";
-import Week from "./screens/reminderauthenticated/reminderx/selection/Week"; // specific days of the week
-import OnceDay from "./screens/reminderauthenticated/reminderx/selection/OnceDay"; // once a day
-import TwiceDay from "./screens/reminderauthenticated/reminderx/selection/TwiceDay"; // twice a day
-import ThriceDay from "./screens/reminderauthenticated/reminderx/selection/ThriceDay"; // 3 times a day
-import EveryX from "./screens/reminderauthenticated/reminderx/selection/EveryX"; // every X hours
-import SetReminder from "./screens/reminderauthenticated/reminderx/selection/SetReminder";
-import TimeSelector from "./screens/reminderauthenticated/reminderx/selection/TimeSelector";
-import Reviewreminder from "./screens/reminderauthenticated/reminderx/selection/Reviewreminder";
-import SetInterval from "./screens/reminderauthenticated/reminderx/selection/SetInterval";
+// reminderx - notif - main fn.
+
+// -- add-reminder
+import AddReminder from "./screens/reminderauthenticated/reminderx/add-reminder/AddReminder";
+
+// -- how-often-do-you-take
+import OftenTake from "./screens/reminderauthenticated/reminderx/how-often-do-you-take/OftenTake";
+import OftenEveryday from "./screens/reminderauthenticated/reminderx/how-often-do-you-take/Often-Everyday";
+import OftenWeek from "./screens/reminderauthenticated/reminderx/how-often-do-you-take/Often-Week";
+
+// -- add-pills
+import AddPills from "./screens/reminderauthenticated/reminderx/add-pills/AddPills";
+
+// -- select-time
+import SelectTime from "./screens/reminderauthenticated/reminderx/select-time/SelectTime";
+
+// -- req-backend
+import SetReminder from "./screens/reminderauthenticated/reminderx/req-backend/SetReminder";
 
 // context
 import AuthContextProvider from "./context/authContext";
@@ -441,12 +445,13 @@ export default function App() {
                   title: "Add Reminder",
                   headerTintColor: "white",
                   headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
                 }}
               />
 
               <Stack.Screen
-                name="Interval"
-                component={IntervalRx}
+                name="OftenTake"
+                component={OftenTake}
                 options={{
                   headerTintColor: "white",
                   headerTitleAlign: "center",
@@ -454,8 +459,8 @@ export default function App() {
               />
 
               <Stack.Screen
-                name="Frequency"
-                component={Frequency}
+                name="OftenEveryday"
+                component={OftenEveryday}
                 options={{
                   headerTintColor: "white",
                   headerTitleAlign: "center",
@@ -463,8 +468,8 @@ export default function App() {
               />
 
               <Stack.Screen
-                name="Timeselector"
-                component={TimeSelector}
+                name="OftenWeek"
+                component={OftenWeek}
                 options={{
                   headerTintColor: "white",
                   headerTitleAlign: "center",
@@ -472,8 +477,8 @@ export default function App() {
               />
 
               <Stack.Screen
-                name="Review"
-                component={Reviewreminder}
+                name="AddPills"
+                component={AddPills}
                 options={{
                   headerTintColor: "white",
                   headerTitleAlign: "center",
@@ -481,62 +486,8 @@ export default function App() {
               />
 
               <Stack.Screen
-                name="SetInterval"
-                component={SetInterval}
-                options={{
-                  headerTintColor: "white",
-                  headerTitleAlign: "center",
-                }}
-              />
-
-              <Stack.Screen
-                name="Once a day"
-                component={OnceDay}
-                options={{
-                  headerTintColor: "white",
-                  headerTitleAlign: "center",
-                }}
-              />
-
-              <Stack.Screen
-                name="Twice a day"
-                component={TwiceDay}
-                options={{
-                  headerTintColor: "white",
-                  headerTitleAlign: "center",
-                }}
-              />
-
-              <Stack.Screen
-                name="3 times a day"
-                component={ThriceDay}
-                options={{
-                  headerTintColor: "white",
-                  headerTitleAlign: "center",
-                }}
-              />
-
-              <Stack.Screen
-                name="EveryX"
-                component={EveryX}
-                options={{
-                  headerTintColor: "white",
-                  headerTitleAlign: "center",
-                }}
-              />
-
-              <Stack.Screen
-                name="Week"
-                component={Week}
-                options={{
-                  headerTintColor: "white",
-                  headerTitleAlign: "center",
-                }}
-              />
-
-              <Stack.Screen
-                name="EditPills"
-                component={EditPills}
+                name="PickTime"
+                component={SelectTime}
                 options={{
                   headerTintColor: "white",
                   headerTitleAlign: "center",

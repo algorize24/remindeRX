@@ -32,7 +32,6 @@ export default function ReminderScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // fetch the data from database, display only by certain user
   const fetchReminder = async () => {
     setIsLoading(true);
 
@@ -51,22 +50,27 @@ export default function ReminderScreen({ navigation }) {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        // flatten and ensure proper date parsing. make sure all in reminder the time in each object is in ascending.
+        // Flatten the reminders and ensure the correct mapping of time and dosage
         const flattenedReminders = response.data.reminder
-          .flatMap((reminder) =>
-            reminder.times.map((time) => ({
-              time: new Date(time), // ensure `time` is converted to a Date object
+          .flatMap((reminder) => {
+            // Check if dosage is a nested array and flatten it
+            const dosageArray = Array.isArray(reminder.dosage)
+              ? reminder.dosage.flat() // Flatten the nested array if needed
+              : []; // If not an array, use an empty array
+
+            return dosageArray.map((dose, index) => ({
+              time: new Date(reminder.times[index]), // Correctly map time to dosage
               medicineName: reminder.medicineName,
-              dosage: reminder.dosage,
-            }))
-          )
-          .sort((a, b) => a.time - b.time); // sort by time ascending
+              dosage: dose.dosage, // Access the correct dosage value
+            }));
+          })
+          .sort((a, b) => a.time - b.time); // Sort by time ascending
 
         setDisplayReminder(flattenedReminders);
       }
     } catch (error) {
       console.log(error);
-      setError("An unexpected error occurred. Please try again later.", error);
+      setError("An unexpected error occurred. Please try again later.");
     } finally {
       setIsLoading(false);
     }

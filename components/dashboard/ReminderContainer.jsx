@@ -10,23 +10,28 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function ReminderContainer({ itemData }) {
-  // this data is from ReminderScreen.jsx
-  const { medicineName, dosage, time } = itemData;
+  const { time, dosage, medicineName } = itemData;
 
-  // format the time for display
+  // Format the time for display
   const formattedTime = new Date(time).toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
-    hour12: true, // 12-hour format with AM/PM, if false, military time.
+    hour12: true, // 12-hour format with AM/PM
   });
 
-  // state for modal visibility
   const [modalVisible, setModalVisible] = useState(false);
+
+  // If dosage is a single number, convert it into an array
+  const safeDosage = Array.isArray(dosage) ? dosage : [{ dosage }];
+
   return (
     <View style={styles.root}>
       <View style={styles.mapContainer}>
         <Text style={styles.time}>{formattedTime}</Text>
-        <Pressable onPress={() => {}} style={styles.mainContainer}>
+        <Pressable
+          onPress={() => setModalVisible(true)}
+          style={styles.mainContainer}
+        >
           {/* Display medicine details */}
           <View style={styles.container}>
             <Image
@@ -35,15 +40,17 @@ export default function ReminderContainer({ itemData }) {
             />
             <View style={styles.textContainer}>
               <Text style={styles.medName}>{medicineName}</Text>
-              <Text style={styles.description}>
-                Take {dosage} Pill(s) of {medicineName}.
-              </Text>
+              {safeDosage.map((item, index) => (
+                <Text key={index} style={styles.description}>
+                  Take {item.dosage} Pill(s) of {medicineName}.
+                </Text>
+              ))}
             </View>
           </View>
         </Pressable>
       </View>
 
-      {/* modal section */}
+      {/* Modal Section */}
       <Modal
         animationType="fade"
         transparent={true}
@@ -76,7 +83,11 @@ export default function ReminderContainer({ itemData }) {
 
             <View style={styles.infoContainer}>
               <MaterialCommunityIcons name="pill" size={24} color="#fff" />
-              <Text style={styles.modalDescription}>Take {dosage} pill(s)</Text>
+              {safeDosage.map((item, index) => (
+                <Text key={index} style={styles.modalDescription}>
+                  Take {item.dosage} pill(s)
+                </Text>
+              ))}
             </View>
 
             <View style={styles.actionButtons}>

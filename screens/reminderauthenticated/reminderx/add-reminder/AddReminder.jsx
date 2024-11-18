@@ -2,16 +2,16 @@ import { View, Text, StyleSheet } from "react-native";
 import { useState } from "react";
 
 // component
-import MainButton from "../../../components/buttons/MainButton";
-import TextInputs from "../../../components/Inputs/TextInputs";
-import AuthText from "../../../components/header/AuthText";
+import MainButton from "../../../../components/buttons/MainButton";
+import TextInputs from "../../../../components/Inputs/TextInputs";
+import AuthText from "../../../../components/header/AuthText";
 
 // constants
-import { Color } from "../../../constants/Color";
-import { Fonts } from "../../../constants/Font";
+import { Color } from "../../../../constants/Color";
+import { Fonts } from "../../../../constants/Font";
 
 // context
-import { useReminder } from "../../../context/reminderContext";
+import { useReminder } from "../../../../context/reminderContext";
 
 export default function AddReminder({ navigation }) {
   // from ReminderContext
@@ -31,7 +31,7 @@ export default function AddReminder({ navigation }) {
     // check if medName is not empty or whitespace
     if (medName.trim()) {
       setMedicationName(medName);
-      navigation.navigate("Interval");
+      navigation.navigate("OftenTake");
 
       // reset the field
       setMedName("");
