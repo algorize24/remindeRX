@@ -12,8 +12,10 @@ import AuthText from "../../../../components/header/AuthText";
 import { useReminder } from "../../../../context/reminderContext";
 
 export default function OftenEveryday({ navigation }) {
+  // reminderContext
   const { medicationName, setFrequency } = useReminder();
 
+  // dynamically change the title
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
@@ -30,6 +32,11 @@ export default function OftenEveryday({ navigation }) {
     {
       path: "PickTime",
       frequency: "Twice a day",
+    },
+
+    {
+      path: "PickTime",
+      frequency: "3 times a day",
     },
   ];
 

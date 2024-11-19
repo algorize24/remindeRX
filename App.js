@@ -85,9 +85,11 @@ import OftenWeek from "./screens/reminderauthenticated/reminderx/how-often-do-yo
 
 // -- add-pills
 import AddPills from "./screens/reminderauthenticated/reminderx/add-pills/AddPills";
+import AddPillsWeek from "./screens/reminderauthenticated/reminderx/add-pills/AddPillsWeek";
 
 // -- select-time
 import SelectTime from "./screens/reminderauthenticated/reminderx/select-time/SelectTime";
+import SelectTimeWeek from "./screens/reminderauthenticated/reminderx/select-time/SelectTimeWeek";
 
 // -- req-backend
 import SetReminder from "./screens/reminderauthenticated/reminderx/req-backend/SetReminder";
@@ -486,8 +488,26 @@ export default function App() {
               />
 
               <Stack.Screen
+                name="AddPillsWeek"
+                component={AddPillsWeek}
+                options={{
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                }}
+              />
+
+              <Stack.Screen
                 name="PickTime"
                 component={SelectTime}
+                options={{
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                }}
+              />
+
+              <Stack.Screen
+                name="PickTimeWeek"
+                component={SelectTimeWeek}
                 options={{
                   headerTintColor: "white",
                   headerTitleAlign: "center",

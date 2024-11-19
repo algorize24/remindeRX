@@ -70,34 +70,33 @@ export default function SetReminder({ navigation }) {
     setIsLoading(true);
 
     try {
-      // Get the currentUser
       const currentUser = auth.currentUser;
 
-      // If there's a currentUser
       if (currentUser) {
-        // Get the token
         const token = await currentUser.getIdToken();
 
-        // Ensure dosage values are numbers
+        // Ensure dosage values are numbers and time is standardized
         const correctedDosages = dosages.map((dosage) => ({
-          time: dosage.time,
+          time: new Date(dosage.time).toISOString(),
           dosage: Number(dosage.dosage), // Convert string to number
         }));
 
-        // Create an object to send to the database
+        // Ensure specificDays is properly formatted
+        const correctedSpecificDays = Array.isArray(specificDays)
+          ? specificDays
+          : [specificDays];
+
+        // Use the `time` from the `dosage` array for `times`
         const reminderData = {
           medicineName: medicationName,
-          frequency,
-          specificDays,
-          dosage: correctedDosages, // Use the corrected dosages
-          times: Array.isArray(reminderTime)
-            ? reminderTime.map((time) => time.toISOString())
-            : [], // Fallback to an empty array if reminderTime is not an array
+          frequency: frequency || "Once a day",
+          specificDays: correctedSpecificDays, // Pass as an array
+          dosage: correctedDosages,
+          times: correctedDosages.map((d) => d.time), // Derive `times` from `dosage`
         };
 
         console.log("Reminder Data:", reminderData);
 
-        // Request to the backend with the created object
         const response = await axios.post(
           "http://10.0.2.2:5000/api/reminder/createreminder",
           reminderData,
@@ -108,15 +107,14 @@ export default function SetReminder({ navigation }) {
           }
         );
 
-        // If successfully created
         if (response.status === 201) {
           Alert.alert("Reminder Created", "New reminder created successfully");
-          clearFields(); // Reset the fields
+          clearFields();
           navigation.navigate("EventSchedule");
         }
       }
     } catch (error) {
-      console.log(error);
+      console.log("Error creating reminder:", error);
     } finally {
       setIsLoading(false);
     }

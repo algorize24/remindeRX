@@ -98,7 +98,6 @@ export default function ReminderScreen({ navigation }) {
             bounces={false}
             overScrollMode="never"
             data={displayReminder}
-            // keyExtractor={(item) => item._id.toString()}
             keyExtractor={(item, index) =>
               `${item.time}-${item.medicineName}-${index}`
             }

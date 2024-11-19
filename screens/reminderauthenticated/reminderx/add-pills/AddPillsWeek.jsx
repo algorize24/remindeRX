@@ -13,72 +13,56 @@ import AuthText from "../../../../components/header/AuthText";
 // context
 import { useReminder } from "../../../../context/reminderContext";
 
-export default function AddPills({ navigation }) {
-  const { medicationName, frequency, updateDosages, reminderTime } =
-    useReminder();
+export default function AddPillsWeek({ navigation, route }) {
+  const { medicationName, updateDosages } = useReminder();
+  const { specificDay, selectedTime } = route.params; // Get specific day and time
 
-  // Format reminder time as a string (example: "12:30 PM")
-  const formattedReminderTimes = reminderTime.map((time) =>
-    time instanceof Date
-      ? time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-      : "No time set"
-  );
-
-  const frequencyMap = {
-    "Once a day": 1,
-    "Twice a day": 2,
-    "3 times a day": 3,
-  };
-
-  const [pillCounts, setPillCounts] = useState(
-    Array(frequencyMap[frequency] || 1).fill("1")
-  );
-
-  const handlePillCountChange = (index, value) => {
-    const updatedPillCounts = [...pillCounts];
-    updatedPillCounts[index] = value;
-    setPillCounts(updatedPillCounts);
-  };
+  const [pillCount, setPillCount] = useState("1"); // Default pill count
 
   const handleAddPills = () => {
-    // Combine reminder times and dosages into an array of objects
-    const reminderData = reminderTime.map((time, index) => ({
-      time: time.toISOString(),
-      dosage: pillCounts[index], // Corresponding dosage for each time
-    }));
+    const reminderData = {
+      day: specificDay,
+      time: selectedTime, // Pass the time from `route.params`
+      dosage: Number(pillCount), // Ensure dosage is a number
+    };
 
-    // Save to context
-    updateDosages(reminderData); // Update with time and dosage pairs
+    updateDosages((prevDosages) => {
+      if (Array.isArray(prevDosages)) {
+        return [...prevDosages, reminderData];
+      }
+      return [reminderData];
+    });
+
     navigation.navigate("SetReminder");
   };
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: () => (
-        <Text style={styles.title}>{medicationName && medicationName}</Text>
-      ),
+      headerTitle: () => <Text style={styles.title}>{medicationName}</Text>,
     });
-  }, [navigation, medicationName, frequency]);
+  }, [navigation, medicationName]);
 
   return (
     <View style={styles.root}>
-      <AuthText style={styles.text}>How many pill(s) do you take?</AuthText>
+      <AuthText style={styles.text}>
+        How many pill(s) do you take on {specificDay} at{" "}
+        {new Date(selectedTime).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+        ?
+      </AuthText>
 
       <View style={styles.container}>
-        <View style={styles.subContainer}>
-          {pillCounts.map((pillCount, index) => (
-            <View style={styles.inputView} key={index}>
-              <Text style={styles.time}>{formattedReminderTimes[index]}</Text>
-              <TextInputs
-                style={styles.input}
-                maxLength={2}
-                keyboardType={"numeric"}
-                value={pillCount}
-                onChangeText={(value) => handlePillCountChange(index, value)}
-              />
-              <Text style={styles.pills}>Pill(s)</Text>
-            </View>
-          ))}
+        <View style={styles.inputView}>
+          <TextInputs
+            style={styles.input}
+            maxLength={2}
+            keyboardType={"numeric"}
+            value={pillCount}
+            onChangeText={(value) => setPillCount(value)}
+          />
+          <Text style={styles.pills}>Pill(s)</Text>
         </View>
 
         <View style={styles.buttonView}>
@@ -90,7 +74,6 @@ export default function AddPills({ navigation }) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   root: {
     flex: 1,

@@ -38,8 +38,8 @@ export default function ReminderMedScreen({ navigation }) {
   };
   return (
     <SafeAreaView style={styles.root}>
-      <FeatureText style={styles.featureText} />
-      <View>
+      <View style={styles.container}>
+        <FeatureText style={styles.featureText} />
         {imageLoading && <ActivityIndicator color={Color.purpleColor} />}
 
         <Image
@@ -58,13 +58,13 @@ export default function ReminderMedScreen({ navigation }) {
           for your medications, ensuring you never miss a dose and manage your
           health with ease.
         </Text>
+      </View>
 
+      <View>
         {!isLoading ? (
-          <MainButton onPress={handleNext} style={styles.mainButton}>
-            Get Started
-          </MainButton>
+          <MainButton onPress={handleNext}>Get Started</MainButton>
         ) : (
-          <Button style={styles.isLoading} isEnable={false}>
+          <Button isEnable={false}>
             <ActivityIndicator color={"#fff"} />
           </Button>
         )}
@@ -76,8 +76,13 @@ export default function ReminderMedScreen({ navigation }) {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingVertical: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     paddingHorizontal: 10,
+    justifyContent: "space-between",
+  },
+
+  container: {
+    flex: 1,
     justifyContent: "center",
   },
 
@@ -91,7 +96,7 @@ const styles = StyleSheet.create({
   },
 
   textPolicy: {
-    fontSize: 28,
+    fontSize: 22,
     marginTop: 10,
     paddingHorizontal: 10,
   },
@@ -105,15 +110,5 @@ const styles = StyleSheet.create({
   rxText: {
     color: Color.purpleColor,
     fontWeight: "bold",
-  },
-
-  mainButton: {
-    paddingHorizontal: 10,
-    justifyContent: "flex-end",
-    marginTop: 88,
-  },
-
-  isLoading: {
-    marginTop: 88,
   },
 });

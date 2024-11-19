@@ -30,8 +30,8 @@ export default function RealTimeScreen({ navigation }) {
   };
   return (
     <SafeAreaView style={styles.root}>
-      <FeatureText style={styles.featureText} />
-      <View>
+      <View style={styles.container}>
+        <FeatureText style={styles.featureText} />
         {imageLoading && <ActivityIndicator color={Color.purpleColor} />}
 
         <Image
@@ -47,13 +47,13 @@ export default function RealTimeScreen({ navigation }) {
         <Text style={styles.mainText}>
           Monitor your <Text style={styles.rxText}>vital signs</Text> and{" "}
           <Text style={styles.rxText}>glucose</Text> in real-time, ensuring
-          up-to-the-minue insights into your health. Stay informed with live
+          up-to-the-minute insights into your health. Stay informed with live
           updates for better health management.
         </Text>
+      </View>
 
-        <MainButton onPress={handleNext} style={styles.mainButton}>
-          Next
-        </MainButton>
+      <View>
+        <MainButton onPress={handleNext}>Next</MainButton>
       </View>
     </SafeAreaView>
   );
@@ -62,8 +62,13 @@ export default function RealTimeScreen({ navigation }) {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingVertical: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     paddingHorizontal: 10,
+    justifyContent: "space-between",
+  },
+
+  container: {
+    flex: 1,
     justifyContent: "center",
   },
 
@@ -77,7 +82,7 @@ const styles = StyleSheet.create({
   },
 
   textPolicy: {
-    fontSize: 28,
+    fontSize: 22,
     marginTop: 10,
     paddingHorizontal: 10,
   },
@@ -91,11 +96,5 @@ const styles = StyleSheet.create({
   rxText: {
     color: Color.purpleColor,
     fontWeight: "bold",
-  },
-
-  mainButton: {
-    paddingHorizontal: 10,
-    justifyContent: "flex-end",
-    marginTop: 88,
   },
 });

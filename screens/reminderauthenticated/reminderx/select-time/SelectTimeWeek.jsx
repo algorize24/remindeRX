@@ -15,39 +15,34 @@ import { useReminder } from "../../../../context/reminderContext";
 // date & time picker expo
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-export default function SelectTime({ navigation }) {
-  const { medicationName, setReminderTime, frequency } = useReminder();
+export default function SelectTimeWeek({ navigation, route }) {
+  const { medicationName, setReminderTime } = useReminder();
+  const { specificDay } = route.params; // Get the specific day from navigation
 
-  const [time, setTime] = useState([new Date(), new Date(), new Date()]);
+  const [time, setTime] = useState(new Date()); // Default to current time
   const [show, setShow] = useState(false);
-  const [timeIndex, setTimeIndex] = useState(0);
 
-  const handleTime = () => {
-    const filteredTimes =
-      frequency === "Once a day"
-        ? [time[0]]
-        : frequency === "Twice a day"
-        ? time.slice(0, 2)
-        : time;
-    setReminderTime(filteredTimes);
-    navigation.navigate("AddPills");
-  };
-
+  // Update time when user selects a new time
   const handleTimeChange = (event, selectedDate) => {
     if (event.type === "set") {
-      const updatedTime = [...time];
-      updatedTime[timeIndex] = selectedDate || time[timeIndex];
-      setTime(updatedTime);
+      setTime(selectedDate || time); // Set the selected time or keep the previous one
     }
-    setShow(false);
+    setShow(false); // Hide the date picker
   };
 
-  const handleSwitchTime = () => {
-    if (frequency === "Twice a day") {
-      setTimeIndex((prevIndex) => (prevIndex === 0 ? 1 : 0)); // Toggle between Dose 1 and Dose 2
-    } else if (frequency === "3 times a day") {
-      setTimeIndex((prevIndex) => (prevIndex + 1) % 3); // Cycle through 0, 1, 2
-    }
+  const handleNext = () => {
+    // Update the reminder time with the selected day and time
+    setReminderTime((prevReminderTimes) => {
+      const newReminder = { day: specificDay, time: time.toISOString() }; // Convert time to ISO string
+      return Array.isArray(prevReminderTimes)
+        ? [...prevReminderTimes, newReminder]
+        : [newReminder];
+    });
+
+    navigation.navigate("AddPillsWeek", {
+      specificDay,
+      selectedTime: time.toISOString(), // Pass the selected time as an ISO string
+    });
   };
 
   useLayoutEffect(() => {
@@ -59,21 +54,20 @@ export default function SelectTime({ navigation }) {
   return (
     <View style={styles.root}>
       <AuthText style={styles.text}>
-        When do you need to take the dose?
+        When do you need to take the dose on {specificDay}?
       </AuthText>
 
       <View style={styles.container}>
         <View style={styles.subContainer}>
           <Pressable onPress={() => setShow(true)}>
             <Text style={styles.selectTime}>
-              Set the time for your {["first", "second", "third"][timeIndex]}{" "}
-              dose reminder
+              Set the time for your dose reminder
             </Text>
           </Pressable>
 
           {show && (
             <DateTimePicker
-              value={time[timeIndex]} // ensure this is a valid Date object
+              value={time} // Use the updated time state
               mode="time"
               is24Hour={false}
               display="spinner"
@@ -83,24 +77,8 @@ export default function SelectTime({ navigation }) {
           )}
         </View>
 
-        {frequency === "Twice a day" && timeIndex === 0 && (
-          <View style={styles.buttonView}>
-            <MainButton onPress={handleSwitchTime} style={styles.setButton}>
-              Pick time for Dose 2
-            </MainButton>
-          </View>
-        )}
-
-        {frequency === "3 times a day" && timeIndex < 2 && (
-          <View style={styles.buttonView}>
-            <MainButton onPress={handleSwitchTime} style={styles.setButton}>
-              Pick time for Dose {timeIndex + 2}
-            </MainButton>
-          </View>
-        )}
-
         <View style={styles.buttonView}>
-          <MainButton onPress={handleTime} style={styles.button}>
+          <MainButton onPress={handleNext} style={styles.button}>
             Next
           </MainButton>
         </View>
@@ -163,10 +141,5 @@ const styles = StyleSheet.create({
 
   button: {
     width: "90%",
-  },
-
-  setButton: {
-    width: "90%",
-    backgroundColor: Color.textInput,
   },
 });
