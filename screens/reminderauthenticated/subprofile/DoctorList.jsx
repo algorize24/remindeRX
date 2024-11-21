@@ -1,13 +1,9 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  FlatList,
-  ActivityIndicator,
-} from "react-native";
+import { View, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useState, useCallback } from "react";
+
+// image
+import EmptyImage from "../../../assets/others/doctorempty.png";
 
 // constants
 import { Color } from "../../../constants/Color";
@@ -15,6 +11,8 @@ import { Fonts } from "../../../constants/Font";
 
 // component
 import ListDoctor from "../../../components/desc/ListDoctor";
+import ErrorComponent from "../../../components/dashboard/ErrorComponent";
+import IsEmpty from "../../../components/dashboard/isEmpty";
 
 // axios
 import axios from "axios";
@@ -77,7 +75,9 @@ export default function DoctorList() {
   return (
     <>
       {error ? (
-        <Text style={styles.errorText}>{error}</Text>
+        <View style={styles.error}>
+          <ErrorComponent message={error} />
+        </View>
       ) : isLoading ? (
         <ActivityIndicator size={"large"} color={Color.purpleColor} />
       ) : doctorsData && doctorsData.length > 0 ? (
@@ -90,9 +90,10 @@ export default function DoctorList() {
         />
       ) : (
         <View style={styles.isEmpty}>
-          <Text style={styles.isEmptyText}>
-            You haven't added any doctor yet
-          </Text>
+          <IsEmpty
+            image={EmptyImage}
+            message={"You haven’t added any doctor yet"}
+          />
         </View>
       )}
     </>
@@ -114,10 +115,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  isEmptyText: {
-    textAlign: "center",
-    color: Color.tagLine,
-    fontFamily: Fonts.main,
-    fontSize: 13,
+  error: {
+    flex: 1,
+    justifyContent: "center",
   },
 });

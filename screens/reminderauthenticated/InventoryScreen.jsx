@@ -1,21 +1,18 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-} from "react-native";
+import { View, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 
+// empty image
+import EmptyImage from "../../assets/others/inventoryempty.png";
+
 // constant
-import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
 
 // components
 import ListInventory from "../../components/desc/ListInventory";
-import TextScreen from "../../components/header/TextScreen";
 import Label from "../../components/dashboard/Label";
+import ErrorComponent from "../../components/dashboard/ErrorComponent";
+import IsEmpty from "../../components/dashboard/isEmpty";
 
 // axios
 import axios from "axios";
@@ -86,7 +83,9 @@ export default function InventoryScreen({ navigation }) {
         </Label>
 
         {error ? (
-          <Text style={styles.errorText}>{error}</Text>
+          <View style={styles.error}>
+            <ErrorComponent message={error} />
+          </View>
         ) : isLoading ? (
           <ActivityIndicator size={"large"} color={Color.purpleColor} />
         ) : displayInventory && displayInventory.length > 0 ? (
@@ -101,9 +100,10 @@ export default function InventoryScreen({ navigation }) {
           />
         ) : (
           <View style={styles.isEmpty}>
-            <Text style={styles.isEmptyText}>
-              You haven't added any items yet
-            </Text>
+            <IsEmpty
+              image={EmptyImage}
+              message={"You haven’t added any medicine yet"}
+            />
           </View>
         )}
       </View>
@@ -130,18 +130,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  isEmptyText: {
-    textAlign: "center",
-    color: Color.tagLine,
-    fontFamily: Fonts.main,
-    fontSize: 13,
-  },
-
-  errorText: {
-    color: Color.redColor,
-    fontFamily: Fonts.main,
-    fontSize: 13,
-    marginVertical: 10,
-    textAlign: "center",
+  error: {
+    flex: 1,
+    justifyContent: "center",
   },
 });

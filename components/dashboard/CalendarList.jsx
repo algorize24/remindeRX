@@ -8,11 +8,7 @@ import { Fonts } from "../../constants/Font";
 // moment for date
 import moment from "moment/moment";
 
-export default function CalendarList() {
-  // State for selected date, initialized with today's date in 'YYYY-MM-DD' format
-  const [selectedDate, setSelectedDate] = useState(
-    moment().format("YYYY-MM-DD")
-  );
+export default function CalendarList({ selectedDate, setSelectedDate }) {
   // State for the start of the current week (Monday)
   const [currentWeekStart, setCurrentWeekStart] = useState(
     moment().startOf("isoWeek")

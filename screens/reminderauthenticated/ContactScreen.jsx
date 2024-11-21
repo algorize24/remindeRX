@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   StyleSheet,
   TextInput,
   FlatList,
@@ -9,14 +8,17 @@ import {
 import { useFocusEffect } from "@react-navigation/native";
 import { useState, useCallback } from "react";
 
+// image
+import EmptyImage from "../../assets/others/contactempty.png";
+
 // constant
 import { Color } from "../../constants/Color";
-import { Fonts } from "../../constants/Font";
 
 // components
-import TextScreen from "../../components/header/TextScreen";
+import ErrorComponent from "../../components/dashboard/ErrorComponent";
 import ListContact from "../../components/desc/ListContact";
 import Label from "../../components/dashboard/Label";
+import IsEmpty from "../../components/dashboard/isEmpty";
 
 // axios
 import axios from "axios";
@@ -38,6 +40,9 @@ export default function ContactScreen({ navigation }) {
   // search state
   const [searchContact, setSearchContact] = useState([]);
   const [search, setSearch] = useState("");
+
+  // error state
+  const [error, setError] = useState("");
 
   // display contact by certain user
   const fetchContact = async () => {
@@ -61,7 +66,7 @@ export default function ContactScreen({ navigation }) {
         setSearchContact(response.data.contacts);
       }
     } catch (error) {
-      console.log("Error fetching contact list", error);
+      setError("An unexpected error occurred. Please try again later.", error);
     } finally {
       setIsLoading(false);
     }
@@ -103,7 +108,12 @@ export default function ContactScreen({ navigation }) {
         >
           All Contact
         </Label>
-        {isLoading ? (
+
+        {error ? (
+          <View style={styles.error}>
+            <ErrorComponent message={error} />
+          </View>
+        ) : isLoading ? (
           <ActivityIndicator size={"large"} color={Color.purpleColor} />
         ) : searchContact.length > 0 ? (
           <FlatList
@@ -114,7 +124,12 @@ export default function ContactScreen({ navigation }) {
             renderItem={({ item }) => <ListContact itemData={item} />}
           />
         ) : (
-          <Text style={styles.noContactsMessage}>No contacts found</Text> // Show message if no results found
+          <View style={styles.isEmpty}>
+            <IsEmpty
+              image={EmptyImage}
+              message={"You haven’t added any contact yet"}
+            />
+          </View>
         )}
       </View>
     </View>
@@ -144,10 +159,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  noContactsMessage: {
-    textAlign: "center",
-    color: Color.tagLine,
-    fontFamily: Fonts.main,
-    fontSize: 14,
+  isEmpty: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  error: {
+    flex: 1,
+    justifyContent: "center",
   },
 });

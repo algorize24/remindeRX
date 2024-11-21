@@ -2,10 +2,13 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { Color } from "../../constants/Color";
 import { Fonts } from "../../constants/Font";
 
-export default function IsEmpty({ message, image }) {
+export default function ErrorComponent({ message }) {
   return (
     <View style={styles.root}>
-      <Image style={styles.img} source={image} />
+      <Image
+        style={styles.img}
+        source={require("../../assets/others/error.png")}
+      />
       <Text style={styles.textLength}>{message}</Text>
     </View>
   );
@@ -22,11 +25,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     fontFamily: Fonts.main,
     textAlign: "center",
-    color: Color.tagLine,
+    color: Color.redColor,
   },
 
   img: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
   },
 });
