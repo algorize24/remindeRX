@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, StyleSheet, Image, Alert } from "react-native";
 import { useState, useEffect, useCallback } from "react";
 
 import { useFocusEffect } from "@react-navigation/native";
@@ -16,6 +9,7 @@ import { Fonts } from "../../constants/Font";
 
 // components
 import LoadingRoots from "../../components/loading/LoadingRoots";
+import LoadingProfile from "../../components/loading/LoadingProfile";
 
 // auth context
 import { useAuth } from "../../context/authContext";
@@ -101,7 +95,7 @@ export default function ProfileScreen({ navigation }) {
   let content = (
     <View style={styles.root}>
       {userLoading ? (
-        <ActivityIndicator color={Color.purpleColor} />
+        <LoadingProfile />
       ) : (
         <View style={styles.userInfo}>
           {userInfo && userInfo.image && (

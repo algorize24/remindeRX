@@ -20,6 +20,7 @@ import {
   FontAwesome6,
   Ionicons,
   FontAwesome,
+  AntDesign,
 } from "@expo/vector-icons";
 
 // constants
@@ -360,6 +361,7 @@ export default function App() {
           ...MaterialIcons.font,
           ...FontAwesome6.font,
           ...Ionicons.font,
+          ...AntDesign.font,
         });
       } catch (err) {
         console.warn(err);

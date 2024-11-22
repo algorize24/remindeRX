@@ -23,6 +23,7 @@ import { Fonts } from "../../constants/Font";
 import { Color } from "../../constants/Color";
 
 // component
+import LoadingDrawer from "../loading/LoadingDrawer";
 import HeaderTitle from "./HeaderTitle";
 
 // axios
@@ -70,7 +71,7 @@ export default function DrawerHeader(props) {
 
   // loading state for user info...
   if (loading) {
-    return <ActivityIndicator color={Color.purpleColor} />;
+    return <LoadingDrawer />;
   }
 
   return (

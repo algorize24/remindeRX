@@ -127,7 +127,7 @@ export default function ReminderScreen({ navigation }) {
           <View style={styles.empty}>
             <IsEmpty
               image={EmptyImage}
-              message={"No upcoming reminders for today."}
+              message={"No upcoming reminders for today"}
             />
           </View>
         )}
