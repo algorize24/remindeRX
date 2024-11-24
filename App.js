@@ -98,6 +98,9 @@ import SetReminder from "./screens/reminderauthenticated/reminderx/req-backend/S
 // notification
 import NotificationScreen from "./screens/reminderauthenticated/notification/NotificationScreen";
 
+// connection
+import DeviceConnection from "./screens/reminderauthenticated/connection/DeviceConnection";
+
 // context
 import AuthContextProvider from "./context/authContext";
 import ReminderContextProvider from "./context/reminderContext";
@@ -280,13 +283,23 @@ function ReminderAuthenticated() {
         gestureEnabled: true,
         swipeEnabled: true,
         headerRight: () => (
-          <Ionicons
-            name="notifications-outline"
-            size={20}
-            color="#fff"
-            style={{ marginRight: 15 }}
-            onPress={() => navigation.navigate("Notification")}
-          />
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Ionicons
+              name="notifications"
+              size={20}
+              color="#fff"
+              style={{ marginRight: 15 }}
+              onPress={() => navigation.navigate("Notification")}
+            />
+
+            <AntDesign
+              name="link"
+              size={20}
+              color="#fff"
+              style={{ marginRight: 15 }}
+              onPress={() => navigation.navigate("Connection")}
+            />
+          </View>
         ),
       })}
     >
@@ -404,6 +417,18 @@ export default function App() {
                 component={NotificationScreen}
                 options={{
                   title: "Notification",
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                  headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
+                }}
+              />
+
+              <Stack.Screen
+                name="Connection"
+                component={DeviceConnection}
+                options={{
+                  title: "Device Connection",
                   headerTintColor: "white",
                   headerTitleAlign: "center",
                   headerTitleAlign: "center",

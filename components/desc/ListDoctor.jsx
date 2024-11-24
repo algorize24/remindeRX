@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     borderRadius: 30,
-    borderWidth: 1,
     borderColor: Color.tagLine,
   },
 

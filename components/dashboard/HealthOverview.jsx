@@ -58,24 +58,16 @@ export default function HealthOverview() {
   const chartConfig = {
     backgroundGradientFrom: Color.container,
     backgroundGradientTo: Color.container,
-    // color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // White line and labels
-    color: (opacity = 1) => `rgba(94, 173, 81, ${opacity})`,
+    // color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // white line and labels
+    color: (opacity = 1) => `rgba(94, 173, 81, ${opacity})`, // green color
     propsForDots: {
       r: "0", // Hide dots
     },
   };
   return (
     <View style={styles.health_overview}>
-      <View style={styles.header}>
-        <View>
-          <AuthText style={styles.header_text}>Health Overview</AuthText>
-          <Text style={styles.update}>Last update: Just now</Text>
-        </View>
-
-        <Pressable>
-          <AntDesign name="link" size={24} color={Color.tagLine} />
-        </Pressable>
-      </View>
+      <AuthText style={styles.header_text}>Health Overview</AuthText>
+      <Text style={styles.update}>Last update: Just now</Text>
 
       <View style={styles.container}>
         <View style={styles.data_container}>
@@ -227,13 +219,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
 
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-
   img: {
     width: 40,
     height: 40,
@@ -273,5 +258,6 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.mainLight,
     color: Color.tagLine,
     fontSize: 12,
+    marginBottom: 20,
   },
 });

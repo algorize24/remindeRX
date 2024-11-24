@@ -58,7 +58,7 @@ export default function ListContact({ itemData }) {
       <View style={styles.container}>
         <Image
           style={styles.img}
-          source={require("../../assets/others/user-avatar.png")}
+          source={require("../../assets/others/user.png")}
         />
 
         <View style={styles.user}>
