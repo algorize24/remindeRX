@@ -65,8 +65,8 @@ export default function DrawerHeader(props) {
     }, [user])
   );
 
-  // get the email and password and set a fall back
-  const displayEmail = userInfo ? userInfo.email : "null";
+  // get the name and address and set a fall back
+  const displayName = userInfo ? userInfo.name : "null";
   const address = userInfo ? userInfo.address : "null";
 
   // loading state for user info...
@@ -78,17 +78,13 @@ export default function DrawerHeader(props) {
     <SafeAreaView style={styles.root}>
       <HeaderTitle style={styles.text} />
       <View style={styles.user}>
-        {userInfo && userInfo.image && (
+        {userInfo && (
           <Image
             style={styles.userIcon}
-            source={{
-              uri:
-                userInfo.image ||
-                require("../../assets/others/user-avatar.png"),
-            }}
+            source={require("../../assets/others/profile.png")}
           />
         )}
-        <Text style={styles.userEmail}>{displayEmail}</Text>
+        <Text style={styles.userName}>{displayName}</Text>
         <Text style={styles.userAddress}>{address}</Text>
       </View>
       <DrawerContentScrollView {...props}>
@@ -119,10 +115,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Color.textInput,
   },
-  userEmail: {
+  userName: {
     color: "white",
     fontFamily: Fonts.main,
     marginBottom: 2,
+    textTransform: "capitalize",
   },
   userAddress: {
     fontFamily: Fonts.main,

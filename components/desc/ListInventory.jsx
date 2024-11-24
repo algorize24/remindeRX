@@ -26,28 +26,28 @@ export default function ListInventory({ itemData }) {
       }}
       style={({ pressed }) => [styles.medView, pressed && styles.pressed]}
     >
-      <View style={styles.container}>
-        <View>
+      <View style={styles.main_container}>
+        <View style={styles.container}>
           <Image
             style={styles.img}
-            source={require("../../assets/others/medicine.webp")}
+            source={require("../../assets/others/pill.png")}
           />
+
+          <View style={styles.textContainer}>
+            <Text style={styles.name}>{medicine_name}</Text>
+            <Text style={styles.dosage}>{dosage}mg</Text>
+          </View>
         </View>
 
-        <View style={styles.textContainer}>
-          <Text style={styles.medText}>
-            {medicine_name}, <Text style={styles.dosageText}>{dosage}mg</Text>
-          </Text>
+        <View style={styles.nums_container}>
+          <View>
+            <Text style={styles.info}>Expiration Date</Text>
+            <Text style={styles.data}>{formattedDate}</Text>
+          </View>
 
-          <View style={styles.status}>
-            <View style={styles.statusSection}>
-              <Text style={styles.statusText}>Expiration Date</Text>
-              <Text style={styles.mainText}>{formattedDate}</Text>
-            </View>
-            <View style={styles.statusSection}>
-              <Text style={styles.statusText}>Stock</Text>
-              <Text style={styles.mainText}>{stock}</Text>
-            </View>
+          <View style={styles.stock_container}>
+            <Text style={styles.info}>Stock</Text>
+            <Text style={styles.data}>{stock}</Text>
           </View>
         </View>
       </View>
@@ -68,51 +68,52 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
 
+  main_container: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+
   container: {
     flexDirection: "row",
   },
 
   img: {
-    width: 120,
-    height: 80,
-    borderRadius: 3,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
 
   textContainer: {
-    color: "#fff",
     marginLeft: 10,
   },
 
-  medText: {
+  name: {
     fontFamily: Fonts.main,
     color: "#fff",
+    fontSize: 14,
     textTransform: "capitalize",
   },
 
-  status: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-    width: "100%",
+  dosage: {
+    fontFamily: Fonts.main,
+    color: "#fff",
+    fontSize: 13,
   },
 
-  statusSection: {
-    flex: 1,
-  },
-
-  statusText: {
+  info: {
     fontFamily: Fonts.mainLight,
     color: Color.tagLine,
     fontSize: 12,
   },
 
-  mainText: {
-    color: "#fff",
+  data: {
     fontFamily: Fonts.main,
+    color: "#fff",
+    fontSize: 13,
   },
 
-  dosageText: {
-    color: "#fff",
-    textTransform: "lowercase",
+  stock_container: {
+    marginTop: 10,
   },
 });

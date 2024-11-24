@@ -95,6 +95,9 @@ import SelectTimeWeek from "./screens/reminderauthenticated/reminderx/select-tim
 // -- req-backend
 import SetReminder from "./screens/reminderauthenticated/reminderx/req-backend/SetReminder";
 
+// notification
+import NotificationScreen from "./screens/reminderauthenticated/notification/NotificationScreen";
+
 // context
 import AuthContextProvider from "./context/authContext";
 import ReminderContextProvider from "./context/reminderContext";
@@ -269,10 +272,22 @@ function ReminderAuthenticated() {
         headerTitle: () => <HeaderTitle />,
         headerTitleAlign: "center",
         drawerStyle: { backgroundColor: Color.bgColor },
-        drawerLabelStyle: { color: Color.tagLine, marginLeft: -20 },
+        drawerLabelStyle: {
+          color: Color.tagLine,
+          fontFamily: Fonts.main,
+        },
         drawerActiveBackgroundColor: Color.container,
         gestureEnabled: true,
         swipeEnabled: true,
+        headerRight: () => (
+          <Ionicons
+            name="notifications-outline"
+            size={20}
+            color="#fff"
+            style={{ marginRight: 15 }}
+            onPress={() => navigation.navigate("Notification")}
+          />
+        ),
       })}
     >
       <Drawer.Screen
@@ -280,9 +295,6 @@ function ReminderAuthenticated() {
         component={DashboardScreen}
         options={{
           title: "Dashboard",
-          drawerIcon: () => (
-            <MaterialIcons name="dashboard" size={20} color={Color.tagLine} />
-          ),
         }}
       />
       <Drawer.Screen
@@ -290,9 +302,6 @@ function ReminderAuthenticated() {
         component={InventoryScreen}
         options={{
           title: "Medicine Storage",
-          drawerIcon: () => (
-            <FontAwesome6 name="list" size={20} color={Color.tagLine} />
-          ),
         }}
       />
       <Drawer.Screen
@@ -300,13 +309,6 @@ function ReminderAuthenticated() {
         component={ReminderScreen}
         options={{
           title: "Medication Reminder",
-          drawerIcon: () => (
-            <MaterialIcons
-              name="notifications"
-              size={22}
-              color={Color.tagLine}
-            />
-          ),
         }}
       />
       {/* <Drawer.Screen
@@ -322,21 +324,10 @@ function ReminderAuthenticated() {
         component={ContactScreen}
         options={{
           title: "Emergency Contact ",
-          drawerIcon: () => (
-            <FontAwesome name="phone" size={24} color={Color.tagLine} />
-          ),
         }}
       />
 
-      <Drawer.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          drawerIcon: () => (
-            <Feather name="user" size={20} color={Color.tagLine} />
-          ),
-        }}
-      />
+      <Drawer.Screen name="Profile" component={ProfileScreen} />
     </Drawer.Navigator>
   );
 }
@@ -406,6 +397,18 @@ export default function App() {
                 name="ReminderAuthenticated"
                 component={ReminderAuthenticated}
                 options={{ headerShown: false }}
+              />
+
+              <Stack.Screen
+                name="Notification"
+                component={NotificationScreen}
+                options={{
+                  title: "Notification",
+                  headerTintColor: "white",
+                  headerTitleAlign: "center",
+                  headerTitleAlign: "center",
+                  headerTitleStyle: { fontFamily: Fonts.main, fontSize: 14 },
+                }}
               />
 
               <Stack.Screen

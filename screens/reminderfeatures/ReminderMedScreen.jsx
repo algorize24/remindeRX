@@ -58,16 +58,16 @@ export default function ReminderMedScreen({ navigation }) {
           for your medications, ensuring you never miss a dose and manage your
           health with ease.
         </Text>
-      </View>
 
-      <View>
-        {!isLoading ? (
-          <MainButton onPress={handleNext}>Get Started</MainButton>
-        ) : (
-          <Button isEnable={false}>
-            <ActivityIndicator color={"#fff"} />
-          </Button>
-        )}
+        <View style={styles.buttonContainer}>
+          {!isLoading ? (
+            <MainButton onPress={handleNext}>Get Started</MainButton>
+          ) : (
+            <Button isEnable={false}>
+              <ActivityIndicator color={"#fff"} />
+            </Button>
+          )}
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -77,13 +77,16 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     paddingVertical: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    paddingHorizontal: 10,
-    justifyContent: "space-between",
+    paddingHorizontal: 25,
   },
 
   container: {
     flex: 1,
     justifyContent: "center",
+  },
+
+  buttonContainer: {
+    marginTop: 50,
   },
 
   featureText: {

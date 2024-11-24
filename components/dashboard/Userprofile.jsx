@@ -9,6 +9,9 @@ import { Color } from "../../constants/Color";
 // auth context
 import { useAuth } from "../../context/authContext";
 
+// component
+import LoadingUserProfile from "../loading/LoadingUserProfile";
+
 // axios
 import axios from "axios";
 
@@ -51,20 +54,15 @@ export default function Userprofile() {
 
   // loading state for user info...
   if (loading) {
-    return (
-      <ActivityIndicator style={styles.loading} color={Color.purpleColor} />
-    );
+    return <LoadingUserProfile />;
   }
 
   return (
     <View style={styles.userInfo}>
-      {userInfo && userInfo.image && (
+      {userInfo && (
         <Image
           style={styles.img}
-          source={{
-            uri:
-              userInfo.image || require("../../assets/others/user-avatar.png"),
-          }}
+          source={require("../../assets/others/profile.png")}
         />
       )}
       <View style={styles.user}>

@@ -58,7 +58,8 @@ export default function HealthOverview() {
   const chartConfig = {
     backgroundGradientFrom: Color.container,
     backgroundGradientTo: Color.container,
-    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // White line and labels
+    // color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // White line and labels
+    color: (opacity = 1) => `rgba(94, 173, 81, ${opacity})`,
     propsForDots: {
       r: "0", // Hide dots
     },

@@ -98,14 +98,10 @@ export default function ProfileScreen({ navigation }) {
         <LoadingProfile />
       ) : (
         <View style={styles.userInfo}>
-          {userInfo && userInfo.image && (
+          {userInfo && (
             <Image
               style={styles.img}
-              source={{
-                uri:
-                  userInfo.image ||
-                  require("../../assets/others/user-avatar.png"),
-              }}
+              source={require("../../assets/others/profile.png")}
             />
           )}
           <Text style={styles.email}>{displayEmail}</Text>

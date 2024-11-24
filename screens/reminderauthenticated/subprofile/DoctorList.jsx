@@ -13,6 +13,7 @@ import { Fonts } from "../../../constants/Font";
 import ListDoctor from "../../../components/desc/ListDoctor";
 import ErrorComponent from "../../../components/dashboard/ErrorComponent";
 import IsEmpty from "../../../components/dashboard/isEmpty";
+import LoadingDoctor from "../../../components/loading/LoadingDoctor";
 
 // axios
 import axios from "axios";
@@ -79,7 +80,7 @@ export default function DoctorList() {
           <ErrorComponent message={error} />
         </View>
       ) : isLoading ? (
-        <ActivityIndicator size={"large"} color={Color.purpleColor} />
+        <LoadingDoctor />
       ) : doctorsData && doctorsData.length > 0 ? (
         <FlatList
           overScrollMode="never"

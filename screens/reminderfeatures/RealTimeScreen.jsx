@@ -50,10 +50,10 @@ export default function RealTimeScreen({ navigation }) {
           up-to-the-minute insights into your health. Stay informed with live
           updates for better health management.
         </Text>
-      </View>
 
-      <View>
-        <MainButton onPress={handleNext}>Next</MainButton>
+        <View style={styles.buttonContainer}>
+          <MainButton onPress={handleNext}>Next</MainButton>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -63,13 +63,16 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     paddingVertical: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    paddingHorizontal: 10,
-    justifyContent: "space-between",
+    paddingHorizontal: 25,
   },
 
   container: {
     flex: 1,
     justifyContent: "center",
+  },
+
+  buttonContainer: {
+    marginTop: 50,
   },
 
   featureText: {

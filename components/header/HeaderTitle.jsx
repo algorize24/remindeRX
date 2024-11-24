@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: Fonts.main,
     color: "white",
-    fontSize: 19,
+    fontSize: 15,
   },
 
   rxText: {

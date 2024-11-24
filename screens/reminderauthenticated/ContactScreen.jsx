@@ -13,12 +13,14 @@ import EmptyImage from "../../assets/others/contactempty.png";
 
 // constant
 import { Color } from "../../constants/Color";
+import { Fonts } from "../../constants/Font";
 
 // components
 import ErrorComponent from "../../components/dashboard/ErrorComponent";
 import ListContact from "../../components/desc/ListContact";
 import Label from "../../components/dashboard/Label";
 import IsEmpty from "../../components/dashboard/isEmpty";
+import LoadingContact from "../../components/loading/LoadingContact";
 
 // axios
 import axios from "axios";
@@ -114,7 +116,7 @@ export default function ContactScreen({ navigation }) {
             <ErrorComponent message={error} />
           </View>
         ) : isLoading ? (
-          <ActivityIndicator size={"large"} color={Color.purpleColor} />
+          <LoadingContact />
         ) : searchContact.length > 0 ? (
           <FlatList
             overScrollMode="never"
@@ -151,6 +153,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     color: Color.tagLine,
+    fontFamily: Fonts.main,
   },
 
   dataContainer: {

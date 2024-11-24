@@ -13,7 +13,7 @@ export default function FeatureText({ style }) {
 const styles = StyleSheet.create({
   mainText: {
     fontFamily: Fonts.main,
-    fontSize: 22,
+    fontSize: 18,
     textAlign: "center",
     color: "white",
   },

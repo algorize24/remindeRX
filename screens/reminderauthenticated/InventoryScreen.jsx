@@ -1,4 +1,11 @@
-import { View, StyleSheet, FlatList, ActivityIndicator } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  Text,
+  ScrollView,
+} from "react-native";
 import { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -7,12 +14,15 @@ import EmptyImage from "../../assets/others/inventoryempty.png";
 
 // constant
 import { Color } from "../../constants/Color";
+import { Fonts } from "../../constants/Font";
 
 // components
 import ListInventory from "../../components/desc/ListInventory";
 import Label from "../../components/dashboard/Label";
 import ErrorComponent from "../../components/dashboard/ErrorComponent";
 import IsEmpty from "../../components/dashboard/isEmpty";
+import SortingContainer from "../../components/inventory/SortingContainer";
+import LoadingInventory from "../../components/loading/LoadingInventory";
 
 // axios
 import axios from "axios";
@@ -34,32 +44,52 @@ export default function InventoryScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(""); // error state
 
+  // track the current sort
+  const [sortCriteria, setSortCriteria] = useState("default");
+
+  // handle sort change
+  const handleSortChange = (newCriteria) => {
+    setSortCriteria(newCriteria); // Update the state for future reference
+    fetchInventory(newCriteria); // Pass the new criteria directly
+  };
+
   // display inventory by certain user
-  const fetchInventory = async () => {
+  const fetchInventory = async (criteria = sortCriteria) => {
     setIsLoading(true);
 
     try {
-      // check if the currentUser
       const currentUser = auth.currentUser;
 
-      // if there's a currentUser
       if (currentUser) {
-        // get the token
         const token = await currentUser.getIdToken();
 
-        // request to backend
         const response = await axios.get("http://10.0.2.2:5000/api/inventory", {
           headers: {
-            // send the token to backend for verification
             Authorization: `Bearer ${token}`,
           },
         });
 
-        // get the response.data
-        setDisplayInventory(response.data.inventory);
+        let inventoryData = response.data.inventory;
+
+        // Apply sorting based on the provided criteria
+        if (criteria === "ascend") {
+          inventoryData.sort((a, b) =>
+            a.medicine_name.localeCompare(b.medicine_name)
+          );
+        } else if (criteria === "descend") {
+          inventoryData.sort((a, b) =>
+            b.medicine_name.localeCompare(a.medicine_name)
+          );
+        } else if (criteria === "expDate") {
+          inventoryData.sort(
+            (a, b) => new Date(a.expiration_date) - new Date(b.expiration_date)
+          );
+        }
+
+        setDisplayInventory(inventoryData);
       }
     } catch (error) {
-      setError("An unexpected error occurred. Please try again later.", error);
+      setError("An unexpected error occurred. Please try again later.");
     } finally {
       setIsLoading(false);
     }
@@ -71,6 +101,7 @@ export default function InventoryScreen({ navigation }) {
       fetchInventory();
     }, [user])
   );
+
   return (
     <View style={styles.root}>
       <View style={styles.dataContainer}>
@@ -79,15 +110,17 @@ export default function InventoryScreen({ navigation }) {
             navigation.navigate("AddMedicine");
           }}
         >
-          Lists of Medicine
+          Medicine Inventory
         </Label>
+
+        <SortingContainer onSortChange={handleSortChange} />
 
         {error ? (
           <View style={styles.error}>
             <ErrorComponent message={error} />
           </View>
         ) : isLoading ? (
-          <ActivityIndicator size={"large"} color={Color.purpleColor} />
+          <LoadingInventory />
         ) : displayInventory && displayInventory.length > 0 ? (
           <FlatList
             overScrollMode="never"

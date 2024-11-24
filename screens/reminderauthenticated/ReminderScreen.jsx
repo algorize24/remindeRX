@@ -15,6 +15,7 @@ import MainButton from "../../components/buttons/MainButton";
 import ReminderContainer from "../../components/dashboard/ReminderContainer";
 import IsEmpty from "../../components/dashboard/isEmpty";
 import ErrorComponent from "../../components/dashboard/ErrorComponent";
+import LoadingReminder from "../../components/loading/LoadingReminder";
 
 // axios
 import axios from "axios";
@@ -110,7 +111,7 @@ export default function ReminderScreen({ navigation }) {
             <ErrorComponent message={error} />
           </View>
         ) : isLoading ? (
-          <ActivityIndicator size={"large"} color={Color.purpleColor} />
+          <LoadingReminder />
         ) : displayReminder && displayReminder.length > 0 ? (
           <FlatList
             alwaysBounceVertical={false}
